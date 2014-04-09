@@ -2,7 +2,7 @@ RM=rm
 CC=g++
 CFLAGS=-g -std=c++11 -Wall -pedantic
 CLCFLAGS=-pthread
-LIBS=-lboost_filesystem -lboost_system
+LIBS=-Llib/ -lboost_system
 SERVER_BIN=server
 SERVER_SRC=server.cpp
 CLIENT_SRC=client.cpp
