@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <boost/asio.hpp>
+#include "server_connect"
 
 using boost::asio::ip::tcp;
 
@@ -13,34 +14,21 @@ std::string make_daytime_string()
 
 int main()
 {
-  try
-  {
-    // Any program that uses asio need to have at least one io_service object
-    boost::asio::io_service io_service;
-
-    // acceptor object needs to be created to listen for new connections
-    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 11500));
-
-    for (;;)
-    {
-      // creates a socket
-      tcp::socket socket(io_service);
-
-      // wait and listen
-      acceptor.accept(socket);
-
-      // prepare message to send back to client
-      std::string message = make_daytime_string();
-
-      boost::system::error_code ignored_error;
-
-      // writing the message for current time
-      boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
-    }
+  boost::asio::io_service io;
+  
+  try{
+  connection_binnder binnder(io);
+  
+  
+  //spustit hru;()
+  
+  io.run();
+  
+  
   }
   catch (std::exception& e)
   {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "Exception: " << e.what() << "\n";
   }
 
   return 0;
