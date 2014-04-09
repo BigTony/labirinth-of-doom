@@ -19,7 +19,7 @@ int main()
     boost::asio::io_service io_service;
 
     // acceptor object needs to be created to listen for new connections
-    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 13));
+    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 11500));
 
     for (;;)
     {

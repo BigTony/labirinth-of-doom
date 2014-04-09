@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     // A resolver takes a query object and turns it into a list of endpoints. 
     // We construct a query using the name of the server, specified in argv[1], 
     // and the name of the service, in this case "daytime".
-    tcp::resolver::query query(argv[1], "daytime");
+    tcp::resolver::query query(argv[1], "11500");
 
     // The list of endpoints is returned using an iterator of type ip::tcp::resolver::iterator. 
     // A default constructed ip::tcp::resolver::iterator object can be used as an end iterator.
