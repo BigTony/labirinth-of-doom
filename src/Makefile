@@ -1,6 +1,6 @@
 RM=rm
 CC=g++
-CFLAGS=-g -std=c++11 -Wall -pedantic
+CFLAGS=-g -std=c++11 -Wall -pedantic -Iinc/
 CLCFLAGS=-pthread
 LIBS=-Llib/ -lboost_system
 SERVER_BIN=server
@@ -20,4 +20,4 @@ client: $(CLIENT_SRC)
 	
 	
 clean:
-	$(RM)   *.o
+	$(RM)   *.o $(SERVER_BIN) $(CLIENT_BIN)
