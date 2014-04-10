@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <boost/asio.hpp>
-#include "server_connect"
+#include "server_connect.hpp"
 
 using boost::asio::ip::tcp;
 
@@ -18,17 +18,14 @@ int main()
   
   try{
   connection_binnder binnder(io);
-  
-  
+
   //spustit hru;()
   
   io.run();
-  
-  
+
   }
-  catch (std::exception& e)
-  {
-    std::cerr << "Exception: " << e.what() << "\n";
+  catch (std::exception& error){
+    std::cerr << "Exception: " << error.what() << std::endl;
   }
 
   return 0;
