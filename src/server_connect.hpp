@@ -12,42 +12,42 @@
 #define SERVER_CONNECT_HPP
 
 
-
+#include <cstdlib>
 #include <boost/asio.hpp>
 
-#define SERVER_PORT "11500"
+#define SERVER_PORT 11500
 
 using boost::asio::ip::tcp;
 
 /**
 * Class storing all information about connected clients
 */
-class client_connection {
+class client_connection:public std::enable_shared_from_this<client_connection> {
 public:
 
   /**
   * A constructor.
-  * Constructor of connection_binnder no parrams need.
-  * @param boos::asio::io_service needed for I/O opperatoins 
+  * Constructor of new connected client.
+  * @param socket used for connection.
   */
-  client_connection(tcp::socket socket);
-  ~client_connection();
+  client_connection(boost::asio::io_service* io_service);
 
   /**
   * A public function.
-  * Sends message to client connected with this connection
-  * When connection comes handle it and add it to
+  * Sends message to client connected with this connection.
+  * When connection comes handle it and add it to.
   * @param auto 
   */  
   void send_msg();
-    
-private:
 
   /**
-  * A private variable 
-  * Socket storing information about connection with client
+  * A private variable. 
+  * Socket storing information about connection with client.
   */
-  tcp::socket socket_;  
+  tcp::socket socket_; 
+private:
+
+ 
 };
 
 
@@ -60,24 +60,19 @@ public:
   /**
   * A constructor.
   * Constructor of connection_binnder
-  * @param boos::asio::io_service needed for I/O opperatoins 
+  * @param boost::asio::io_service needed for I/O opperatoins.
+  * @param const boost::asio::ip::tcp::endpoint point used for I/O opperatoins.
   */
-  connection_binnder(boost::asio::io_service& io);
-  ~connection_binnder();
+  connection_binnder(boost::asio::io_service* io_service,
+		     const tcp::endpoint& endpoint);
+
   /**
   * A public function.
   * Waiting for incomming connection from clients.
   * When connection comes handle it and add it to @var connections
   */  
   void wait_connection();
-private:
- 
-  /**
-  * A private function.
-  * Add new client to known list
-  * And add assynchronyose hanndler to IO service
-  */  
-  void add_connection();  
+private:  
   
   /**
   * A private variable 
@@ -95,7 +90,7 @@ private:
   * A private variable 
   * Socket storing information about connection with client
   */
-  tcp::socket socket_;
+  boost::asio::io_service* io_;
 };
 
 

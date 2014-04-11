@@ -5,7 +5,7 @@ CLCFLAGS=-pthread
 LIBS=-lboost_system
 SERVER_BIN=server
 SERVER_SRC=server.cpp server_connect.hpp server_connect.cpp
-CLIENT_SRC=client.cpp
+CLIENT_SRC=client.cpp client_connect.hpp
 CLIENT_BIN=client
 
 all: server client
