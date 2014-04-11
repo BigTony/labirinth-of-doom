@@ -8,8 +8,7 @@
 using boost::asio::ip::tcp;
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]){
   boost::asio::io_service io;
   tcp::endpoint endpoint(tcp::v4(), SERVER_PORT);
   try{

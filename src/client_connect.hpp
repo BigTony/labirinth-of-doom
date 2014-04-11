@@ -10,6 +10,7 @@
 
 #ifndef CLIENT_CONNECT_HPP
 #include <iostream>
+#include <system_error>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 
@@ -41,15 +42,16 @@ public:
 	void print_message(){
 		std::cout.write(buf_.data(), len_);
 	}
-
+	void stop();
 private:
 	void connect(tcp::resolver::iterator endpoint_iterator);
 	void read_message();
+
 	/**
 	* A private variable.
 	* Asio need to have at least one io_service object.
 	*/
-	
+	boost::asio::io_service *io_;
 	/**
 	* A private variable.
 	* Create socket.
