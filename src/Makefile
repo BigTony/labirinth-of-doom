@@ -1,7 +1,6 @@
 RM=rm
 CC=g++
-CFLAGS=-g -std=c++11 -Wall -pedantic -Iinc/
-CLCFLAGS=-pthread
+CFLAGS=-g -std=c++11 -pthread -Wall -pedantic -Iinc/
 LIBS=-lboost_system
 SERVER_BIN=server
 SERVER_SRC=server.cpp server_connect.hpp server_connect.cpp
@@ -16,7 +15,7 @@ server: $(SERVER_SRC)
 
 
 client: $(CLIENT_SRC)
-	$(CC) $(CFLAGS) $(CLCFLAGS) $(CLIENT_SRC) $(LIBS) -o $(CLIENT_BIN)
+	$(CC) $(CFLAGS) $(CLIENT_SRC) $(LIBS) -o $(CLIENT_BIN)
 	
 	
 clean:
