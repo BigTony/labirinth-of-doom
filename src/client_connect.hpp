@@ -43,8 +43,11 @@ public:
 		std::cout.write(buf_.data(), len_);
 	}
 	void stop();
-private:
 	void connect(tcp::resolver::iterator endpoint_iterator);
+
+	void error_biatch(boost::system::error_code error);
+private:
+	
 	void read_message();
 
 	/**
@@ -68,7 +71,6 @@ private:
 	* Prevent buffer overflow.
 	*/
 	size_t len_;
-
 };
 
 
