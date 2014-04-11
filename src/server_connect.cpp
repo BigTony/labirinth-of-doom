@@ -32,9 +32,8 @@ void connection_binnder::wait_connection(){
 
 void connection_binnder::stop(){
   acceptor_.cancel();
+  io_->stop();
 }
-
-
 
 
 client_connection::client_connection(boost::asio::io_service* io_service)
