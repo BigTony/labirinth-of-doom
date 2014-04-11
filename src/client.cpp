@@ -4,13 +4,14 @@ using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[])
 {
-  server_connection con(argv);
+  boost::asio::io_service io;
+  tcp::resolver resolver(io);
+  auto endpoint_iterator = resolver.resolve({ argv[1],PORT});
 
-  while(1){
-        std::string message;
-        std::cin >> message;
-        con.send_to_server(message);
-  }
+
+  server_connection con(&io,endpoint_iterator);
+
+  io.run();
 
   return 0;
 }

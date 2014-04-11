@@ -15,7 +15,7 @@
 
 #define CLIENT_CONNECT_HPP
 
-#define PORT 11500
+#define PORT "11500"
 
 using boost::asio::ip::tcp;
 
@@ -26,7 +26,7 @@ public:
 	/** A constructor of server_connection.
 	* Also create connection to argv[1]
 	*/
-	server_connection(char *ip[]);
+	server_connection(boost::asio::io_service *io,tcp::resolver::iterator endpoint_iterator);
 	/** A public function.
 	* Send message to server.
 	*/
@@ -49,7 +49,7 @@ private:
 	* A private variable.
 	* Asio need to have at least one io_service object.
 	*/
-	boost::asio::io_service io_service_;
+	
 	/**
 	* A private variable.
 	* Create socket.
@@ -60,7 +60,6 @@ private:
 	* Hold recieved data.
 	*/
 	boost::array<char, 128> buf_;
-	boost::system::error_code error_;
 	/**
 	* A private variable.
 	* The size of the array which hold recieved data.
