@@ -69,9 +69,15 @@ public:
   /**
   * A public function.
   * Waiting for incomming connection from clients.
-  * When connection comes handle it and add it to @var connections
+  * When connection comes handle it and add it to @var connections_
   */  
   void wait_connection();
+  
+  /**
+  * A public function.
+  * Stop waiting for incomming connection from clients.
+  */  
+  void stop();
 private:  
   
   /**

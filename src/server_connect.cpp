@@ -22,15 +22,20 @@ io_=io_service;
   
 void connection_binnder::wait_connection(){
   connections_.emplace_back(io_);
-  
   acceptor_.async_accept(connections_.back().socket_,[this](boost::system::error_code error){
     if (!error){
-      std::cout << "New client Connecting..." << std::endl;
-      //auto new_con = new client_connection(socket_);
+      std::cout << "New client Connecting..." << std::endl; 
       }
     wait_connection();
   });   
 }
+
+void connection_binnder::stop(){
+  acceptor_.cancel();
+}
+
+
+
 
 client_connection::client_connection(boost::asio::io_service* io_service)
     : socket_(*io_service){
