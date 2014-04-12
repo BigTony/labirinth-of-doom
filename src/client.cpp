@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
 catch (std::exception& error){
     std::cerr << "Exception: " << error.what() << std::endl;
   }
-// catch(int &kunda){
+// catch(int &kunda){a
 //   std::cout << " chytl sem intpokemona"<< kunda << std::endl;
 // }
 // catch (std::string &s){

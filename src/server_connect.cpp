@@ -25,7 +25,6 @@ void connection_binnder::wait_connection(){
   acceptor_.async_accept(connections_.back().socket_,[this](boost::system::error_code error){
     if (!error){
       std::cout << "New client Connecting..." << std::endl;
-      connections_.back.send_msg("Welcome");
       }
     wait_connection();
   });   
@@ -34,7 +33,7 @@ void connection_binnder::wait_connection(){
 void connection_binnder::stop(){
 
   acceptor_.cancel();
-  io_.stop();
+  io_->stop();
 }
 
 

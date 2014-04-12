@@ -9,9 +9,10 @@ using boost::asio::ip::tcp;
 
 
 int main(int argc, char* argv[]){
+
+  try{
   boost::asio::io_service io;
   tcp::endpoint endpoint(tcp::v4(), SERVER_PORT);
-  try{
   connection_binnder binnder(&io,endpoint);
   binnder.wait_connection();
   //spustit hru;()

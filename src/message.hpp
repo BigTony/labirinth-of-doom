@@ -6,19 +6,31 @@
 ///////////////////////////////////
 // message.hpp
 
-
-
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
-
-
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
 
+
+
+
+
 using std;
+
+class msg {
+public:
+  msg();
+  
+private:
+  
+  
+  
+  string to_send;
+};
+
 
 
 
