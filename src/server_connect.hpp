@@ -38,7 +38,7 @@ public:
   * When connection comes handle it and add it to.
   * @param auto 
   */  
-  void send_msg();
+  void send_msg(std::string msg);
 
   /**
   * A private variable. 

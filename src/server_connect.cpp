@@ -24,16 +24,17 @@ void connection_binnder::wait_connection(){
   connections_.emplace_back(io_);
   acceptor_.async_accept(connections_.back().socket_,[this](boost::system::error_code error){
     if (!error){
-      std::cout << "New client Connecting..." << std::endl; 
+      std::cout << "New client Connecting..." << std::endl;
+      connections_.back.send_msg("Welcome");
       }
     wait_connection();
   });   
 }
 
 void connection_binnder::stop(){
+
   acceptor_.cancel();
-  io_->post([this](){ connections_.back().socket_.close(); });
-  io_->stop();
+  io_.stop();
 }
 
 
@@ -44,7 +45,9 @@ client_connection::client_connection(boost::asio::io_service* io_service)
 }
 
 
-void client_connection::send_msg(){
+void client_connection::send_msg(std::string msg){
+  
+  
   return;
 }
     
