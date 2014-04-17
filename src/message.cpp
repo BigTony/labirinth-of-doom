@@ -4,7 +4,7 @@
 // Seidl Antonin  - xseidl01
 // Skyva Petr     - xskyva02
 ///////////////////////////////////
-// server_connect.cpp
+// message.cpp
 
 #include "message.hpp"
 using std;

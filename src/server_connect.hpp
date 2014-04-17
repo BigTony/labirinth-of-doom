@@ -54,7 +54,7 @@ private:
 /**
 * Handling all incomming cnnections
 */
-class connection_binnder {
+class connection_binnder:public boost::enable_shared_from_this<connection_binnder>{
 public:
   
   /**

@@ -1,9 +1,8 @@
 #include <ctime>
 #include <iostream>
 #include <string>
-#include <boost/asio.hpp>
 #include <thread>
-#include "server_connect.hpp"
+#include "serverhpp"
 
 using boost::asio::ip::tcp;
 
@@ -11,6 +10,8 @@ using boost::asio::ip::tcp;
 int main(int argc, char* argv[]){
 
   try{
+    
+  
   boost::asio::io_service io;
   tcp::endpoint endpoint(tcp::v4(), SERVER_PORT);
   connection_binnder binnder(&io,endpoint);
