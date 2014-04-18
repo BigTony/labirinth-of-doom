@@ -6,3 +6,123 @@
 ///////////////////////////////////
 // parser.cpp
 
+#include "parser.hpp"
+
+#define MAX_SIZE	15
+
+void parser_client::parse_arguments(std::string message){
+	if(message.compare(0,9, "send_maze") == 0){
+		int i = 10;
+		std::string active;
+		// nacte souradnice
+		while(i < 15){
+			if(message[i] == ' '){
+				y = std::stoi(active);
+				break;
+			}
+			if(message[i] == 'x'){
+				x = std::stoi(active);
+				active = "";
+				i++;
+				continue;
+			}
+			active += message[i];
+			i++;
+		}
+		// nacte bludiste
+		message.erase(0,i+1);
+		maze = message;
+	}else if(message.compare(0,16, "send_game_change") == 0){
+		std::cout << "start" << std::endl;
+		int i = 17;
+		std::string active;
+		int space = 0;
+		// send_game_change OBJ XxY OBJ....
+		while(i < message.length()){
+			if(isalpha(message[i])){
+				// sudej pocet mezer
+				if(space % 2 == 0){
+					active += message[i];
+				}else{	
+					std::cout << "sour x: " << active << std::endl;
+					active = "";
+				}
+			}else if(isdigit(message[i])){
+				active += message[i];
+			}else if(message[i] == ' '){
+				// sudej pocet mezer
+				if(space % 2 == 0){
+					std::cout << "obj: " << active << std::endl;
+					active = "";
+				}else{
+					std::cout << "sour y: " << active << std::endl;
+					active = "";
+				}
+				space++;
+				
+			}
+			i++;
+		}
+		std::cout << "sour y: " << active << std::endl;
+	}else if(message.compare(0,10, "send_lobby") == 0){
+		int i = 11;
+		std::string game_name,maze_name,player_count,game_num;
+		int comma = 0;
+		while(i < message.length()){
+			if(message[i] == ' '){
+				comma = 0;
+				std::cout << game_name << " " << maze_name << " " << player_count << " " << game_num << std::endl;
+				game_name,maze_name,player_count,game_num = "";
+			}else if(message[i] == '-'){
+				comma++;
+				i++;
+			}
+
+			if(comma == 0){
+				game_name += message[i];
+			}else if(comma == 1){
+				maze_name += message[i];
+			}else if(comma == 2){
+				player_count += message[i];
+			}else if(comma == 3){
+				game_num += message[i];
+			}
+			i++;
+		}
+		std::cout << game_name << " " << maze_name << " " << player_count << " " << game_num << std::endl;
+	}else if(message.compare(0,10, "send_stats") == 0){
+		int i = 11;
+		int comma = 0;
+		std::string steps,game_time;
+		while(i < message.length()){
+			if(message[i] == ' '){
+				comma = 0;
+				std::cout << steps << " " << game_time << std::endl;
+				steps,game_time = "";
+			}else if(message[i] == '-'){
+				comma++;
+				i++;
+			}
+		}
+	}else{
+		// error
+	}
+}
+
+int parser_client::getx(){
+	return x;
+}
+
+int parser_client::gety(){
+	return y;
+}
+
+std::string parser_client::getmaze(){
+	return maze;
+}
+
+// int main(int argc, char* argv[]){
+// 	parser_client parser;
+// 	parser.parse_arguments("send_lobby suprhra-epicmaze-0/4-1");
+// 	return 0;
+// }
