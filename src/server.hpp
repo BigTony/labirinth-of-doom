@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
 #include "command_handler.hpp"
 #include "server_connect.hpp"
@@ -25,17 +26,20 @@ private:
   
 };*/
 
-/*class game_server{
+class game_server{
 public:
   game_server();
   void run();
+  void terminal_command();
   
   
 private:
-  boost::asio::io_service* p_io_;
+  boost::asio::io_service io_;
   tcp::endpoint endpoint_;
-  connection_binnder binder;
-};*/
+  connection_binnder binnder_;
+  boost::thread t_binnder_;
+  std::string command_;
+};
 
 
 

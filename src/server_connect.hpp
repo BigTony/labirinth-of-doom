@@ -14,8 +14,12 @@
 
 #include <cstdlib>
 #include <boost/asio.hpp>
+#include "message.hpp"
 
 #define SERVER_PORT 11500
+#define NOT_CONNECTED 1
+#define CONNECTED 2
+#define CONNECTION_LOST 2
 
 using boost::asio::ip::tcp;
 
@@ -39,22 +43,34 @@ public:
   * @param auto 
   */  
   void send_msg(std::string msg);
+  
+  
+  void wait_msg();
+  void set_client_id(int id);
+  
 
   /**
-  * A private variable. 
+  * A public variable. 
   * Socket storing information about connection with client.
   */
-  tcp::socket socket_; 
+  tcp::socket socket_;
+  
+  
+  
+  
 private:
-
- 
+  int client_id_;
+  int status_;
+  std::string send_data;
+  std::string recived_data;
+  char data[MAX_MSG_LENGTH];
 };
 
 
 /**
 * Handling all incomming cnnections
 */
-class connection_binnder:public boost::enable_shared_from_this<connection_binnder>{
+class connection_binnder {
 public:
   
   /**
@@ -97,6 +113,9 @@ private:
   * Socket storing information about connection with client
   */
   boost::asio::io_service* io_;
+  
+  int connection_counter_;
+  
 };
 
 

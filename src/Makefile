@@ -1,11 +1,12 @@
 RM=rm
 CC=g++
 CFLAGS=-g -std=c++11 -pthread -Wall -pedantic -Iinc/
-LIBS=-lboost_system
+LIBS=-lboost_system -lboost_thread
 SERVER_BIN=server
-SERVER_SRC=server.cpp server_connect.hpp server_connect.cpp
-CLIENT_SRC=client.cpp client_connect.hpp client_connect.cpp
 CLIENT_BIN=client
+SERVER_SRC=server.cpp server.hpp server_connect.hpp server_connect.cpp message.cpp message.hpp
+CLIENT_SRC=client.cpp client_connect.hpp client_connect.cpp message.cpp message.hpp
+
 
 all: server client
 
