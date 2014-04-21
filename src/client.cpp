@@ -11,8 +11,18 @@
 using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[]){
-  try{
+  try{  
+  game_client client;
+  client.terminal_command();
+  }
+  catch (std::exception& error){
+    std::cerr << "Exception: " << error.what() << std::endl;
+  }
 
+  return 0;
+  
+  
+  
   boost::asio::io_service io;
   tcp::resolver resolver(io);
   auto endpoint_iterator = resolver.resolve({ argv[1],PORT});
@@ -31,22 +41,29 @@ int main(int argc, char* argv[]){
     }
   }
 
+}
 
 
-  }
+game_client::game_client():io_(),resolver_(io_){
+  endpoint_
+}
 
-catch (std::exception& error){
-    std::cerr << "Exception: " << error.what() << std::endl;
-  }
-// catch(int &kunda){a
-//   std::cout << " chytl sem intpokemona"<< kunda << std::endl;
-// }
-// catch (std::string &s){
-//   std::cout << " chytl sem stringokemona"<< s << std::endl;
-//   // std::cout << s << std::endl;
-// }
+void game_client::run (){
+  
+}
 
 
-
-  return 0;
+void game_client::terminal_command(){
+    std::getline (std::cin,command_);
+    if (command_.compare("exit")==0){
+      std::cout << "Stoping game server..." << std::endl;
+      connection_.stop();
+      t_connection_.join();
+      break;
+    }
+    else {
+      tcp::resolver resolver(io_);
+      endpoint_= resolver.resolve({ string,PORT});
+      connection_(&io_,endpoint_);
+    }
 }

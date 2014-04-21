@@ -9,22 +9,24 @@
 #ifndef MAZE_HPP
 #define MAZE_HPP
 
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/asio.hpp>
+
+//game constants
 #DEFINE MAX_MAZE_WIDTH 50
 #DEFINE MAX_MAZE_LENGTH 50
 #DEFINE MIN_CLOCK 500
 #DEFINE MAX_CLOCK 5000
 #DEFINE MAX_PLAYERS 4
 
+//game status
 #DEFINE STOPED 0
 #DEFINE PLAYING 1
 #DEFINE ENDED 2
 #DEFINE ERROR 3
-
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/asio.hpp>
 
 using std;
 /**
@@ -32,13 +34,13 @@ using std;
  */
 class maze_object {
 public:
-  maze_object();
+  maze_object()=0;
 private:
     
 };
 
 class static_object: public maze_object {
-  //virtual key,gate,wall,path
+  //virtual key,gate,wall,free
 };
 
 class dynamic_object public: maze_object {
@@ -57,7 +59,7 @@ class wall_object public: static_object{
   
 };
 
-class path_object public: static_object{
+class path_free public: static_object{
   
 };
 

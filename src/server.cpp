@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
 }
 
 
-game_server::game_server():endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
+game_server::game_server():io_(), endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
 }
 
 
