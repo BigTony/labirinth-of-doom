@@ -31,11 +31,7 @@ int main(int argc, char* argv[]){
 }
 
 
-<<<<<<< HEAD
-game_server::game_server():io_(), endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
-=======
 game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
->>>>>>> 468f68add045bc0123b15a3835bc6cf483d8e7c7
 }
 
 
