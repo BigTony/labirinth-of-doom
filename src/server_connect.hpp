@@ -15,8 +15,9 @@
 #include <cstdlib>
 #include <boost/asio.hpp>
 #include "message.hpp"
+#include "output.hpp"
 
-#define SERVER_PORT 11500
+#define SERVER_PORT 11600
 #define NOT_CONNECTED 1
 #define CONNECTED 2
 #define CONNECTION_LOST 2
@@ -55,7 +56,7 @@ public:
   */
   tcp::socket socket_;
   
-  
+  int get_client_id();
   
   
 private:
@@ -94,6 +95,7 @@ public:
   * Stop waiting for incomming connection from clients.
   */  
   void stop();
+  void send_to_client(int id);
 private:  
   
   /**

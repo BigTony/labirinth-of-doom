@@ -9,16 +9,19 @@
 #include <iostream>
 #include <string>
 #include "server.hpp"
+#include "output.hpp"
 
 using boost::asio::ip::tcp;
+
+
 
 
 int main(int argc, char* argv[]){
 
   try{  
-  game_server server;
-  server.run();
-  server.terminal_command();
+    game_server server;
+    server.run();
+    server.terminal_command();
   }
   catch (std::exception& error){
     std::cerr << "Exception: " << error.what() << std::endl;
@@ -28,7 +31,11 @@ int main(int argc, char* argv[]){
 }
 
 
+<<<<<<< HEAD
 game_server::game_server():io_(), endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
+=======
+game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
+>>>>>>> 468f68add045bc0123b15a3835bc6cf483d8e7c7
 }
 
 
@@ -43,8 +50,12 @@ void game_server::terminal_command(){
       std::cout << "Stoping game server..." << std::endl;
       binnder_.stop();
       t_binnder_.join();
+      return;
+    }else if(command_.compare("send")==0){
+      binnder_.send_to_client(1);
     }
-    else 
-      terminal_command();
+    terminal_command();
+
+
 }
 
