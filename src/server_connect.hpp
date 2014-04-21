@@ -15,8 +15,9 @@
 #include <cstdlib>
 #include <boost/asio.hpp>
 #include "message.hpp"
+#include "output.hpp"
 
-#define SERVER_PORT 11500
+#define SERVER_PORT 11600
 #define NOT_CONNECTED 1
 #define CONNECTED 2
 #define CONNECTION_LOST 2

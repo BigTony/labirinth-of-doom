@@ -43,6 +43,7 @@ using boost::asio::ip::tcp;
   void server_connection::connect(tcp::resolver::iterator endpoint_iterator){
     // boost::system::error_code *throw_error;
     boost::asio::connect(socket_, endpoint_iterator);
+    out.print("pripojen klient...");
   }
 
   void server_connection::read_message(){

@@ -1,10 +1,10 @@
 CC=g++
-CFLAGS=-g -std=c++11 -pthread -Wall -pedantic -Iinc/
-LIBS=-lboost_system -lboost_thread
+CFLAGS=-g -std=c++11 -pthread -Wall -pedantic -Iinc
+LIBS=-lboost_system -L/usr/local/lib/ -lboost_thread
 SERVER_BIN=server
 CLIENT_BIN=client
-SERVER_SRC=server.cpp server.hpp server_connect.hpp server_connect.cpp message.cpp message.hpp 
-CLIENT_SRC=client.cpp client.hpp client_connect.hpp client_connect.cpp message.cpp message.hpp 
+SERVER_SRC=server.cpp server.hpp server_connect.hpp server_connect.cpp message.cpp message.hpp output.hpp output.cpp
+CLIENT_SRC=client.cpp client_connect.hpp client_connect.cpp message.cpp message.hpp output.hpp output.cpp
 
 #maze.hpp maze.cpp
 #maze.hpp maze.cpp

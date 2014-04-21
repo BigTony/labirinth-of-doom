@@ -11,9 +11,7 @@
 #include <cstdlib>
 #include "server_connect.hpp"
 
-#include <algorithm>
-#include <vector>
-#include <boost/thread.hpp>
+
 
 using boost::asio::ip::tcp;
 
@@ -73,8 +71,8 @@ void connection_binnder::wait_connection(){
   connections_.emplace_back(io_);
   acceptor_.async_accept(connections_.back().socket_,[this](boost::system::error_code error){
     if (!error){
-      std::cout << "New client Connecting..." << std::endl;
-      connections_.front().set_client_id(connection_counter_++);
+      std::cout << "New client Connecting..." << "actual connection counter: " << connection_counter_ << std::endl;
+      connections_.back().set_client_id(connection_counter_++);
       } 
     wait_connection();
   });   
@@ -86,19 +84,18 @@ void connection_binnder::stop(){
 }
 
 void connection_binnder::send_to_client(int id){
-  // for(std::vector<client_connection>::iterator it = connections_.begin(); it != connections_.end(); ++it) {
-  //   if(it.client_id_ == id){
-  //     it.send_msg("YOLO ");
-  //     break;
-  //   }   
-  // }
-  for (unsigned int i = 0; i < connections_.size(); ++i)
+  for (unsigned int i = 0; i < connections_.size(); i++)
   {
-    if(connections_[i].get_client_id() == id){
+    std::cout << connections_[i].get_client_id() << std::endl;
+    if(connections_[i].get_client_id() == id){ 
       connections_[i].send_msg("YOLO");
+      // std::cout << "Zprava odeslana..." << std::endl;
+      out.print("zprava odeslana...");
+      out.print(10);
       break;
     }
   }
+
 }
 
 
