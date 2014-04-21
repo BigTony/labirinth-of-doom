@@ -11,6 +11,9 @@
 #include <cstdlib>
 #include "server_connect.hpp"
 
+#include <algorithm>
+#include <vector>
+#include <boost/thread.hpp>
 
 using boost::asio::ip::tcp;
 
@@ -20,6 +23,10 @@ client_connection::client_connection(boost::asio::io_service* io_service)
 
 void client_connection::set_client_id(int id){
   client_id_=id;
+}
+
+int client_connection::get_client_id(){
+  return client_id_;
 }
 
 void client_connection::wait_msg(){
@@ -34,7 +41,7 @@ void client_connection::wait_msg(){
           else
           {
             socket_.close();
-	    std::cout << "Unable recive data. Client hang out unexpectly" << client_id_ << std::endl;
+            std::cout << "Unable recive data. Client hang out unexpectly" << client_id_ << std::endl;
           }
         });
 }
@@ -44,12 +51,12 @@ void client_connection::send_msg(std::string msg){
         {
           if (!error)
           {
-	    std::cout << "Msg transmited to client" << client_id_ << std::endl;
+            std::cout << "Msg transmited to client" << client_id_ << std::endl;
           }
           else
           {
-	    std::cout << "Unable send msg to client. Client ID" << client_id_ << "hang out unexpectly" << std::endl;
-	    status_=CONNECTION_LOST;
+            std::cout << "Unable send msg to client. Client ID" << client_id_ << "hang out unexpectly" << std::endl;
+            status_=CONNECTION_LOST;
             socket_.close();
           }
         });
@@ -77,6 +84,24 @@ void connection_binnder::stop(){
   acceptor_.cancel();
   io_->stop();
 }
+
+void connection_binnder::send_to_client(int id){
+  // for(std::vector<client_connection>::iterator it = connections_.begin(); it != connections_.end(); ++it) {
+  //   if(it.client_id_ == id){
+  //     it.send_msg("YOLO ");
+  //     break;
+  //   }   
+  // }
+  for (unsigned int i = 0; i < connections_.size(); ++i)
+  {
+    if(connections_[i].get_client_id() == id){
+      connections_[i].send_msg("YOLO");
+      break;
+    }
+  }
+}
+
+
 
 
 

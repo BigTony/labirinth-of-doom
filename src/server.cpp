@@ -16,9 +16,9 @@ using boost::asio::ip::tcp;
 int main(int argc, char* argv[]){
 
   try{  
-  game_server server;
-  server.run();
-  server.terminal_command();
+    game_server server;
+    server.run();
+    server.terminal_command();
   }
   catch (std::exception& error){
     std::cerr << "Exception: " << error.what() << std::endl;
@@ -43,6 +43,8 @@ void game_server::terminal_command(){
       std::cout << "Stoping game server..." << std::endl;
       binnder_.stop();
       t_binnder_.join();
+    }else if(command_.compare("send")==0){
+      binnder_.send_to_client(1);
     }
     else 
       terminal_command();

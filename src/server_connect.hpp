@@ -55,7 +55,7 @@ public:
   */
   tcp::socket socket_;
   
-  
+  int get_client_id();
   
   
 private:
@@ -94,6 +94,7 @@ public:
   * Stop waiting for incomming connection from clients.
   */  
   void stop();
+  void send_to_client(int id);
 private:  
   
   /**
