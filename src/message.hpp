@@ -10,27 +10,28 @@
 #define MESSAGE_HPP
 
 #define MAX_MSG_LENGTH 4096
-#define HEADER_LENGTH 4
+#define HEADER_LENGTH 5
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
 
-/*
-class net_msg {
+
+/*class net_msg {
 public:
   net_msg();
-  size_t get_length();
+  void size_t get_length();
+  void set_header();
   void get_header();
   void decode msg();
   
 private:
-  string msg_;
+  char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
   std::size_t body_length_;
   
-};
-*/
+};*/
+
 /*class msg_handler{
 public:
   msg_handler(array<string> ids, array<string> commands, string separathor);

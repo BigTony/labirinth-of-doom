@@ -48,7 +48,7 @@ void game_server::terminal_command(){
       t_binnder_.join();
       return;
     }else if(command_.compare("send")==0){
-      binnder_.send_to_client(1);
+      binnder_.send_to_client(1,"ROFL");
     }
     terminal_command();
 

@@ -43,9 +43,7 @@ public:
   * When connection comes handle it and add it to.
   * @param auto 
   */  
-  void send_msg(std::string msg);
-  
-  
+  void send_msg(std::string message);
   void wait_msg();
   void set_client_id(int id);
   
@@ -62,9 +60,11 @@ public:
 private:
   int client_id_;
   int status_;
-  std::string send_data;
-  std::string recived_data;
-  char data[MAX_MSG_LENGTH];
+  std::string send_data_;
+  std::string recived_data_;
+  char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
+  char header_[HEADER_LENGTH+1];
+  int recived_;
 };
 
 
@@ -95,7 +95,7 @@ public:
   * Stop waiting for incomming connection from clients.
   */  
   void stop();
-  void send_to_client(int id);
+  void send_to_client(int id,std::string msg);
 private:  
   
   /**

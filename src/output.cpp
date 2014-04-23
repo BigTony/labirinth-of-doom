@@ -26,3 +26,7 @@ void output_handler::print(int message){
 void output_handler::print(unsigned int message){
 	std::cout << message << std::endl;
 }
+
+void output_handler::print_warn(std::string message){
+	std::cout << message << std::endl;
+}

@@ -19,6 +19,7 @@ public:
 	void print(std::string message);
 	void print(int message);
 	void print(unsigned int message);
+	void print_warn(std::string message);
 private:
 
 };
