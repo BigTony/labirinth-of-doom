@@ -34,7 +34,7 @@ void client_connection::wait_msg(){
 			std::strncat(header, header_, HEADER_LENGTH);
 			recived_ = std::atoi(header);
 			out.print(recived_);
-			
+			read_msg();
 		}
 		else{
 			socket_.close();
@@ -42,8 +42,10 @@ void client_connection::wait_msg(){
 			return;
 		}
 	});
+}
 
-	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_-1),[this](boost::system::error_code error, std::size_t length){
+void client_connection::read_msg(){
+	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			recived_data_=data_;
 			out.print(recived_data_);

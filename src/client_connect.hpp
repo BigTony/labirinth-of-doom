@@ -47,13 +47,12 @@ public:
 	void print_message(){
 		std::cout.write(buf_.data(), len_);
 	}
+	void read_msg();
 	void stop();
 	void connect(tcp::resolver::iterator endpoint_iterator);
 
 	void error_biatch(boost::system::error_code error);
 private:
-	
-	void read_message();
 
 	/**
 	* A private variable.

@@ -46,7 +46,7 @@ public:
   void send_msg(std::string message);
   void wait_msg();
   void set_client_id(int id);
-  
+  void read_msg();
 
   /**
   * A public variable. 
@@ -57,7 +57,7 @@ public:
   int get_client_id();
   
   
-private:
+private:1
   int client_id_;
   int status_;
   std::string send_data_;
