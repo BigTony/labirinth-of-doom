@@ -37,8 +37,7 @@ void client_connection::wait_msg(){
 			recived_ = std::atoi(header);
 			// out.print("server_connect:36:delka zpravy:");
 			out.print(recived_);
-			// read_data();
-			wait_msg();
+			read_msg();
 		}
 		else{
 			socket_.close();
@@ -46,10 +45,12 @@ void client_connection::wait_msg(){
 			return;
 		} 
 	});
+}
 
 }
 
-void client_connection::read_data(){
+
+void client_connection::read_msg(){
 	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			recived_data_=data_;
