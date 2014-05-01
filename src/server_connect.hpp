@@ -35,7 +35,7 @@ public:
   * Constructor of new connected client.
   * @param socket used for connection.
   */
-  client_connection(boost::asio::io_service* io_service);
+  client_connection(tcp::socket socket);
 
   /**
   * A public function.
@@ -53,12 +53,13 @@ public:
   * A public variable. 
   * Socket storing information about connection with client.
   */
-  tcp::socket socket_;
+
   
   int get_client_id();
-  
+  tcp::socket socket_; 
   
 private:
+
   int client_id_;
   int status_;
   std::string send_data_;
@@ -68,7 +69,7 @@ private:
   int recived_;
 };
 
-
+typedef std::shared_ptr<client_connection> client_connection_ptr;
 /**
 * Handling all incomming cnnections
 */
@@ -106,12 +107,12 @@ private:
   * Acceptor object needs to be created to listen for new connections
   */  
   tcp::acceptor acceptor_;
-  
+  tcp::socket socket_;
   /**
   * A private variable 
   * Array storing client connections
   */   
-  std::vector<client_connection> connections_;
+  std::vector<client_connection_ptr> connections_;
 
   /**
   * A private variable 

@@ -15,8 +15,7 @@
 
 using boost::asio::ip::tcp;
 
-client_connection::client_connection(boost::asio::io_service* io_service)
-: socket_(*io_service){
+client_connection::client_connection(tcp::socket socket): socket_(std::move(socket)){
 }
 
 void client_connection::set_client_id(int id){
@@ -89,19 +88,21 @@ void client_connection::send_msg(std::string message){
 }
 
 connection_binnder::connection_binnder(boost::asio::io_service* io_service, const tcp::endpoint& endpoint)
-: acceptor_(*io_service, endpoint){
+: acceptor_(*io_service, endpoint), socket_(*io_service){
 	io_=io_service;
 	connection_counter_=0;
 }
 
 void connection_binnder::wait_connection(){
-	connections_.emplace_back(io_);
-	acceptor_.async_accept(connections_.back().socket_,[this](boost::system::error_code error){
+	
+	acceptor_.async_accept(socket_,[this](boost::system::error_code error){
 		if (!error){
 			std::cout << "New client Connecting..." << "actual connection counter: " << connection_counter_ << std::endl;
-			connections_.back().set_client_id(connection_counter_++);
-			// connections_.back().send_msg("cusikfdsafdsa");
-			connections_.back().wait_msg();
+			client_connection_ptr p_new_connection = std::make_shared<client_connection>(std::move(socket_));
+			connections_.push_back(p_new_connection);
+			connections_.back()->wait_msg();
+			connections_.back()->set_client_id(connection_counter_++);
+			// connections_.back()->send_msg("cusikfdsafdsa");
 		} 
 		wait_connection();
 	});   
@@ -113,15 +114,15 @@ void connection_binnder::stop(){
 }
 
 void connection_binnder::check_socket(){
-	std::cout << "socket klienta prikaz: " << connections_[0].socket_.is_open() << std::endl;
+	std::cout << "socket klienta prikaz: " << connections_[0]->socket_.is_open() << std::endl;
 }
 
 void connection_binnder::send_to_client(int id, std::string msg){
 	for (unsigned int i = 0; i < connections_.size(); i++)
 	{
-		std::cout << connections_[i].get_client_id() << std::endl;
-		if(connections_[i].get_client_id() == id){ 
-			connections_[i].send_msg(msg);
+		std::cout << connections_[i]->get_client_id() << std::endl;
+		if(connections_[i]->get_client_id() == id){ 
+			connections_[i]->send_msg(msg);
 			// std::cout << "Zprava odeslana..." << std::endl;
 			out.print("zprava odeslana...");
 			break;
