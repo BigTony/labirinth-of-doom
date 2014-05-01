@@ -36,7 +36,7 @@ game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_
 
 
 
-void game_server:: run(){
+void game_server::run(){
   binnder_.wait_connection();
   t_binnder_ = new boost::thread([this](){ io_.run(); });
 }
@@ -49,7 +49,9 @@ void game_server::terminal_command(){
       t_binnder_->join();
       return;
     }else if(command_.compare("send")==0){
-      binnder_.send_to_client(1,"ROFL");
+      binnder_.send_to_client(0,"ROFL");
+    }else if(command_.compare("socket")==0){
+      binnder_.check_socket();
     }
     terminal_command();
 

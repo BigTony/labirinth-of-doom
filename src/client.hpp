@@ -30,7 +30,7 @@ private:
   tcp::resolver::iterator endpoint_;
   server_connection connection_;
   std::string command_;
-  boost::thread t_connection_;
+  boost::thread *t_connection_;
 };
 
 #endif

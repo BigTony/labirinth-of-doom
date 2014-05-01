@@ -100,7 +100,7 @@ void connection_binnder::wait_connection(){
 		if (!error){
 			std::cout << "New client Connecting..." << "actual connection counter: " << connection_counter_ << std::endl;
 			connections_.back().set_client_id(connection_counter_++);
-			connections_.back().send_msg("cusikfdsafdsa");
+			// connections_.back().send_msg("cusikfdsafdsa");
 			connections_.back().wait_msg();
 		} 
 		wait_connection();
@@ -110,6 +110,10 @@ void connection_binnder::wait_connection(){
 void connection_binnder::stop(){
 	acceptor_.cancel();
 	io_->stop();
+}
+
+void connection_binnder::check_socket(){
+	std::cout << "socket klienta prikaz: " << connections_[0].socket_.is_open() << std::endl;
 }
 
 void connection_binnder::send_to_client(int id, std::string msg){

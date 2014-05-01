@@ -18,6 +18,10 @@ void server_connection::send_prep(const std::string msg){
 	// *io_->post(send_msg(msg););
 }
 
+void server_connection::check_socket(){
+	std::cout << "socket klienta prikaz: " << socket_.is_open() << std::endl;
+}
+
 void server_connection::send_msg(std::string message){
 	std::cout << "socket klienta start: " << socket_.is_open() << std::endl;
 	if (message.length()>MAX_MSG_LENGTH) {
@@ -36,6 +40,7 @@ void server_connection::send_msg(std::string message){
 		if (!error){
 			out.print("bug2");
 			std::cout << "Msg transmited to server" << std::endl;
+
 		}
 		else{
 			out.print("bug3");
@@ -71,7 +76,6 @@ void server_connection::wait_msg(){
 					return;
 				}
 			}); 
-			read_msg();
 		}
 	else{
 		socket_.close();
@@ -82,33 +86,11 @@ void server_connection::wait_msg(){
 	
 }
 
-void server_connection::read_msg(){
-	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
-		if (!error){
-			recived_data_=data_;
-			out.print(recived_data_);
-			wait_msg();
-		}
-		else{
-			socket_.close();
-			std::cout << "Unable recive data. Server hang out unexpectly"<< std::endl;
-			return;
-		}
-	});  
-}
-
-
-
 
 void server_connection::connect(tcp::resolver::iterator endpoint_iterator){
-	// boost::system::error_code *throw_error;
 	boost::asio::connect(socket_, endpoint_iterator);
 	out.print("pripojen klient...");
 	wait_msg();
-}
-
-void server_connection::read_message(){
-	std::cout << "OJJJ CONNECT" << std::endl;
 }
 
 void server_connection::stop(){

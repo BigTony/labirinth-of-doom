@@ -97,6 +97,8 @@ public:
   */  
   void stop();
   void send_to_client(int id,std::string msg);
+
+  void check_socket();
 private:  
   
   /**
