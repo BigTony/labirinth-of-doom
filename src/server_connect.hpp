@@ -45,6 +45,7 @@ public:
   */  
   void send_msg(std::string message);
   void wait_msg();
+  void read_data();
   void set_client_id(int id);
   
 

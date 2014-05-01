@@ -28,33 +28,43 @@ int client_connection::get_client_id(){
 }
 
 void client_connection::wait_msg(){
+	
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
+			std::cout << "prijata data: " << header_ << std::endl;
 			recived_ = std::atoi(header);
+			// out.print("server_connect:36:delka zpravy:");
 			out.print(recived_);
-			
+			// read_data();
+			wait_msg();
 		}
 		else{
 			socket_.close();
 			std::cout << "Unable recive data(header). Server hang out unexpectly"<< std::endl;
 			return;
-		}
+		} 
 	});
 
-	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_-1),[this](boost::system::error_code error, std::size_t length){
+}
+
+void client_connection::read_data(){
+	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			recived_data_=data_;
 			out.print(recived_data_);
+			// socket_.close();
 			wait_msg();
 		}
 		else{
+			std::cout << "fucking error: " << error << " addr: " << socket_.is_open() << std::endl;
 			socket_.close();
 			std::cout << "Unable recive data. Server hang out unexpectly"<< std::endl;
 			return;
 		}
 	});
+	std::cout << "data: " << data_ << std::endl;
 }
 
 void client_connection::send_msg(std::string message){
@@ -68,7 +78,7 @@ void client_connection::send_msg(std::string message){
 	out.print("TEST");
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data_.data(),send_data_.length()),[this](boost::system::error_code error, std::size_t){
 		if (!error){
-			std::cout << "Msg transmited to client" << client_id_ << std::endl;
+			std::cout << "Msg transmited to client: " << client_id_ << std::endl;
 		}
 		else{
 			std::cout << "Unable send msg to client. Client ID" << client_id_ << "hang out unexpectly" << std::endl;
@@ -91,6 +101,7 @@ void connection_binnder::wait_connection(){
 		if (!error){
 			std::cout << "New client Connecting..." << "actual connection counter: " << connection_counter_ << std::endl;
 			connections_.back().set_client_id(connection_counter_++);
+			connections_.back().send_msg("cusikfdsafdsa");
 			connections_.back().wait_msg();
 		} 
 		wait_connection();

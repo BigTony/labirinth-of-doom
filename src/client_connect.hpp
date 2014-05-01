@@ -37,6 +37,7 @@ public:
 	* Send message to server.
 	*/
 	void send_msg(std::string message);
+	void send_prep(std::string message);
 	/** A public function.
 	* Recieve message from server.
 	*/

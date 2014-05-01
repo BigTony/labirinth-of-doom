@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-g -std=c++11 -pthread -Wall -pedantic -Iinc
-LIBS=-lboost_system -L/usr/local/lib/ -lboost_thread
+LIBS=-lboost_system -L/usr/lib/ -lboost_thread
 SERVER_BIN=server
 CLIENT_BIN=client
 SERVER_SRC=server.cpp server.hpp server_connect.hpp server_connect.cpp message.cpp message.hpp output.hpp output.cpp

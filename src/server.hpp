@@ -37,7 +37,7 @@ private:
   boost::asio::io_service io_;
   tcp::endpoint endpoint_;
   connection_binnder binnder_;
-  boost::thread t_binnder_;
+  boost::thread *t_binnder_;
   std::string command_;
 };
 

@@ -31,13 +31,14 @@ int main(int argc, char* argv[]){
 }
 
 
-game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_),t_binnder_([this](){ io_.run(); }){
+game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_){
 }
 
 
 
 void game_server:: run(){
   binnder_.wait_connection();
+  t_binnder_ = new boost::thread([this](){ io_.run(); });
 }
 
 void game_server::terminal_command(){
@@ -45,7 +46,7 @@ void game_server::terminal_command(){
     if (command_.compare("exit")==0){
       std::cout << "Stoping game server..." << std::endl;
       binnder_.stop();
-      t_binnder_.join();
+      t_binnder_->join();
       return;
     }else if(command_.compare("send")==0){
       binnder_.send_to_client(1,"ROFL");

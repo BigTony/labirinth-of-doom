@@ -28,16 +28,9 @@ private:
   boost::asio::io_service io_;
   tcp::resolver resolver_;
   tcp::resolver::iterator endpoint_;
-  boost::thread t_connection_;
   server_connection connection_;
   std::string command_;
+  boost::thread t_connection_;
 };
-
-
-
-
-
-
-
 
 #endif

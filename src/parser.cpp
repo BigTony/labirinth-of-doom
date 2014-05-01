@@ -174,7 +174,7 @@ void parser_server::parse_arguments(std::string message){
 		std::cout << game_name << " " << maze_name << " " << tik_tak << std::endl;
 	}else if(message.compare(0,2, "gm") == 0){
 		if(message.compare(3,8, "start") == 0){
-			std::cout << "gm client: start" << std::endl;
+			std::cou t << "gm client: start" << std::endl;
 		}else if(message.compare(3,10, "restart") == 0){
 			std::cout << "gm client: restart" << std::endl;
 		}else if(message.compare(3,7, "stop") == 0){
@@ -189,8 +189,8 @@ void parser_server::parse_arguments(std::string message){
 	}
 }
 
-int main(int argc, char* argv[]){
-	parser_server parser;
-	parser.parse_arguments("create suprhra-epicmaze-0.5");
-	return 0;
-}
+// int main(int argc, char* argv[]){
+// 	parser_server parser;
+// 	parser.parse_arguments("create suprhra-epicmaze-0.5");
+// 	return 0;
+// }
