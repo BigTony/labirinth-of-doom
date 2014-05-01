@@ -58,7 +58,7 @@ public:
   int get_client_id();
   
   
-private:1
+private:
   int client_id_;
   int status_;
   std::string send_data_;

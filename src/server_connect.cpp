@@ -47,8 +47,6 @@ void client_connection::wait_msg(){
 	});
 }
 
-}
-
 
 void client_connection::read_msg(){
 	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
