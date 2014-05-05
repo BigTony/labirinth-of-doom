@@ -35,7 +35,7 @@ void client_connection::wait_msg(){
 			std::cout << "prijata data: " << header_ << std::endl;
 			recived_ = std::atoi(header);
 			// out.print("server_connect:36:delka zpravy:");
-			out.print(recived_);
+			out.print(std::to_string(recived_));
 			read_msg();
 		}
 		else{

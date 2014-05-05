@@ -37,7 +37,6 @@ public:
 	* Send message to server.
 	*/
 	void send_msg(std::string message);
-	void send_prep(std::string message);
 	/** A public function.
 	* Recieve message from server.
 	*/
@@ -45,9 +44,6 @@ public:
 	/** A public function.
 	* Print recieved message from server.
 	*/
-	void print_message(){
-		std::cout.write(buf_.data(), len_);
-	}
 	void read_msg();
 	void stop();
 	void connect(tcp::resolver::iterator endpoint_iterator);
