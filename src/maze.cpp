@@ -9,49 +9,80 @@
 #include "maze.hpp"
 #include "output.hpp"
 
+void maze::print_maze(){	
+	for (unsigned int i = 0; i < maze_array_.size(); i++){
+		if((i % (width_)) == 0){
+			out.print("");
+		}
+		maze_array_.at(i)->print_object();
+	}
+
+
+}
+
 void maze::add_object(std::string value){
+	maze_object_ptr obj_ptr;
 	// std::cout << value << std::endl;
 	if(value == ""){
-		maze_array_.emplace_back(path_free());
-		// out_print_debug_object(" \t")
+		// path_free_ptr obj_ptr = std::make_shared<path_free>(path_free());
+		obj_ptr = std::make_shared<path_free>(path_free());
+		// maze_array_.emplace_back();
 	}else if(value == "w"){
-		maze_array_.emplace_back(wall_object());
-		// out_print_debug_object("w\t")
+		obj_ptr = std::make_shared<wall_object>(wall_object());
+		// maze_array_.emplace_back();
 	}else if(value == "f"){
-		maze_array_.emplace_back(finish_object());
-		// out_print_debug_object("f\t")
+		obj_ptr = std::make_shared<finish_object>(finish_object());
+		// maze_array_.emplace_back();
 	}else if(value.compare(0,2, "G_") == 0){
-		maze_array_.emplace_back(gate_object(value.substr(2)));
-		// out_print_debug_object("G\t")
+		obj_ptr = std::make_shared<gate_object>(gate_object(value.substr(2)));
+		// maze_array_.emplace_back();
 	}else if(value.compare(0,2, "S_") == 0){
-		maze_array_.emplace_back(keeper_object(value.substr(2)));
-		// out_print_debug_object("G\t")
+		obj_ptr = std::make_shared<keeper_object>(keeper_object(value.substr(2)));
+		// maze_array_.emplace_back());
 	}else if(value.compare(0,2, "K_") == 0){
-		maze_array_.emplace_back(key_object(value.substr(2)));
-		// out_print_debug_object("G\t")
+		obj_ptr = std::make_shared<key_object>(key_object(value.substr(2)));
+		// maze_array_.emplace_back());
 	}else if(value.compare(0,3, "Cp_") == 0){
-		maze_array_.emplace_back(create_player_object(value.substr(3)));
-		// out_print_debug_object("G\t")
+		obj_ptr = std::make_shared<create_player_object>(create_player_object(value.substr(3)));
+		// maze_array_.emplace_back());
 	}else{
-		// out_print_error("EERR");
+		return;
 	}
+	maze_array_.push_back(obj_ptr);
+
 }
 
 maze::maze(std::string level){
-	std::ifstream file ( level ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+	std::ifstream file ( level );
 	std::string value = "";
+
+	if(file.good()){
+		getline(file,value);
+		width_ = std::stoi(value);
+	}
+	value = "";
+	if(file.good()){
+		getline(file,value);
+		length_ = std::stoi(value);
+	}
+	value = "";
+
 	while ( file.good() ){
     	char c = file.get();
+    	
 		if (file.good()){
-			if(c == ','){
+			if((c == ',') || (c == '\n')){
 				add_object(value);
 				value = "";
 			}else{
 				value +=c;
 			}
-		}   		
+		} 
+
    	}
    	file.close();
+
+   	print_maze();
 }
 
 maze_object::maze_object(){
@@ -70,41 +101,77 @@ key_object::key_object(std::string s_id){
 	id = std::stoi(s_id);
 }
 
+void key_object::print_object(){
+	out.print_debug_object("K_");
+}
+
 gate_object::gate_object(std::string s_id){
 	id = std::stoi(s_id);
+}
+
+void gate_object::print_object(){
+	out.print_debug_object("G_");
 }
 
 wall_object::wall_object(){
 
 }
 
+void wall_object::print_object(){
+	out.print_debug_object("W_");
+}
+
 path_free::path_free(){
 
+}
+
+void path_free::print_object(){
+	out.print_debug_object("__");
 }
 
 player_object::player_object(){
 
 }
 
+void player_object::print_object(){
+	out.print_debug_object("P_");
+}
+
 keeper_object::keeper_object(std::string s_id){
 	id = std::stoi(s_id);
+}
+
+void keeper_object::print_object(){
+	out.print_debug_object("S_");
 }
 
 finish_object::finish_object(){
 
 }
 
+void finish_object::print_object(){
+	out.print_debug_object("F_");
+}
+
 create_player_object::create_player_object(std::string s_id){
 	id = std::stoi(s_id);
+}
+
+void create_player_object::print_object(){
+	out.print_debug_object("CP");
 }
 
 
 
 
 int main(int argc, char* argv[]){
-	
+	out.set_debug(true);
 
-	maze maze("levels/level1.csv");
+	try{
+		maze maze("levels/level1.csv");
+	}catch (std::exception& error){
+		std::cerr << "Exception: " << error.what() << std::endl;
+	}
 
 
    	return 0;
