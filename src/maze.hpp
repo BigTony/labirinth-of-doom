@@ -31,6 +31,7 @@
 #define ERROR 3
 
 
+
 /**
  * Virtual
  */
@@ -106,7 +107,7 @@ private:
 
 class maze{
 public:
-  maze();
+  maze(std::string level);
   void load_maze(std::string file_name);
   int do_cycle(); // vrati stav hry
   int get_winner(); // vrati id winnera

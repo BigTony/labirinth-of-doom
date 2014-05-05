@@ -37,8 +37,21 @@ void maze::add_object(std::string value){
 	}
 }
 
-maze::maze(){
-
+maze::maze(std::string level){
+	std::ifstream file ( level ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+	std::string value = "";
+	while ( file.good() ){
+    	char c = file.get();
+		if (file.good()){
+			if(c == ','){
+				add_object(value);
+				value = "";
+			}else{
+				value +=c;
+			}
+		}   		
+   	}
+   	file.close();
 }
 
 maze_object::maze_object(){
@@ -89,25 +102,10 @@ create_player_object::create_player_object(std::string s_id){
 
 
 int main(int argc, char* argv[]){
-	std::ifstream file ( "levels/level1.csv" ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
-	std::string value = "";
+	
 
-	maze maze;
+	maze maze("levels/level1.csv");
 
-	while ( file.good() ){
-    	char c = file.get();
-
-		if (file.good()){
-			if(c == ','){
-				maze.add_object(value);
-				value = "";
-			}else{
-				value +=c;
-			}
-		}   		
-   	}
-
-   	file.close();
 
    	return 0;
 }
