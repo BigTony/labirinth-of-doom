@@ -37,6 +37,11 @@ void  output_handler::print_debug(std::string message){
 		std::cout << message << std::endl;
 }
 
+void  output_handler::print_debug_object(std::string message){
+	if (debug_==true)
+		std::cout << message;
+}
+
 void output_handler::set_debug(bool set){
 	debug_=set;
 }
