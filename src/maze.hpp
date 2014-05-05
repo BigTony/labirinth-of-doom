@@ -12,78 +12,111 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
+#include <iostream>
+#include <fstream>
 
 //game constants
-#DEFINE MAX_MAZE_WIDTH 50
-#DEFINE MAX_MAZE_LENGTH 50
-#DEFINE MIN_CLOCK 500
-#DEFINE MAX_CLOCK 5000
-#DEFINE MAX_PLAYERS 4
+#define MAX_MAZE_WIDTH 50
+#define MAX_MAZE_LENGTH 50
+#define MIN_CLOCK 500
+#define MAX_CLOCK 5000
+#define MAX_PLAYERS 4
 
 //game status
-#DEFINE STOPED 0
-#DEFINE PLAYING 1
-#DEFINE ENDED 2
-#DEFINE ERROR 3
+#define STOPED 0
+#define PLAYING 1
+#define ENDED 2
+#define ERROR 3
 
-using std;
+
 /**
  * Virtual
  */
 class maze_object {
 public:
-  maze_object()=0;
+  maze_object();
 private:
     
 };
 
 class static_object: public maze_object {
+public:
   //virtual key,gate,wall,free
+  static_object();
 };
 
-class dynamic_object public: maze_object {
+class dynamic_object: public maze_object {
+public:
   //virtual keeper, player
+  dynamic_object();
 };
 
-class key_object public: static_object{
-  
+class key_object: public static_object{
+public:
+  key_object(std::string s_id);
+private:
+  int id;
 };
 
-class gate_object public: static_object{
-  
+class gate_object: public static_object{
+public:
+  gate_object(std::string s_id);
+private:
+  int id;
 };
 
-class wall_object public: static_object{
-  
+class wall_object: public static_object{
+public:
+  wall_object();
 };
 
-class path_free public: static_object{
-  
+class path_free: public static_object{
+public:
+  path_free();
 };
 
-class player_object public: dynamic_object{
-  
+class player_object: public dynamic_object{
+public:
+  player_object();
+private:
+  int id;
 };
 
-class keeper_object public: dynamic_object{
-  
+class keeper_object: public dynamic_object{
+public:
+  keeper_object(std::string s_id);
+private:
+  int id;
+};
+
+class finish_object: public static_object{
+public:
+  finish_object();
+};
+
+class create_player_object: public static_object{
+public:
+  create_player_object(std::string s_id);
+private:
+  int id;
 };
 
 
 class maze{
 public:
   maze();
-  void load_maze(string file_name);
+  void load_maze(std::string file_name);
   int do_cycle(); // vrati stav hry
   int get_winner(); // vrati id winnera
-  void set_command(int player, string command);
+  void set_command(int player, std::string command);
+  void add_object(std::string value);
   
 private:
-  t_size width_;
-  t_size length_;
-  array<maze_object> maze_array_;
+  int width_;
+  int length_;
+  std::vector<maze_object> maze_array_;
 };
 
 
@@ -91,13 +124,13 @@ private:
 class game{
 public:
   game();
-  void set_command(int id, string command);
-  void set_timer(int id, string time);
+  void set_command(int id, std::string command);
+  void set_timer(int id, std::string time);
 private:
   int owner_id_;
   int game_state_;
   maze maze_;
-  array<int,MAX_PLAYERS> players_id_;  
+  std::array<int,MAX_PLAYERS> players_id_;  
   boost::posix_time::ptime game_start_;
   boost::posix_time::ptime game_end_;
   boost::posix_time::ptime clock_;
