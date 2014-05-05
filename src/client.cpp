@@ -12,12 +12,21 @@
 using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[]){
-	try{  
-	 game_client client(argv[1]);
+	try{
+		std::string arg = "argv[1]";
+		if (arg.compare("-debug"))
+		{
+			out.set_debug(true);
+			game_client client(argv[2]);
+			client.run();
+			client.terminal_command();
+		}
+		else{
+			game_client client(argv[1]);
+			client.run();
+			client.terminal_command();
+		}
 
-	 client.run();
-
-	 client.terminal_command();
    }
 	catch (std::exception& error){
 	 std::cerr << "Exception: " << error.what() << std::endl;

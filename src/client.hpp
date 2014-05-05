@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include "client_connect.hpp"
 #include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
 

@@ -42,14 +42,14 @@ void game_server::run(){
 }
 
 void game_server::terminal_command(){
-    std::getline (std::cin,command_);
+    command_=in.wait_cmd();
     if (command_.compare("exit")==0){
-      std::cout << "Stoping game server..." << std::endl;
+      out.print_info("Server is shutting down");
       binnder_.stop();
       t_binnder_->join();
       return;
     }else if(command_.compare("send")==0){
-      binnder_.send_to_client(0,"ROFL");
+      binnder_.send_to_client(0,"TEST message");
     }else if(command_.compare("socket")==0){
       binnder_.check_socket();
     }

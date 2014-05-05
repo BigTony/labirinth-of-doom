@@ -101,11 +101,7 @@ private:
   boost::posix_time::ptime game_start_;
   boost::posix_time::ptime game_end_;
   boost::posix_time::ptime clock_;
-  boost::asio::deadline_timer timer_;
-  
-  
-  
-  
+  boost::asio::deadline_timer timer_;  
 };
 
 
