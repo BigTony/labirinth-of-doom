@@ -24,27 +24,26 @@ void maze::add_object(std::string value){
 	maze_object_ptr obj_ptr;
 	// std::cout << value << std::endl;
 	if(value == ""){
-		// path_free_ptr obj_ptr = std::make_shared<path_free>(path_free());
 		obj_ptr = std::make_shared<path_free>(path_free());
-		// maze_array_.emplace_back();
+		// frees_.push_back(*(dynamic_cast<path_free_ptr*>(&obj_ptr)));
 	}else if(value == "w"){
 		obj_ptr = std::make_shared<wall_object>(wall_object());
-		// maze_array_.emplace_back();
+		// walls_.push_back(obj_ptr);
 	}else if(value == "f"){
 		obj_ptr = std::make_shared<finish_object>(finish_object());
-		// maze_array_.emplace_back();
+		// finishes_.push_back(obj_ptr);
 	}else if(value.compare(0,2, "G_") == 0){
 		obj_ptr = std::make_shared<gate_object>(gate_object(value.substr(2)));
-		// maze_array_.emplace_back();
+		// gates_.push_back(obj_ptr);
 	}else if(value.compare(0,2, "S_") == 0){
 		obj_ptr = std::make_shared<keeper_object>(keeper_object(value.substr(2)));
-		// maze_array_.emplace_back());
+		// keepers_.push_back(obj_ptr);
 	}else if(value.compare(0,2, "K_") == 0){
 		obj_ptr = std::make_shared<key_object>(key_object(value.substr(2)));
-		// maze_array_.emplace_back());
+		// keys_.push_back(obj_ptr);
 	}else if(value.compare(0,3, "Cp_") == 0){
 		obj_ptr = std::make_shared<create_player_object>(create_player_object(value.substr(3)));
-		// maze_array_.emplace_back());
+		// cps_.push_back(obj_ptr);
 	}else{
 		return;
 	}
@@ -177,4 +176,4 @@ int main(int argc, char* argv[]){
    	return 0;
 }
 
-    
+// g++ maze.cpp output.cpp -std=c++11 -lboost_system -g 
