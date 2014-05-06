@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
     server.terminal_command();
   }
   catch (std::exception& error){
-    out.print_error("Exception: "+error.what());
+    out.print_error(std::string("Exception: ")+error.what());
   }
 
   return 0;
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
 
 
 game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_){
-  load.load_all_files("./levels");
+  load_.load_all_files("./levels");
 }
 
 

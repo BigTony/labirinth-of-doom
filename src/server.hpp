@@ -40,7 +40,7 @@ private:
   connection_binnder binnder_;
   boost::thread *t_binnder_;
   std::string command_;
-  loader load;
+  loader load_;
 };
 
 

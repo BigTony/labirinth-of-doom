@@ -32,12 +32,12 @@ void client_connection::wait_msg(){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
-			out.print_debug("Recived header:\t"+header_);
+			out.print_debug(std::string("Recived header:\t")+header_);
 			recived_ = std::atoi(header);
 			read_msg();
 		}
 		else{
-			out.print_error(std::string("Unable recive msg. Client NO: ") + std::to_string(client_id_) std::string(" hang out unexpectly"));
+			out.print_error(std::string("Unable recive msg. Client NO: ") + std::to_string(client_id_) +std::string(" hang out unexpectly"));
 			status_=CONNECTION_LOST;
 			socket_.close();
 			return;
@@ -54,7 +54,7 @@ void client_connection::read_msg(){
 			wait_msg();
 		}
 		else{
-			out.print_error(std::string("Unable to send msg to client NO: ") + std::to_string(client_id_) std::string(" hang out unexpectly"));
+			out.print_error(std::string("Unable to send msg to client NO: ") + std::to_string(client_id_) +std::string(" hang out unexpectly"));
 			status_=CONNECTION_LOST;
 			socket_.close();
 			return;
@@ -67,7 +67,7 @@ void client_connection::send_msg(std::string message){
 		out.print_warn("Msg is too long for transmit");
 		return;
 	}
-	out.print_debug("Sending msg to client NO: "+ +" data:\t"+message);	
+	out.print_debug(std::string("Sending msg to client NO: ") +std::string(" data:\t")+message);	
 	char header[HEADER_LENGTH+1]="";
 	std::sprintf(header, "%5d", message.length());
 	send_data_=header+message;
