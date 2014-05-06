@@ -140,6 +140,8 @@ void parser_server::parse_arguments(std::string message){
 		}
 	}else if(message.compare(0,15, "send_get_lobbys") == 0){
 		std::cout << "client zada o lobby" << std::endl;
+	}else if(message.compare(0,15, "send_get_mazes") == 0){
+		std::cout << "client zada o hry" << std::endl;
 	}else if(message.compare(0,4, "join") == 0){
 		int i = 5;
 		std::string number;

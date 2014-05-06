@@ -48,6 +48,7 @@ public:
   void read_data();
   void set_client_id(int id);
   void read_msg();
+  void parse_arguments(std::string message);
 
   /**
   * A public variable. 

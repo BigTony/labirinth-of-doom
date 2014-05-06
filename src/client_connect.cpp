@@ -79,3 +79,95 @@ void server_connection::stop(){
 	io_->stop();
 }
 
+std::string server_connection::parse_arguments(std::string message){
+	std::string ret;
+	if(message.compare(0,9, "send_maze") == 0){
+		message.erase(0,9);
+		ret = message;
+	}else if(message.compare(0,16, "send_game_change") == 0){
+		std::cout << "start" << std::endl;
+		unsigned int i = 17;
+		std::string active;
+		int space = 0;
+		// send_game_change OBJ XxY OBJ....
+		while(i < message.length()){
+			if(isalpha(message[i])){
+				// sudej pocet mezer
+				if(space % 2 == 0){
+					active += message[i];
+				}else{	
+					out.print_debug(std::string("sour x: ") + std::string(active));
+					active = "";
+				}
+			}else if(isdigit(message[i])){
+				active += message[i];
+			}else if(message[i] == ' '){
+				// sudej pocet mezer
+				if(space % 2 == 0){
+					out.print_debug(std::string("obj : ") + std::string(active));
+					active = "";
+				}else{
+					out.print_debug(std::string("sour y: ") + std::string(active));
+					active = "";
+				}
+				space++;
+				
+			}
+			i++;
+		}
+		out.print_debug(std::string("sour y: ") + std::string(active));
+	}else if(message.compare(0,10, "send_lobby") == 0){
+		unsigned int i = 11;
+		std::string game_name,maze_name,player_count,game_num;
+		int comma = 0;
+		while(i < message.length()){
+			if(message[i] == ' '){
+				comma = 0;
+				std::cout << game_name << " " << maze_name << " " << player_count << " " << game_num << std::endl;
+				game_name = "";
+				maze_name = "";
+				player_count = "";
+				game_num = "";
+			}else if(message[i] == '-'){
+				comma++;
+				i++;
+			}
+
+			if(comma == 0){
+				game_name += message[i];
+			}else if(comma == 1){
+				maze_name += message[i];
+			}else if(comma == 2){
+				player_count += message[i];
+			}else if(comma == 3){
+				game_num += message[i];
+			}
+			i++;
+		}
+		std::cout << game_name << " " << maze_name << " " << player_count << " " << game_num << std::endl;
+	}else if(message.compare(0,10, "send_stats") == 0){
+		unsigned int i = 11;
+		int comma = 0;
+		std::string steps,game_time;
+		while(i < message.length()){
+			if(message[i] == ' '){
+				comma = 0;
+				std::cout << steps << " " << game_time << std::endl;
+				steps = "";
+				game_time = "";
+			}else if(message[i] == '-'){
+				comma++;
+				i++;
+			}
+		}
+	}else{
+		// error
+	}
+	return ret;
+}
+
+std::string server_connection::get_lobbys(){
+	std::string ret = "";
+	return ret;
+}
+

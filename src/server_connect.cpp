@@ -84,6 +84,76 @@ void client_connection::send_msg(std::string message){
 	return;
 }
 
+void client_connection::parse_arguments(std::string message){
+	if(message.compare(0,8, "send_cmd") == 0){
+		if(message.compare(9,13, "open") == 0){
+			std::cout << "open" << std::endl;
+		}else if(message.compare(9,11, "go") == 0){
+			std::cout << "go" << std::endl;
+		}else if(message.compare(9,13, "stop") == 0){
+			std::cout << "stop" << std::endl;
+		}else if(message.compare(9,13, "left") == 0){
+			std::cout << "left" << std::endl;
+		}else if(message.compare(9,13, "right") == 0){
+			std::cout << "right" << std::endl;
+		}else if(message.compare(9,13, "take") == 0){
+			std::cout << "take" << std::endl;
+		}else{
+			// spatny prikaz
+		}
+	}else if(message.compare(0,15, "send_get_lobbys") == 0){
+		std::cout << "client zada o lobby" << std::endl;
+	}else if(message.compare(0,15, "send_get_mazes") == 0){
+		std::cout << "client zada o hry" << std::endl;
+	}else if(message.compare(0,4, "join") == 0){
+		unsigned int i = 5;
+		std::string number;
+		while(i < message.length()){
+			number += message[i];
+			i++;
+		}
+		int join_number = std::stoi(number);
+		std::cout << join_number << std::endl;
+	}else if(message.compare(0,10, "disconnect") == 0){
+		std::cout << "client provedl disconnect" << std::endl;
+	}else if(message.compare(0,4, "exit") == 0){
+		std::cout << "client provedl exit" << std::endl;
+	}else if(message.compare(0,6, "create") == 0){
+		int comma = 0;
+		unsigned int i = 7;
+		std::string game_name,maze_name,tik_tak;
+		while(i < message.length()){
+			if(message[i] == '-'){
+				comma++;
+				i++;
+			}
+			if(comma == 0){
+				game_name += message[i];
+			}else if(comma == 1){
+				maze_name += message[i];
+			}else if(comma == 2){
+				tik_tak += message[i];
+			}
+			i++;
+		}
+		std::cout << game_name << " " << maze_name << " " << tik_tak << std::endl;
+	}else if(message.compare(0,2, "gm") == 0){
+		if(message.compare(3,8, "start") == 0){
+			std::cout << "gm client: start" << std::endl;
+		}else if(message.compare(3,10, "restart") == 0){
+			std::cout << "gm client: restart" << std::endl;
+		}else if(message.compare(3,7, "stop") == 0){
+			std::cout << "gm client: stop" << std::endl;
+		}else if(message.compare(3,7, "kick") == 0){
+			std::cout << "gm client: kick #asi tu pak bude num zatim neresim" << std::endl;
+		}else{
+			// spatny gm prikaz
+		}
+	}else{
+		// error
+	}
+}
+
 connection_binnder::connection_binnder(boost::asio::io_service* io_service, const tcp::endpoint& endpoint)
 : acceptor_(*io_service, endpoint), socket_(*io_service){
 	io_=io_service;
