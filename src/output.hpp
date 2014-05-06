@@ -34,6 +34,19 @@ public:
 	std::string wait_cmd();
 };
 
+
+class client_input_handler: public input_handler{
+public:
+	std::string wait_cmd();
+};
+
+class client_output_handler: public output_handler{
+public:
+	void print_menu();
+};
+
+extern client_input_handler clin;
+extern client_output_handler clout;
 extern input_handler in;
 extern output_handler out;
 

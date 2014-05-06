@@ -12,6 +12,9 @@
 output_handler out;
 input_handler in;
 
+client_input_handler clin;
+client_output_handler clout;
+
 output_handler::output_handler(){
 
 }
@@ -58,4 +61,21 @@ std::string input_handler::wait_cmd() {
 	std::cout << "----------------------------------" << std::endl;
 	return command;
 }
+
+
+
+std::string client_input_handler::wait_cmd() {
+	std::string command;
+	std::getline (std::cin,command);
+	std::cout << "----------------------------------" << std::endl;
+	return command;
+}
+
+void client_output_handler::print_menu(){
+	std::cout << "----Vytejte ve hre lab of doom-----" << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+	std::cout << "-----1. Pripojit-------------------" << std::endl;
+	std::cout << "-----2. Vitvorit-------------------" << std::endl;
+}
+
 
