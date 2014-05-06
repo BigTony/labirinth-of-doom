@@ -47,9 +47,6 @@ public:
 	void read_msg();
 	void stop();
 	void connect(tcp::resolver::iterator endpoint_iterator);
-
-	void error_biatch(boost::system::error_code error);
-
 	void check_socket();
 private:
 

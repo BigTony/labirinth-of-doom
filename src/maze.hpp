@@ -37,84 +37,84 @@
  */
 class maze_object {
 public:
-  virtual void print_object(){}
-  maze_object();
+	virtual void print_object(){}
+	maze_object();
 private:
-  int x;
-  int y;
+	int x;
+	int y;
 };
 
 
 class static_object: virtual public maze_object {
 public:
-  //virtual key,gate,wall,free
-  void print_object() = 0;
-  static_object();
+	//virtual key,gate,wall,free
+	void print_object() = 0;
+	static_object();
 };
 
 class dynamic_object: virtual public maze_object {
 public:
-  //virtual keeper, player
-  void print_object() = 0;
-  dynamic_object();
+	//virtual keeper, player
+	void print_object() = 0;
+	dynamic_object();
 };
 
 class key_object: public static_object{
 public:
-  key_object(std::string s_id);
-  void print_object();
+	key_object(std::string s_id);
+	void print_object();
 private:
-  int id;
+	int id;
 };
 
 class gate_object: public static_object{
 public:
-  gate_object(std::string s_id);
-  void print_object();
+	gate_object(std::string s_id);
+	void print_object();
 private:
-  int id;
+	int id;
 };
 
 class wall_object: public static_object{
 public:
-  wall_object();
-  void print_object();
+	wall_object();
+	void print_object();
 };
 
 class path_free: public static_object{
 public:
-  path_free();
-  void print_object();
+	path_free();
+	void print_object();
 };
 
 class player_object: public dynamic_object{
 public:
-  player_object();
-  void print_object();
+	player_object();
+	void print_object();
 private:
-  int id;
+	int id;
 };
 
 class keeper_object: public dynamic_object{
 public:
-  keeper_object(std::string s_id);
-  void print_object();
+	keeper_object(std::string s_id);
+	void print_object();
 private:
-  int id;
+	int id;
 };
 
 class finish_object: public static_object{
 public:
-  finish_object();
-  void print_object();
+	finish_object();
+	void print_object();
 };
 
 class create_player_object: public static_object{
 public:
-  create_player_object(std::string s_id);
-  void print_object();
+	create_player_object(std::string s_id);
+	void print_object();
 private:
-  int id;
+	int id;
 };
 
 typedef std::shared_ptr<maze_object> maze_object_ptr;
@@ -130,47 +130,55 @@ typedef std::shared_ptr<create_player_object> create_player_object_ptr;
 
 class maze:public std::enable_shared_from_this<maze>{
 public:
-  maze(std::string level);
-  void load_maze(std::string file_name);
-  int do_cycle(); // vrati stav hry
-  int get_winner(); // vrati id winnera
-  void set_command(int player, std::string command);
-  void add_object(std::string value);
-  void print_maze();
+	maze(std::string level);
+	void load_maze(std::string file_name);
+	int do_cycle(); // vrati stav hry
+	int get_winner(); // vrati id winnera
+	void set_command(int player, std::string command);
+	void add_object(std::string value);
+	void print_maze();
 private:
-  int coords_counter;
-  int width_;
-  int length_;
-  std::vector<maze_object_ptr> maze_array_;
-  std::vector<path_free_ptr> frees_;
-  std::vector<key_object_ptr> keys_;
-  std::vector<gate_object_ptr> gates_;
-  std::vector<wall_object_ptr> walls_;
-  std::vector<player_object_ptr> players_;
-  std::vector<keeper_object_ptr> keepers_;
-  std::vector<finish_object_ptr> finishes_;
-  std::vector<create_player_object_ptr> cps_;
+	int coords_counter;
+	int width_;
+	int length_;
+	std::vector<maze_object_ptr> maze_array_;
+	std::vector<path_free_ptr> frees_;
+	std::vector<key_object_ptr> keys_;
+	std::vector<gate_object_ptr> gates_;
+	std::vector<wall_object_ptr> walls_;
+	std::vector<player_object_ptr> players_;
+	std::vector<keeper_object_ptr> keepers_;
+	std::vector<finish_object_ptr> finishes_;
+	std::vector<create_player_object_ptr> cps_;
 };
 
 
 
 class game{
 public:
-  game();
-  void set_command(int id, std::string command);
-  void set_timer(int id, std::string time);
+	game();
+	void set_command(int id, std::string command);
+	void set_timer(int id, std::string time);
 private:
-  int owner_id_;
-  int game_state_;
-  maze maze_;
-  std::array<int,MAX_PLAYERS> players_id_;  
-  boost::posix_time::ptime game_start_;
-  boost::posix_time::ptime game_end_;
-  boost::posix_time::ptime clock_;
-  boost::asio::deadline_timer timer_;  
+	int owner_id_;
+	int game_state_;
+	maze maze_;
+	std::array<int,MAX_PLAYERS> players_id_;  
+	boost::posix_time::ptime game_start_;
+	boost::posix_time::ptime game_end_;
+	boost::posix_time::ptime clock_;
+	boost::asio::deadline_timer timer_;  
+};
+
+
+class client_maze: public maze,public std::enable_shared_from_this<client_maze>
+{
+public:
+	client_maze(std::string level);
 };
 
 
 
-
 #endif
+
+
