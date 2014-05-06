@@ -219,7 +219,7 @@ int main(int argc, char* argv[]){
 
 	try{
 		maze maze("levels/level1.csv");
-		std::cout << maze.msg_send_maze() << std::endl;
+		maze.print_maze();
 	}catch (std::exception& error){
 		std::cerr << "Exception: " << error.what() << std::endl;
 	}

@@ -101,6 +101,9 @@ public:
   std::string print_to_str();
 private:
   int id;
+  int x_;
+  int y_;
+  std::string direction_ = "north";
 };
 
 class keeper_object: public dynamic_object{
@@ -149,6 +152,8 @@ public:
   void add_object(std::string value);
   void print_maze();
   std::string msg_send_maze();
+
+  void set_player_direction(int x,int y,std::string dir);
 private:
   int coords_counter;
   int width_;
