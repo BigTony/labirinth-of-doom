@@ -41,8 +41,8 @@ public:
   virtual std::string print_to_str(){}
   maze_object();
 private:
-  int x;
-  int y;
+	int x;
+	int y;
 };
 
 
@@ -68,7 +68,7 @@ public:
   void print_object();
   std::string print_to_str();
 private:
-  int id;
+	int id;
 };
 
 class gate_object: public static_object{
@@ -77,7 +77,7 @@ public:
   void print_object();
   std::string print_to_str();
 private:
-  int id;
+	int id;
 };
 
 class wall_object: public static_object{
@@ -112,7 +112,7 @@ public:
   void print_object();
   std::string print_to_str();
 private:
-  int id;
+	int id;
 };
 
 class finish_object: public static_object{
@@ -124,11 +124,10 @@ public:
 
 class create_player_object: public static_object{
 public:
-  create_player_object(std::string s_id);
-  void print_object();
-  std::string print_to_str();
+	create_player_object(std::string s_id);
+	void print_object();
 private:
-  int id;
+	int id;
 };
 
 typedef std::shared_ptr<maze_object> maze_object_ptr;
@@ -144,6 +143,7 @@ typedef std::shared_ptr<create_player_object> create_player_object_ptr;
 
 class maze:public std::enable_shared_from_this<maze>{
 public:
+
   maze(std::string level);
   void load_maze(std::string file_name);
   int do_cycle(); // vrati stav hry
@@ -154,40 +154,49 @@ public:
   std::string msg_send_maze();
 
   void set_player_direction(int x,int y,std::string dir);
+
 private:
-  int coords_counter;
-  int width_;
-  int length_;
-  std::vector<maze_object_ptr> maze_array_;
-  std::vector<path_free_ptr> frees_;
-  std::vector<key_object_ptr> keys_;
-  std::vector<gate_object_ptr> gates_;
-  std::vector<wall_object_ptr> walls_;
-  std::vector<player_object_ptr> players_;
-  std::vector<keeper_object_ptr> keepers_;
-  std::vector<finish_object_ptr> finishes_;
-  std::vector<create_player_object_ptr> cps_;
+	int coords_counter;
+	int width_;
+	int length_;
+	std::vector<maze_object_ptr> maze_array_;
+	std::vector<path_free_ptr> frees_;
+	std::vector<key_object_ptr> keys_;
+	std::vector<gate_object_ptr> gates_;
+	std::vector<wall_object_ptr> walls_;
+	std::vector<player_object_ptr> players_;
+	std::vector<keeper_object_ptr> keepers_;
+	std::vector<finish_object_ptr> finishes_;
+	std::vector<create_player_object_ptr> cps_;
 };
 
 
 
 class game{
 public:
-  game();
-  void set_command(int id, std::string command);
-  void set_timer(int id, std::string time);
+	game();
+	void set_command(int id, std::string command);
+	void set_timer(int id, std::string time);
 private:
-  int owner_id_;
-  int game_state_;
-  maze maze_;
-  std::array<int,MAX_PLAYERS> players_id_;  
-  boost::posix_time::ptime game_start_;
-  boost::posix_time::ptime game_end_;
-  boost::posix_time::ptime clock_;
-  boost::asio::deadline_timer timer_;  
+	int owner_id_;
+	int game_state_;
+	maze maze_;
+	std::array<int,MAX_PLAYERS> players_id_;  
+	boost::posix_time::ptime game_start_;
+	boost::posix_time::ptime game_end_;
+	boost::posix_time::ptime clock_;
+	boost::asio::deadline_timer timer_;  
+};
+
+
+class client_maze: public maze,public std::enable_shared_from_this<client_maze>
+{
+public:
+	client_maze(std::string level);
 };
 
 
 
-
 #endif
+
+

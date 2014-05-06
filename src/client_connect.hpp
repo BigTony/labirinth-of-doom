@@ -44,12 +44,11 @@ public:
 	/** A public function.
 	* Print recieved message from server.
 	*/
+	std:string get_lobby();
+	
 	void read_msg();
 	void stop();
 	void connect(tcp::resolver::iterator endpoint_iterator);
-
-	void error_biatch(boost::system::error_code error);
-
 	void check_socket();
 private:
 

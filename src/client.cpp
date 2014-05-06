@@ -45,17 +45,20 @@ void game_client::run(){
 
 
 void game_client::terminal_command(){
-	std::getline (std::cin,command_);
+	clout.print_menu();
+	command_=clin.wait_cmd();
 	if (command_.compare("exit")==0){
 		std::cout << "Stoping client..." << std::endl;
 		connection_.stop();
 		t_connection_->join();
 		return;
+	}else if(command_.compare("new")==0){
+		connection_.send_msg("send_get_mazes");
+	}else if(command_.compare("join")==0){
+		connection_.send_msg("send_get_lobbys");
+		connection_.get_lobbys;
 	}else if(command_.compare("send")==0){
-		// connection_.send_prep("ROFLAAAA");
-		connection_.send_msg("ROFLAAAA");
-		// connection_.send_msg("ROFLAAAA");
-		std::cout << "=====================" << std::endl;
+		connection_.send_msg("Test msg");
 	}else if(command_.compare("socket")==0){
 		connection_.check_socket();
 	}

@@ -20,7 +20,7 @@
 #define SERVER_PORT 11600
 #define NOT_CONNECTED 1
 #define CONNECTED 2
-#define CONNECTION_LOST 2
+#define CONNECTION_LOST 3
 
 using boost::asio::ip::tcp;
 
