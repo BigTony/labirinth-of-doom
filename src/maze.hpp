@@ -37,8 +37,9 @@
  */
 class maze_object {
 public:
-	virtual void print_object(){}
-	maze_object();
+  virtual void print_object(){}
+  virtual std::string print_to_str(){}
+  maze_object();
 private:
 	int x;
 	int y;
@@ -47,66 +48,75 @@ private:
 
 class static_object: virtual public maze_object {
 public:
-	//virtual key,gate,wall,free
-	void print_object() = 0;
-	static_object();
+  //virtual key,gate,wall,free
+  void print_object() = 0;
+  std::string print_to_str() = 0;
+  static_object();
 };
 
 class dynamic_object: virtual public maze_object {
 public:
-	//virtual keeper, player
-	void print_object() = 0;
-	dynamic_object();
+  //virtual keeper, player
+  void print_object() = 0;
+  std::string print_to_str() = 0;
+  dynamic_object();
 };
 
 class key_object: public static_object{
 public:
-	key_object(std::string s_id);
-	void print_object();
+  key_object(std::string s_id);
+  void print_object();
+  std::string print_to_str();
 private:
 	int id;
 };
 
 class gate_object: public static_object{
 public:
-	gate_object(std::string s_id);
-	void print_object();
+  gate_object(std::string s_id);
+  void print_object();
+  std::string print_to_str();
 private:
 	int id;
 };
 
 class wall_object: public static_object{
 public:
-	wall_object();
-	void print_object();
+  wall_object();
+  void print_object();
+  std::string print_to_str();
 };
 
 class path_free: public static_object{
 public:
-	path_free();
-	void print_object();
+  path_free();
+  void print_object();
+  std::string print_to_str();
 };
 
 class player_object: public dynamic_object{
 public:
-	player_object();
-	void print_object();
+  player_object();
+  void print_object();
+  std::string print_to_str();
 private:
 	int id;
 };
 
 class keeper_object: public dynamic_object{
 public:
-	keeper_object(std::string s_id);
-	void print_object();
+  keeper_object(std::string s_id);
+  void print_object();
+  std::string print_to_str();
 private:
 	int id;
 };
 
 class finish_object: public static_object{
 public:
-	finish_object();
-	void print_object();
+  finish_object();
+  void print_object();
+  std::string print_to_str();
 };
 
 class create_player_object: public static_object{
