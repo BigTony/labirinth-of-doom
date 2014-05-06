@@ -35,6 +35,7 @@ int main(int argc, char* argv[]){
 
 
 game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_){
+  load.load_all_files("./levels");
 }
 
 

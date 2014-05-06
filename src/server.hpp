@@ -16,6 +16,7 @@
 #include <boost/asio.hpp>
 #include "command_handler.hpp"
 #include "server_connect.hpp"
+#include "load.hpp"
 
   
 /*class command_handler_server_cli: public:command_handler{
@@ -39,6 +40,7 @@ private:
   connection_binnder binnder_;
   boost::thread *t_binnder_;
   std::string command_;
+  loader load;
 };
 
 
