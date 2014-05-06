@@ -56,7 +56,6 @@ void game_client::terminal_command(){
 		connection_.send_msg("send_get_mazes");
 	}else if(command_.compare("join")==0){
 		connection_.send_msg("send_get_lobbys");
-		connection_.get_lobbys;
 	}else if(command_.compare("send")==0){
 		connection_.send_msg("Test msg");
 	}else if(command_.compare("socket")==0){
