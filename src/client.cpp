@@ -52,10 +52,7 @@ void game_client::terminal_command(){
 		t_connection_->join();
 		return;
 	}else if(command_.compare("send")==0){
-		// connection_.send_prep("ROFLAAAA");
-		connection_.send_msg("ROFLAAAA");
-		// connection_.send_msg("ROFLAAAA");
-		std::cout << "=====================" << std::endl;
+		connection_.send_msg("Test msg");
 	}else if(command_.compare("socket")==0){
 		connection_.check_socket();
 	}

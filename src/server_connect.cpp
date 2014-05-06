@@ -32,15 +32,14 @@ void client_connection::wait_msg(){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
-			std::cout << "prijata data: " << header_ << std::endl;
+			out.print_debug("Recived header:\t"+header_);
 			recived_ = std::atoi(header);
-			// out.print("server_connect:36:delka zpravy:");
-			out.print(std::to_string(recived_));
 			read_msg();
 		}
 		else{
+			out.print_error(std::string("Unable recive msg. Client NO: ") + std::to_string(client_id_) std::string(" hang out unexpectly"));
+			status_=CONNECTION_LOST;
 			socket_.close();
-			std::cout << "Unable recive data(header). Server hang out unexpectly"<< std::endl;
 			return;
 		} 
 	});
@@ -51,18 +50,16 @@ void client_connection::read_msg(){
 	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			recived_data_=data_;
-			out.print(recived_data_);
-			// socket_.close();
+			out.print_debug("Recived header:\t"+recived_data_);
 			wait_msg();
 		}
 		else{
-			std::cout << "fucking error: " << error << " addr: " << socket_.is_open() << std::endl;
+			out.print_error(std::string("Unable to send msg to client NO: ") + std::to_string(client_id_) std::string(" hang out unexpectly"));
+			status_=CONNECTION_LOST;
 			socket_.close();
-			std::cout << "Unable recive data. Server hang out unexpectly"<< std::endl;
 			return;
 		}
 	});
-	std::cout << "data: " << data_ << std::endl;
 }
 
 void client_connection::send_msg(std::string message){
@@ -70,10 +67,10 @@ void client_connection::send_msg(std::string message){
 		out.print_warn("Msg is too long for transmit");
 		return;
 	}
+	out.print_debug("Sending msg to client NO: "+ +" data:\t"+message);	
 	char header[HEADER_LENGTH+1]="";
 	std::sprintf(header, "%5d", message.length());
 	send_data_=header+message;
-	out.print("TEST");
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data_.data(),send_data_.length()),[this](boost::system::error_code error, std::size_t){
 		if (!error){
 			std::cout << "Msg transmited to client: " << client_id_ << std::endl;

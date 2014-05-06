@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
     server.terminal_command();
   }
   catch (std::exception& error){
-    std::cerr << "Exception: " << error.what() << std::endl;
+    out.print_error("Exception: "+error.what());
   }
 
   return 0;
