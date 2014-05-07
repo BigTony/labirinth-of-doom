@@ -68,10 +68,42 @@ void server_connection::wait_msg(){
 }
 
 
+void server_connection::sync_wait_msg(){
+	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
+	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
+		if (!error){
+			char header[HEADER_LENGTH + 1] = "";
+			std::strncat(header, header_, HEADER_LENGTH);
+			recived_ = std::atoi(header);
+			out.print_debug(std::string("Recived header:\t")+header_);
+			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
+				if (!error){
+					recived_data_=data_;
+					out.print_debug("Recived header:\t"+recived_data_);
+					wait_msg();
+				}
+				else{
+					socket_.close();
+					status_=CONNECTION_LOST;
+					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
+					return;
+				}
+			}); 
+		}
+		else{
+			socket_.close();
+			status_=CONNECTION_LOST;
+			out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
+			return;
+		}
+	});
+	
+}
+
+
 void server_connection::connect(tcp::resolver::iterator endpoint_iterator){
 	boost::asio::connect(socket_, endpoint_iterator);
 	out.print_error("Client is connected to server ...");
-	wait_msg();
 }
 
 void server_connection::stop(){
@@ -167,6 +199,7 @@ std::string server_connection::parse_arguments(std::string message){
 }
 
 std::string server_connection::get_lobbys(){
+	
 	std::string ret = "";
 	return ret;
 }
