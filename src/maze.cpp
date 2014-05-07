@@ -52,6 +52,9 @@ void maze::add_object(std::string value){
 	}else if(value.compare(0,2, "K_") == 0){
 		obj_ptr = std::make_shared<key_object>(key_object(value.substr(2)));
 		// keys_.push_back(obj_ptr);
+	}else if(value.compare(0,2, "P_") == 0){
+		obj_ptr = std::make_shared<player_object>(player_object(value.substr(2)));
+		// keys_.push_back(obj_ptr);
 	}else if(value.compare(0,3, "Cp_") == 0){
 		obj_ptr = std::make_shared<create_player_object>(create_player_object(value.substr(3)));
 		// cps_.push_back(obj_ptr);
@@ -92,6 +95,8 @@ maze::maze(std::string level){
    	}
    	file.close();
 }
+
+
 
 
 
@@ -159,8 +164,12 @@ std::string path_free::print_to_str(){
 	return ret;
 }
 
-player_object::player_object(){
+player_object::player_object(std::string s_id){
+	id = std::stoi(s_id);
+}
 
+void player_object::set_direction(std::string dir){
+	direction_ = dir;
 }
 
 void player_object::print_object(){
@@ -174,6 +183,10 @@ std::string player_object::print_to_str(){
 
 keeper_object::keeper_object(std::string s_id){
 	id = std::stoi(s_id);
+}
+
+void keeper_object::set_direction(std::string dir){
+	direction_ = dir;
 }
 
 void keeper_object::print_object(){
@@ -212,6 +225,11 @@ std::string create_player_object::print_to_str(){
 }
 
 
+void maze::set_player_direction(int x,int y,std::string dir){
+	unsigned int i = x + y * width_;
+	maze_array_.at(i)->set_direction(dir);
+}
+
 
 
 int main(int argc, char* argv[]){
@@ -219,7 +237,7 @@ int main(int argc, char* argv[]){
 
 	try{
 		maze maze("levels/level1.csv");
-		maze.print_maze();
+		maze.set_player_direction(1,1,"west");
 	}catch (std::exception& error){
 		std::cerr << "Exception: " << error.what() << std::endl;
 	}

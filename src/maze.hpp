@@ -39,10 +39,10 @@ class maze_object {
 public:
   virtual void print_object(){}
   virtual std::string print_to_str(){}
+  virtual void set_direction(std::string dir){};
   maze_object();
 private:
 	int x;
-	int y;
 };
 
 
@@ -60,6 +60,7 @@ public:
   void print_object() = 0;
   std::string print_to_str() = 0;
   dynamic_object();
+  void set_direction(std::string dir) = 0;
 };
 
 class key_object: public static_object{
@@ -96,8 +97,9 @@ public:
 
 class player_object: public dynamic_object{
 public:
-  player_object();
+  player_object(std::string s_id);
   void print_object();
+  void set_direction(std::string dir);
   std::string print_to_str();
 private:
   int id;
@@ -110,9 +112,11 @@ class keeper_object: public dynamic_object{
 public:
   keeper_object(std::string s_id);
   void print_object();
+  void set_direction(std::string dir);
   std::string print_to_str();
 private:
 	int id;
+  std::string direction_;
 };
 
 class finish_object: public static_object{
@@ -126,6 +130,7 @@ class create_player_object: public static_object{
 public:
 	create_player_object(std::string s_id);
 	void print_object();
+  std::string print_to_str();
 private:
 	int id;
 };
