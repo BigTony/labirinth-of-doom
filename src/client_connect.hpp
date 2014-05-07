@@ -44,6 +44,10 @@ public:
 	/** A public function.
 	* Print recieved message from server.
 	*/
+	void sync_wait_msg();
+	/** A public function.
+	 * Print recieved message from server.
+	 */
 	std::string get_lobbys();
 	
 	void read_msg();

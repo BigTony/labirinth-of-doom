@@ -169,7 +169,6 @@ void connection_binnder::wait_connection(){
 			connections_.push_back(p_new_connection);
 			connections_.back()->wait_msg();
 			connections_.back()->set_client_id(connection_counter_++);
-			// connections_.back()->send_msg("cusikfdsafdsa");
 		} 
 		wait_connection();
 	});   
