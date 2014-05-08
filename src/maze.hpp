@@ -40,19 +40,22 @@ public:
   virtual void print_object(){}
   virtual std::string print_to_str();
   virtual std::string get_direction();
-  virtual void set_direction(std::string dir){}
+  virtual void set_direction(std::string dir);
   virtual int get_state();
-  virtual void set_state(int state){}
+  virtual void set_state(int state);
   virtual int get_x();
   virtual int get_y();
   virtual void set_x(int x);
   virtual void set_y(int y);
+  virtual int get_before();
+  virtual void set_before(int before);
   maze_object();
 private:
 	int x_;
   int y_;
-  int state_;
-  std::string direction_;
+  int state_ = 0;
+  std::string direction_ = "north";
+  int before_;
 };
 
 
@@ -70,13 +73,10 @@ public:
   void print_object() = 0;
   std::string print_to_str() = 0;
   dynamic_object();
-  virtual void set_direction(std::string dir);
-  virtual void set_state(int state);
 private:
   int x_;
   int y_;
-  int state_ = 0;
-  std::string direction_ = "north";
+  int before_;
 };
 
 class key_object: public static_object{
@@ -176,6 +176,7 @@ public:
   void check_end();
   void move_one(unsigned int player_id);
   void set_maze(std::string level);
+  std::vector<maze_object_ptr> players_;
 private:
 	int coords_counter_ = 0;
 	int width_;
@@ -185,7 +186,7 @@ private:
 	std::vector<maze_object_ptr> keys_;
 	std::vector<maze_object_ptr> gates_;
 	std::vector<maze_object_ptr> walls_;
-	std::vector<maze_object_ptr> players_;
+	
 	std::vector<maze_object_ptr> keepers_;
 	std::vector<maze_object_ptr> finishes_;
 	std::vector<maze_object_ptr> cps_;
@@ -201,6 +202,7 @@ public:
   void do_action();
   void set_maze(maze maze);
   void load_maze(std::string maze);
+  void terminal_command();
   maze maze_;
 private:
 	int owner_id_;
@@ -213,11 +215,11 @@ private:
 };
 
 
-class client_maze: public maze,public std::enable_shared_from_this<client_maze>
-{
-public:
-	client_maze();
-};
+// class client_maze: public maze,public std::enable_shared_from_this<client_maze>
+// {
+// public:
+// 	client_maze();
+// };
 
 
 
