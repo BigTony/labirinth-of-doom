@@ -51,6 +51,7 @@ void client_connection::read_msg(){
 		if (!error){
 			recived_data_=data_;
 			out.print_debug("Recived header:\t"+recived_data_);
+			
 			wait_msg();
 		}
 		else{
@@ -189,7 +190,6 @@ void connection_binnder::send_to_client(int id, std::string msg){
 		std::cout << connections_[i]->get_client_id() << std::endl;
 		if(connections_[i]->get_client_id() == id){ 
 			connections_[i]->send_msg(msg);
-			// std::cout << "Zprava odeslana..." << std::endl;
 			out.print("zprava odeslana...");
 			break;
 		}
