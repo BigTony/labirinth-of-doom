@@ -424,9 +424,9 @@ void maze::set_player_state(int x,int y,int state){
 }
 
 
-// client_maze::client_maze(){
+client_maze::client_maze(){
 
-// }
+}
 
 void game::terminal_command(){
 	maze_.print_maze();
@@ -450,18 +450,20 @@ void game::terminal_command(){
     terminal_command();
 }
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game("levels/level1.csv");
-	try{
-		// game.maze_.set_player_state(1,1,1);
-		game.terminal_command();
-	}catch (std::exception& error){
-		std::cerr << "Exception: " << error.what() << std::endl;
-	}
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game("levels/level1.csv");
+// 	try{
+// 		// game.maze_.set_player_state(1,1,1);
+// 		game.terminal_command();
+// 	}catch (std::exception& error){
+// 		std::cerr << "Exception: " << error.what() << std::endl;
+// 	}
 
 
-   	return 0;
-}
+//    	return 0;
+// }
+
+
 
 // g++ maze.cpp output.cpp -std=c++11 -lboost_system -g 
