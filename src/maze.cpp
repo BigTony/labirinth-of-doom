@@ -199,6 +199,10 @@ maze_object::maze_object(){
 
 }
 
+std::string maze_object::print_to_str(){
+	return "O";
+}
+
 int maze_object::get_x(){
 	return x_;
 }
@@ -360,6 +364,10 @@ void maze::set_player_state(int x,int y,int state){
 	maze_array_.at(i)->set_state(state);
 }
 
+
+client_maze::client_maze(){
+	
+}
 
 
 

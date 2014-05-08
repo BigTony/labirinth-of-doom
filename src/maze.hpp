@@ -38,7 +38,7 @@
 class maze_object {
 public:
   virtual void print_object(){}
-  virtual std::string print_to_str(){}
+  virtual std::string print_to_str();
   virtual std::string get_direction();
   virtual void set_direction(std::string dir){}
   virtual int get_state();
