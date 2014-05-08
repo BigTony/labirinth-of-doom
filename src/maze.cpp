@@ -363,20 +363,20 @@ void maze::set_player_state(int x,int y,int state){
 
 
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game("levels/level1.csv");
-	try{
-		game.maze_.set_player_state(1,1,1);
-		game.do_action();
-		// maze.print_maze();
-		game.maze_.print_maze();
-	}catch (std::exception& error){
-		std::cerr << "Exception: " << error.what() << std::endl;
-	}
-
-
-   	return 0;
-}
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game("levels/level1.csv");
+// 	try{
+// 		game.maze_.set_player_state(1,1,1);
+// 		game.do_action();
+// 		// maze.print_maze();
+// 		game.maze_.print_maze();
+// 	}catch (std::exception& error){
+// 		std::cerr << "Exception: " << error.what() << std::endl;
+// 	}
+// 
+// 
+//    	return 0;
+// }
 
 // g++ maze.cpp output.cpp -std=c++11 -lboost_system -g 
