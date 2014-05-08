@@ -39,10 +39,10 @@ class maze_object {
 public:
   virtual void print_object(){}
   virtual std::string print_to_str(){}
-  virtual std::string get_direction(){};
-  virtual void set_direction(std::string dir){};
-  virtual int get_state(){};
-  virtual void set_state(int state){};
+  virtual std::string get_direction();
+  virtual void set_direction(std::string dir){}
+  virtual int get_state();
+  virtual void set_state(int state){}
   virtual int get_x();
   virtual int get_y();
   virtual void set_x(int x);
@@ -51,6 +51,8 @@ public:
 private:
 	int x_;
   int y_;
+  int state_;
+  std::string direction_;
 };
 
 
@@ -69,9 +71,7 @@ public:
   std::string print_to_str() = 0;
   dynamic_object();
   virtual void set_direction(std::string dir);
-  virtual std::string get_direction();
   virtual void set_state(int state);
-  virtual int get_state();
 private:
   int x_;
   int y_;
@@ -158,7 +158,7 @@ typedef std::shared_ptr<create_player_object> create_player_object_ptr;
 
 class maze:public std::enable_shared_from_this<maze>{
 public:
-  maze();
+  maze(std::string maze);
   void load_maze(std::string file_name);
   int do_cycle(); // vrati stav hry
   int get_winner(); // vrati id winnera
@@ -174,7 +174,7 @@ public:
   void check_collision(unsigned int player_id);
   int get_position(std::string direction);
   void check_end();
-  void move_one();
+  void move_one(unsigned int player_id);
   void set_maze(std::string level);
 private:
 	int coords_counter_ = 0;
@@ -195,15 +195,16 @@ private:
 
 class game{
 public:
-	game();
+	game(std::string maze);
 	void set_command(int id, std::string command);
 	void set_timer(int id, std::string time);
   void do_action();
   void set_maze(maze maze);
+  void load_maze(std::string maze);
+  maze maze_;
 private:
 	int owner_id_;
 	int game_state_;
-	maze maze_;
 	std::array<int,MAX_PLAYERS> players_id_;  
 	// boost::posix_time::ptime game_start_;
 	// boost::posix_time::ptime game_end_;

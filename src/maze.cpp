@@ -73,8 +73,8 @@ void maze::add_object(std::string value){
 
 }
 
-maze::maze(){
-
+maze::maze(std::string maze){
+	set_maze(maze);
 }
 
 void maze::set_maze(std::string level){
@@ -115,8 +115,31 @@ void maze::stop_go(){
 			check_collision(i);
 		}
 	}
-
+	check_end();
 }
+
+void maze::check_end(){
+	for (unsigned int i = 0; i < players_.size(); i++){
+		if(players_.at(i)->get_state() == 1){
+			move_one(i);
+		}
+	}
+}
+
+void maze::move_one(unsigned int player_id){
+	int x = players_.at(player_id)->get_x();
+	int y = players_.at(player_id)->get_y();
+	if((maze_array_.at(x+(y*width_))->print_to_str()) != "w"){
+
+	}
+}
+
+// maze_object_ptr obj_ptr;
+// 				obj_ptr = std::make_shared<wall_object>(wall_object());
+// 				// maze_array_.at(x+(y*width_)) = obj_ptr;
+// 				std::cout << maze_array_.size() << std::endl;
+// 				maze_array_.insert(maze_array_.begin() + 10,obj_ptr);
+// 				std::cout << maze_array_.size() << std::endl;
 
 void maze::check_collision(unsigned int player_id){
 	std::string dir = players_.at(player_id)->get_direction();
@@ -126,7 +149,6 @@ void maze::check_collision(unsigned int player_id){
 		if(y != 0){
 			if((maze_array_.at(x+(y*width_))->print_to_str()) != "w"){
 				y--;
-
 				players_.at(player_id)->set_y(y);
 				std::cout << "n" << std::endl;
 			}		
@@ -135,7 +157,7 @@ void maze::check_collision(unsigned int player_id){
 		if(x != 0){
 			if((maze_array_.at(x+(y*width_))->print_to_str()) != "w"){
 				x--;
-				players_.at(player_id)->set_y(y);
+				players_.at(player_id)->set_x(y);
 				std::cout << "w" << std::endl;
 			}		
 		}
@@ -151,16 +173,17 @@ void maze::check_collision(unsigned int player_id){
 		if(y != width_){
 			if((maze_array_.at(x+(y*width_))->print_to_str()) != "w"){
 				x++;
-				players_.at(player_id)->set_y(y);
+				players_.at(player_id)->set_x(y);
 				std::cout << "e" << std::endl;
 			}		
 		}
 	}
 }
 
-game::game(){
+game::game(std::string maze):maze_(maze){
 
 }
+
 
 void game::do_action(){	
 	maze_.stop_go();
@@ -205,7 +228,7 @@ void dynamic_object::set_direction(std::string dir){
 	direction_ = dir;
 }
 
-std::string dynamic_object::get_direction(){
+std::string maze_object::get_direction(){
 	return direction_;
 }
 
@@ -214,7 +237,7 @@ void dynamic_object::set_state(int state){
 }
 
 
-int dynamic_object::get_state(){
+int maze_object::get_state(){
 	return state_;
 }
 
@@ -342,14 +365,12 @@ void maze::set_player_state(int x,int y,int state){
 
 int main(int argc, char* argv[]){
 	out.set_debug(true);
-	game game;
+	game game("levels/level1.csv");
 	try{
-		maze maze;
-		maze.set_maze("levels/level1.csv");
-		game.set_maze(maze);
-		maze.set_player_state(1,1,1);
+		game.maze_.set_player_state(1,1,1);
 		game.do_action();
-		maze.print_maze();
+		// maze.print_maze();
+		game.maze_.print_maze();
 	}catch (std::exception& error){
 		std::cerr << "Exception: " << error.what() << std::endl;
 	}
