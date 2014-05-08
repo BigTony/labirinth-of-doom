@@ -43,6 +43,8 @@ public:
 class client_output_handler: public output_handler{
 public:
 	void print_menu();
+	void print_lobbys(std::string menu);
+	void print_mazes(std::string menu);
 };
 
 extern client_input_handler clin;

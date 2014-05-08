@@ -16,9 +16,9 @@
 #include <system_error>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "output.hpp"
 #include "message.hpp"
-
 #define PORT "11600"
 #define NOT_CONNECTED 1
 #define CONNECTED 2
@@ -49,11 +49,15 @@ public:
 	 * Print recieved message from server.
 	 */
 	std::string get_lobbys();
+	std::string get_mazes();
 	
 	void read_msg();
+	std::string send_create_maze(std::string maze);
+	std::string send_get_lobby(std::string lobby);
 	void stop();
 	void connect(tcp::resolver::iterator endpoint_iterator);
 	void check_socket();
+	void send_quee_msg(std::string message);
 	std::string parse_arguments(std::string message);
 private:
 
@@ -84,6 +88,8 @@ private:
 	char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
 	char header_[HEADER_LENGTH+1];
 	int recived_;
+	std::vector<std::string> msg_quee_;
+	boost::interprocess::interprocess_semaphore mutex_;
 };
 
 

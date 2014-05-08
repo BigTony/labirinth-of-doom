@@ -40,6 +40,7 @@ game_client::game_client(std::string server_ip):io_(),resolver_(io_),endpoint_(r
 }
 
 void game_client::run(){
+	connection_.wait_msg();
 	t_connection_ = new boost::thread([this](){ io_.run(); });
 }
 
@@ -48,15 +49,14 @@ void game_client::terminal_command(){
 	clout.print_menu();
 	command_=clin.wait_cmd();
 	if (command_.compare("exit")==0){
-		std::cout << "Stoping client..." << std::endl;
+		clout.print("Stoping game client");
 		connection_.stop();
 		t_connection_->join();
 		return;
 	}else if(command_.compare("new")==0){
-		connection_.send_msg("send_get_mazes");
+		choose_maze();
 	}else if(command_.compare("join")==0){
-		connection_.send_msg("send_get_lobbys");
-		clout.print_lobbys(connection_.get_lobbys());
+		choose_lobby();
 	}else if(command_.compare("send")==0){
 		connection_.send_msg("Test msg");
 	}else if(command_.compare("socket")==0){
@@ -64,3 +64,44 @@ void game_client::terminal_command(){
 	}
 	terminal_command();
   }
+  
+  
+  void game_client::choose_lobby(){
+	 clout.print_lobbys(connection_.get_lobbys());
+	command_=clin.wait_cmd();
+	if(command_.compare("back")==0){
+		return;
+	}
+	else{
+		join_game(command_);
+	}
+}
+  
+  
+  void game_client::choose_maze(){
+	clout.print_mazes(connection_.get_mazes());
+	command_=clin.wait_cmd();
+	if(command_.compare("back")==0){
+		return;
+	}
+	else{
+		create_game(command_);
+	}
+  }
+void game_client::create_game(std::string maze){
+	clout.print_debug(std::string("Creating new maze: ")+maze);
+	std::string lobby= connection_.send_create_maze(maze);
+	//maze_.create_maze(connection_.send_get_lobby(lobby));
+	play_game();
+}
+
+void game_client::join_game(std::string lobby){
+	clout.print_debug(std::string("Joinnig lobby: ")+lobby);
+	//maze_.create_maze(connection_.send_get_lobby(lobby));
+	play_game();
+}
+
+void game_client::play_game(){
+	clout.print_debug("Starting playing game");
+}
+

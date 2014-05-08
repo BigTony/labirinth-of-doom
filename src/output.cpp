@@ -74,8 +74,20 @@ std::string client_input_handler::wait_cmd() {
 void client_output_handler::print_menu(){
 	std::cout << "----Vytejte ve hre lab of doom-----" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
-	std::cout << "-----1. Pripojit-------------------" << std::endl;
-	std::cout << "-----2. Vitvorit-------------------" << std::endl;
+	std::cout << "-----1. Connect--------------------" << std::endl;
+	std::cout << "-----2. Create---------------------" << std::endl;
 }
 
+void client_output_handler::print_lobbys(std::string menu){
+	std::cout << "-----------------------------------" << std::endl;
+	std::cout << "-----Choose loby-------------------" << std::endl;
+	std::cout << menu << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+}
 
+void client_output_handler::print_mazes(std::string menu){
+	std::cout << "-----------------------------------" << std::endl;
+	std::cout << "-----Choose maze-------------------" << std::endl;
+	std::cout << menu << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+}

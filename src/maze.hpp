@@ -192,7 +192,7 @@ private:
 class client_maze: public maze,public std::enable_shared_from_this<client_maze>
 {
 public:
-	client_maze(std::string level);
+	client_maze();
 };
 
 
