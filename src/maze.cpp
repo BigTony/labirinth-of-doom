@@ -374,7 +374,7 @@ std::string maze::move_one(unsigned int player_id){
 	for (unsigned int i = 0; i < keepers_.size(); i++){
 		// hraci na stejnem policku
 		// std::cout << "keeper: " << "x: " << keepers_.at(i)->get_x() << " " << "y: " << keepers_.at(i)->get_y() << std::endl;
-		if((keepers_.at(i)->get_x() == x) && (keepers_.at(i)->get_y() == y)){
+		if((keepers_.at(i)->get_before_x() == x) && (keepers_.at(i)->get_before_y() == y)){
 			// move_one(i);
 			// int x_b = players_.at(player_id)->get_before_x();
 			// int y_b = players_.at(player_id)->get_before_y();
@@ -982,15 +982,15 @@ void game::terminal_command(){
     terminal_command();
 }
 
-// int main(int argc, char* argv[]){
-// 	out.set_debug(true);
-// 	game game(0,"levels/level1.csv");
-// 	// game.terminal_command();
-// 	client_maze cmaze(game.maze_.msg_send_maze());
-// 	cmaze.print_maze();
+int main(int argc, char* argv[]){
+	out.set_debug(true);
+	game game(0,"levels/level1.csv");
+	// game.terminal_command();
+	// client_maze cmaze(game.maze_.msg_send_maze());
+	// cmaze.print_maze();
 
-//    	return 0;
-// }
+   	return 0;
+}
 
 
 
