@@ -17,6 +17,8 @@
 #include <iostream>
 #include <fstream>
 
+
+
 //game constants
 #define MAX_MAZE_WIDTH 50
 #define MAX_MAZE_LENGTH 50
@@ -31,6 +33,8 @@
 #define ERROR 3
 
 class maze_object;
+class client_connection;
+typedef std::shared_ptr<client_connection> client_connection_ptr;
 typedef std::shared_ptr<maze_object> maze_object_ptr;
 
 /**
@@ -231,11 +235,12 @@ public:
   void set_maze(maze maze);
   void load_maze(std::string maze);
   void terminal_command();
+  void add_player();
   maze maze_;
 private:
 	int owner_id_;
 	int game_state_;
-	std::array<int,MAX_PLAYERS> players_id_;  
+	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
 	boost::posix_time::ptime game_start_;
 	boost::posix_time::ptime game_end_;
 	boost::posix_time::ptime clock_;

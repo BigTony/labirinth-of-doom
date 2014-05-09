@@ -982,15 +982,19 @@ void game::terminal_command(){
     terminal_command();
 }
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game(0,"levels/level1.csv");
-	// game.terminal_command();
-	// client_maze cmaze(game.maze_.msg_send_maze());
-	// cmaze.print_maze();
-
-   	return 0;
+void game::add_player(){
+	
 }
+
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game(0,"levels/level1.csv");
+// 	game.terminal_command();
+// 	// client_maze cmaze(game.maze_.msg_send_maze());
+// 	// cmaze.print_maze();
+
+//    	return 0;
+// }
 
 
 

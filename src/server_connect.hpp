@@ -87,7 +87,7 @@ private:
   void (game_server::*next_msg_handler_)(std::shared_ptr<client_connection> connection);
 };
 
-typedef std::shared_ptr<client_connection> client_connection_ptr;
+
 /**
 * Handling all incomming cnnections
 */
