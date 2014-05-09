@@ -65,7 +65,6 @@ void client_connection::read_msg(){
 
 
 void client_connection::wait_msg_handle(){
-	
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		auto self(shared_from_this());
 		if (!error){

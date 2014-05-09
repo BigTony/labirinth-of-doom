@@ -110,13 +110,14 @@ void game_server::handle_msg(client_connection_ptr client)
 // 			break;
 		case (CHOOSING_GAME):{
 			out.print_debug(std::string("Client state is CHOOSING_GAME"));
+			break;}
+		case (CHOOSING_MAZE):{
+			out.print_debug(std::string("Client state is CHOOSING_MAZE"));
 			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),client->get_msg());
 			games_.push_back(new_game_ptr);
-			
+			client->send_msg(new_game_ptr->maze_.msg_send_maze());
+			client->set_status(IN_GAME);
 			break;}
-		case (CHOOSING_MAZE):
-			out.print_debug(std::string("Client state is CHOOSING_MAZE"));
-			break;
 		case (IN_GAME):
 			out.print_debug(std::string("Client state is IN_GAME"));
 			break;

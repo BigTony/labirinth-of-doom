@@ -92,13 +92,15 @@ void server_connection::sync_wait_msg(){
 			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 				if (!error){
 					recived_data_=data_;
-					out.print_debug("Recived header:\t"+recived_data_);
+					out.print_debug("Recived data:\t"+recived_data_);
+					mutex_.post();
+					sync_wait_msg();
 				}
 				else{
 					socket_.close();
 					status_=CONNECTION_LOST;
 					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
-					return;
+					mutex_.post();
 				}
 			}); 
 		}
@@ -107,6 +109,7 @@ void server_connection::sync_wait_msg(){
 			status_=CONNECTION_LOST;
 			out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
 			return;
+			mutex_.post();
 		}
 	});
 	
@@ -212,30 +215,34 @@ std::string server_connection::parse_arguments(std::string message){
 
 std::string server_connection::get_lobbys(){
 	send_msg("join");
-	sync_wait_msg();
 	out.print_debug("Lobbys was returned");
+	mutex_.wait();
+	mutex_.post();
 	return recived_data_;
 }
 
 std::string server_connection::get_mazes(){
 	send_msg("create");
-	sync_wait_msg();
 	out.print_debug("Mazes was returned");
+	mutex_.wait();
+	mutex_.post();
 	return recived_data_;
 }
 
 
 std::string server_connection::send_get_lobby(std::string lobby){
-	
-	std::string ret = "";
+	send_msg(lobby);
+	mutex_.wait();
+	mutex_.post();
 	out.print_debug("Lobby was returned");
-	return ret;
+	return recived_data_;
 }
 
 std::string server_connection::send_create_maze(std::string maze){
-	
-	std::string ret = "";
+	send_msg(maze);
+	mutex_.wait();
+	mutex_.post();
 	out.print_debug("Maze was created");
-	return ret;
+	return recived_data_;
 }
 

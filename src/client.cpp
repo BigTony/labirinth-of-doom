@@ -45,7 +45,7 @@ game_client::~game_client(){
 }
 
 void game_client::run(){
-	connection_.wait_msg();
+	connection_.sync_wait_msg();
 	t_connection_ = new boost::thread([this](){ io_.run(); });
 }
 

@@ -1020,17 +1020,17 @@ void game::add_player(client_connection_ptr ptr){
 	maze_.add_player(i);
 }
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game(0,"levels/level1.csv");
-	client_connection_ptr ptr;
-	game.add_player(ptr);
-	game.terminal_command();
-	// client_maze cmaze(game.maze_.msg_send_maze());
-	// cmaze.print_maze();
-
-   	return 0;
-}
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game(0,"levels/level1.csv");
+// 	client_connection_ptr ptr;
+// 	game.add_player(ptr);
+// 	game.terminal_command();
+// 	// client_maze cmaze(game.maze_.msg_send_maze());
+// 	// cmaze.print_maze();
+// 
+//    	return 0;
+// }
 
 
 
