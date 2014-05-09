@@ -1026,7 +1026,6 @@ void game::add_player(client_connection_ptr ptr){
 // 	game.terminal_command();
 // 	// client_maze cmaze(game.maze_.msg_send_maze());
 // 	// cmaze.print_maze();
-
 //    	return 0;
 // }
 
