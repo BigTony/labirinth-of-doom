@@ -24,6 +24,7 @@ public:
 	void print_debug_object(std::string message);
 	void set_debug(bool set);
 	bool get_debug();
+	void print_menu();
 private:
 	bool debug_=true;
 };

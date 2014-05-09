@@ -19,7 +19,7 @@ loader::loader(){
 void loader::load_all_files(std::string path)
 {
 	std::string files;
-
+	path_=path;
 	fs::path full_path(fs::initial_path<fs::path>());
   	full_path = fs::system_complete(fs::path(path));
 
@@ -58,6 +58,10 @@ void loader::use_specific(std::string regex){
 			matched_.push_back(files_.at(i));
 		}
 	}
+}
+
+std::string loader::get_path(){
+	return(path_);
 }
 
 void loader::print_matched(){

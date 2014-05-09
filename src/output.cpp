@@ -62,7 +62,12 @@ std::string input_handler::wait_cmd() {
 	return command;
 }
 
-
+void output_handler::print_menu(){
+	std::cout << "----Server Lab of doom-------------" << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+	std::cout << "-----1. load-----------------------" << std::endl;
+	std::cout << "-----2. exit-----------------------" << std::endl;
+}
 
 std::string client_input_handler::wait_cmd() {
 	std::string command;
@@ -72,9 +77,9 @@ std::string client_input_handler::wait_cmd() {
 }
 
 void client_output_handler::print_menu(){
-	std::cout << "----Vytejte ve hre lab of doom-----" << std::endl;
+	std::cout << "----Client Lab of doom-------------" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
-	std::cout << "-----1. join--------------------" << std::endl;
+	std::cout << "-----1. join-----------------------" << std::endl;
 	std::cout << "-----2. create---------------------" << std::endl;
 }
 

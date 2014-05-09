@@ -57,18 +57,23 @@ void game_server::run(){
 }
 
 void game_server::terminal_command(){
-    command_=in.wait_cmd();
+    while (1){
+	command_=in.wait_cmd();
+	out.print_menu();
     if (command_.compare("exit")==0){
       out.print_info("Server is shutting down");
       binnder_.stop();
-      
       return;
     }else if(command_.compare("send")==0){
       binnder_.send_to_client(0,"TEST message");
     }else if(command_.compare("socket")==0){
       binnder_.check_socket();
     }
-    terminal_command();
+    else if(command_.compare("load")==0){
+	command_=in.wait_cmd();
+	load_.load_all_files(command_);
+    }
+	}
 }
 
 void game_server::handle_clients(){
