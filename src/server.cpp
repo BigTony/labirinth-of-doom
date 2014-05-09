@@ -72,9 +72,11 @@ void game_server::terminal_command(){
 }
 
 void game_server::handle_clients(){
+	while(1){
 	client_connection_ptr new_client =binnder_.wait_new_client();
 	new_client->set_handler(&game_server::handle_msg);
 	new_client->wait_msg_handle();
+	}
 }
 
 void game_server::handle_msg(client_connection_ptr client)
@@ -83,7 +85,7 @@ void game_server::handle_msg(client_connection_ptr client)
 	int status=client->get_status();
 		out.print_debug(std::string("Message: ")+client->get_msg()+std::string("\n->Is handling..."));
 	switch (status){
-		case CONNECTED:
+		case (CONNECTED):
 			out.print_debug(std::string("Client state is CONNECTED"));
 			if (client->get_msg().compare("join")==0){
 				client->send_msg(get_lobbys());
@@ -101,20 +103,21 @@ void game_server::handle_msg(client_connection_ptr client)
 // 		case IN_MENU:
 // 			out.print_debug(std::string("Client state is IN_MENU"));
 // 			break;
-		case CHOOSING_GAME:
+		case (CHOOSING_GAME):{
 			out.print_debug(std::string("Client state is CHOOSING_GAME"));
 			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),client->get_msg());
 			games_.push_back(new_game_ptr);
 			
-			break;
-		case CHOOSING_MAZE:
+			break;}
+		case (CHOOSING_MAZE):
 			out.print_debug(std::string("Client state is CHOOSING_MAZE"));
 			break;
-		case IN_GAME:
+		case (IN_GAME):
 			out.print_debug(std::string("Client state is IN_GAME"));
 			break;
 		default:
 			out.print_error(std::string("Unexpected client state")+std::to_string(status));
+			return;
 	}
 	client->wait_msg_handle();
 }

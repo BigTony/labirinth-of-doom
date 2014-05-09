@@ -81,6 +81,7 @@ void server_connection::wait_msg(){
 
 
 void server_connection::sync_wait_msg(){
+	mutex_.wait();
 	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
@@ -92,7 +93,6 @@ void server_connection::sync_wait_msg(){
 				if (!error){
 					recived_data_=data_;
 					out.print_debug("Recived header:\t"+recived_data_);
-					wait_msg();
 				}
 				else{
 					socket_.close();
@@ -211,17 +211,17 @@ std::string server_connection::parse_arguments(std::string message){
 }
 
 std::string server_connection::get_lobbys(){
-	
-	std::string ret = "";
+	send_msg("join");
+	sync_wait_msg();
 	out.print_debug("Lobbys was returned");
-	return ret;
+	return recived_data_;
 }
 
 std::string server_connection::get_mazes(){
-	
-	std::string ret = "";
+	send_msg("create");
+	sync_wait_msg();
 	out.print_debug("Mazes was returned");
-	return ret;
+	return recived_data_;
 }
 
 

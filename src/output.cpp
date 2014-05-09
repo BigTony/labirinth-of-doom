@@ -74,8 +74,8 @@ std::string client_input_handler::wait_cmd() {
 void client_output_handler::print_menu(){
 	std::cout << "----Vytejte ve hre lab of doom-----" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
-	std::cout << "-----1. Connect--------------------" << std::endl;
-	std::cout << "-----2. Create---------------------" << std::endl;
+	std::cout << "-----1. join--------------------" << std::endl;
+	std::cout << "-----2. create---------------------" << std::endl;
 }
 
 void client_output_handler::print_lobbys(std::string menu){
