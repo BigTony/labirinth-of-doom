@@ -40,6 +40,8 @@ class maze_object {
 public:
   virtual void print_object(){}
   virtual std::string print_to_str();
+  virtual int get_steps();
+  virtual void set_steps(){}
   virtual std::string get_direction();
   virtual void set_direction(std::string dir);
   virtual int get_state();
@@ -79,13 +81,14 @@ public:
   //virtual keeper, player
   void print_object() = 0;
   std::string print_to_str() = 0;
+  int get_steps() = 0;
+  void set_steps() = 0;
   dynamic_object();
   void pick_key(unsigned int key_id);
 private:
   int x_;
   int y_;
   int before_;
-  
 };
 
 class key_object: public static_object{
@@ -93,9 +96,8 @@ public:
   key_object(std::string s_id);
   void print_object();
   std::string print_to_str();
-  int id;
 private:
-	
+  int id;
 };
 
 class gate_object: public static_object{
@@ -103,8 +105,9 @@ public:
   gate_object(std::string s_id);
   void print_object();
   std::string print_to_str();
-  int id;
+  
 private:
+  int id;
 };
 
 class wall_object: public static_object{
@@ -126,9 +129,11 @@ public:
   player_object(std::string s_id);
   void print_object();
   std::string print_to_str();
-  
+  int get_steps();
+  void set_steps();
 private:
   int id;
+  int steps_;
 };
 
 class keeper_object: public dynamic_object{
@@ -137,8 +142,11 @@ public:
   void print_object();
   std::string print_to_str();
   void pick_key(unsigned int key_id){}
+  int get_steps();
+  void set_steps();
 private:
 	int id;
+  int steps_ = 0;
 };
 
 class finish_object: public static_object{
@@ -183,19 +191,20 @@ public:
   void set_player_direction(int x,int y,std::string dir);
   void set_direction_keeper(unsigned int keeper_id);
   void set_player_state(int x,int y,int state);
-  void stop_go();
+  std::string stop_go();
 
   void check_collision(unsigned int player_id);
   void check_collision_keeper(unsigned int player_id);
   int get_position(std::string direction);
-  void check_end();
-  void move_one(unsigned int player_id);
-  void move_one_keeper(unsigned int keeper_id);
+  std::string check_end();
+  std::string move_one(unsigned int player_id);
+  std::string move_one_keeper(unsigned int keeper_id);
   void set_maze(std::string level);
-  void pick_key(int x,int y);
-  void open_gate(int x,int y);
+  std::string pick_key(int x,int y);
+  std::string open_gate(int x,int y);
   void check_key();
   void check_gate();
+  void check_steps(int x,int y);
   std::vector<maze_object_ptr> players_;
 private:
 	int coords_counter_ = 0;
@@ -218,7 +227,7 @@ public:
 	game(std::string maze);
 	void set_command(int id, std::string command);
 	void set_timer(int id, std::string time);
-  void do_action();
+  std::string do_action();
   void set_maze(maze maze);
   void load_maze(std::string maze);
   void terminal_command();
@@ -227,9 +236,9 @@ private:
 	int owner_id_;
 	int game_state_;
 	std::array<int,MAX_PLAYERS> players_id_;  
-	// boost::posix_time::ptime game_start_;
-	// boost::posix_time::ptime game_end_;
-	// boost::posix_time::ptime clock_;
+	boost::posix_time::ptime game_start_;
+	boost::posix_time::ptime game_end_;
+	boost::posix_time::ptime clock_;
 	// boost::asio::deadline_timer timer_;  
 };
 
