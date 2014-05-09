@@ -1000,18 +1000,11 @@ void maze::add_player(int i){
 			break;
 		}
 	}
-	// int x = 3;
-	// int y = 3;
 	obj_ptr->set_x(set_x);
 	obj_ptr->set_y(set_y);
 	players_.push_back(obj_ptr);
 	maze_array_.at(set_x+(set_y*width_)) = obj_ptr;
-	// int y = coords_counter_ / width_;
-	// int x = coords_counter_ - (y * width_);
-	// obj_ptr->set_x(x);
-	// obj_ptr->set_y(y);
-	// players_.push_back(obj_ptr);
-	// players_.at() = 
+ 
 }
 
 void game::add_player(client_connection_ptr ptr){
