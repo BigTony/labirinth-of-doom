@@ -57,7 +57,9 @@ public:
 	
 	
 	std::string print_to_string();
+	std::string get_path();
 private:
+	std::string path_;
 	/**
   	* A private variable.
   	* Array storing all matched files.
