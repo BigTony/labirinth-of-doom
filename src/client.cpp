@@ -38,6 +38,11 @@ int main(int argc, char* argv[]){
 
 game_client::game_client(std::string server_ip):io_(),resolver_(io_),endpoint_(resolver_.resolve({server_ip,PORT})),connection_(&io_,endpoint_){
 }
+game_client::~game_client(){
+	if (maze_ptr_!=nullptr){
+		delete(maze_ptr_);
+	}
+}
 
 void game_client::run(){
 	connection_.wait_msg();
@@ -53,7 +58,7 @@ void game_client::terminal_command(){
 		connection_.stop();
 		t_connection_->join();
 		return;
-	}else if(command_.compare("new")==0){
+	}else if(command_.compare("create")==0){
 		choose_maze();
 	}else if(command_.compare("join")==0){
 		choose_lobby();
@@ -84,6 +89,9 @@ void game_client::terminal_command(){
 	if(command_.compare("back")==0){
 		return;
 	}
+	else if(command_.compare("refresh")==0){
+		choose_maze();
+	}
 	else{
 		create_game(command_);
 	}
@@ -91,13 +99,19 @@ void game_client::terminal_command(){
 void game_client::create_game(std::string maze){
 	clout.print_debug(std::string("Creating new maze: ")+maze);
 	std::string lobby= connection_.send_create_maze(maze);
-	//maze_.create_maze(connection_.send_get_lobby(lobby));
+	if (maze_ptr_!=nullptr){
+		delete(maze_ptr_);
+	}
+	maze_ptr_=new client_maze(connection_.send_get_lobby(lobby));
 	play_game();
 }
 
 void game_client::join_game(std::string lobby){
 	clout.print_debug(std::string("Joinnig lobby: ")+lobby);
-	//maze_.create_maze(connection_.send_get_lobby(lobby));
+	if (maze_ptr_!=nullptr){
+		delete(maze_ptr_);
+	}
+	maze_ptr_=new client_maze(connection_.send_get_lobby(lobby));
 	play_game();
 }
 

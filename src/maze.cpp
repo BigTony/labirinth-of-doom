@@ -491,8 +491,8 @@ void maze::check_collision(unsigned int player_id){
 	}
 }
 
-game::game(std::string maze):maze_(maze){
-
+game::game(int client_id,std::string maze):maze_(maze){
+	owner_id_=client_id;
 }
 
 
@@ -869,8 +869,8 @@ void maze::set_player_state(int x,int y,int state){
 }
 
 
-client_maze::client_maze(){
-
+client_maze::client_maze(std::string maze){
+	
 }
 
 void maze::check_key(){

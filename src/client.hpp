@@ -22,6 +22,7 @@ using boost::asio::ip::tcp;
 class game_client{
   public:
   game_client(std::string server_ip);
+  ~game_client();
   void run();
   void terminal_command();
   void choose_lobby();
@@ -37,7 +38,7 @@ private:
   server_connection connection_;
   std::string command_;
   boost::thread *t_connection_;
-  client_maze maze_;
+  client_maze *maze_ptr_;
 };
 
 #endif

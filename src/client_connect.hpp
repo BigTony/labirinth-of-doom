@@ -50,7 +50,6 @@ public:
 	std::string get_lobbys();
 	std::string get_mazes();
 	
-	void read_msg();
 	std::string send_create_maze(std::string maze);
 	std::string send_get_lobby(std::string lobby);
 	void stop();
@@ -58,9 +57,9 @@ public:
 	void check_socket();
 	void send_quee_msg(std::string message);
 	std::string parse_arguments(std::string message);
+	void send_msg(std::string message);
 private:
 	
-	void send_msg(std::string message);
 
 	/**
 	* A private variable.

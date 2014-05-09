@@ -246,7 +246,7 @@ private:
 class client_maze: public maze,public std::enable_shared_from_this<client_maze>
 {
 public:
-	client_maze();
+	client_maze(std::string maze);
 };
 
 
