@@ -54,6 +54,9 @@ public:
   	* Print out all matched files, matched_.
   	*/ 
 	void print_matched();
+	
+	
+	std::string print_to_string();
 private:
 	/**
   	* A private variable.

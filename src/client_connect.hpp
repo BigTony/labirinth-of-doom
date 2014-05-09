@@ -36,7 +36,6 @@ public:
 	/** A public function.
 	* Send message to server.
 	*/
-	void send_msg(std::string message);
 	/** A public function.
 	* Recieve message from server.
 	*/
@@ -60,6 +59,8 @@ public:
 	void send_quee_msg(std::string message);
 	std::string parse_arguments(std::string message);
 private:
+	
+	void send_msg(std::string message);
 
 	/**
 	* A private variable.

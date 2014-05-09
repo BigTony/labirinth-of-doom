@@ -215,7 +215,7 @@ private:
 
 class game{
 public:
-	game(std::string maze);
+	game(int client_id,std::string maze);
 	void set_command(int id, std::string command);
 	void set_timer(int id, std::string time);
   void do_action();

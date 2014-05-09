@@ -15,7 +15,8 @@
 
 using boost::asio::ip::tcp;
 
-client_connection::client_connection(tcp::socket socket): socket_(std::move(socket)){
+client_connection::client_connection(tcp::socket socket,game_server* gs_ptr): socket_(std::move(socket)){
+	game_server_ptr_=gs_ptr;
 }
 
 void client_connection::set_client_id(int id){
@@ -32,7 +33,6 @@ void client_connection::wait_msg(){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
-			out.print_debug(std::string("Recived header:\t")+header_);
 			recived_ = std::atoi(header);
 			read_msg();
 		}
@@ -50,7 +50,7 @@ void client_connection::read_msg(){
 	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			recived_data_=data_;
-			out.print_debug("Recived header:\t"+recived_data_);
+			out.print_debug("Recived data:\t"+recived_data_);
 			
 			wait_msg();
 		}
@@ -62,6 +62,61 @@ void client_connection::read_msg(){
 		}
 	});
 }
+
+
+void client_connection::wait_msg_handle(){
+	
+	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
+		auto self(shared_from_this());
+		if (!error){
+			char header[HEADER_LENGTH + 1] = "";
+			std::strncat(header, header_, HEADER_LENGTH);
+			recived_ = std::atoi(header);
+			read_msg_handle();
+		}
+		else{
+			out.print_error(std::string("Unable recive msg. Client NO: ") + std::to_string(client_id_) +std::string(" hang out unexpectly"));
+			status_=CONNECTION_LOST;
+			socket_.close();
+			(game_server_ptr_->*next_msg_handler_)(self);
+		} 
+	});
+}
+
+
+void client_connection::read_msg_handle(){
+	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
+		auto self(shared_from_this());
+		if (!error){
+			recived_data_=data_;
+			out.print_debug("Recived data:\t"+recived_data_);
+			(game_server_ptr_->*next_msg_handler_)(self);
+		}
+		else{
+			out.print_error(std::string("Unable to send msg to client NO: ") + std::to_string(client_id_) +std::string(" hang out unexpectly"));
+			status_=CONNECTION_LOST;
+			socket_.close();
+			(game_server_ptr_->*next_msg_handler_)(self);
+		}
+	});
+}
+
+void client_connection::set_status(int status){
+	status_=status;
+}
+int client_connection::get_status(){
+	return (status_);
+}
+
+std::string client_connection::get_msg(){
+	return recived_data_;
+}
+
+void client_connection::set_handler(void(game_server::*handler)(std::shared_ptr<client_connection>)){
+	next_msg_handler_=handler;
+}
+
+
 
 void client_connection::send_msg(std::string message){
 	if (message.length()>MAX_MSG_LENGTH) {
@@ -156,22 +211,24 @@ void client_connection::parse_arguments(std::string message){
 }
 
 connection_binnder::connection_binnder(boost::asio::io_service* io_service, const tcp::endpoint& endpoint)
-: acceptor_(*io_service, endpoint), socket_(*io_service){
+: acceptor_(*io_service, endpoint), socket_(*io_service),new_client_(0){
 	io_=io_service;
 	connection_counter_=0;
 }
 
-void connection_binnder::wait_connection(){
+void connection_binnder::wait_connection(game_server* gs_ptr){
 	
-	acceptor_.async_accept(socket_,[this](boost::system::error_code error){
+	acceptor_.async_accept(socket_,[this,gs_ptr](boost::system::error_code error){
 		if (!error){
 			std::cout << "New client Connecting..." << "actual connection counter: " << connection_counter_ << std::endl;
-			client_connection_ptr p_new_connection = std::make_shared<client_connection>(std::move(socket_));
+			client_connection_ptr p_new_connection = std::make_shared<client_connection>(std::move(socket_),gs_ptr);
 			connections_.push_back(p_new_connection);
-			connections_.back()->wait_msg();
+			new_client_ptr_=p_new_connection;
+			p_new_connection->set_status(CONNECTED);
 			connections_.back()->set_client_id(connection_counter_++);
+			new_client_.post();
 		} 
-		wait_connection();
+		wait_connection(gs_ptr);
 	});   
 }
 
@@ -187,15 +244,18 @@ void connection_binnder::check_socket(){
 void connection_binnder::send_to_client(int id, std::string msg){
 	for (unsigned int i = 0; i < connections_.size(); i++)
 	{
-		std::cout << connections_[i]->get_client_id() << std::endl;
 		if(connections_[i]->get_client_id() == id){ 
 			connections_[i]->send_msg(msg);
-			out.print("zprava odeslana...");
 			break;
 		}
 	}
 	
 }
+client_connection_ptr connection_binnder::wait_new_client(){
+	new_client_.wait();
+	return new_client_ptr_;
+}
+
 
 
 
