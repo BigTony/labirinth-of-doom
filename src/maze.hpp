@@ -209,6 +209,7 @@ public:
   void check_key();
   void check_gate();
   void check_steps(int x,int y);
+  void add_player(int id);
   std::vector<maze_object_ptr> players_;
 protected:
 	int coords_counter_ = 0;
@@ -235,7 +236,7 @@ public:
   void set_maze(maze maze);
   void load_maze(std::string maze);
   void terminal_command();
-  void add_player();
+  void add_player(client_connection_ptr ptr);
   maze maze_;
 private:
 	int owner_id_;
