@@ -984,23 +984,28 @@ void game::terminal_command(){
 
 void maze::add_player(int i){
 	maze_object_ptr obj_ptr;
+	int set_x = 0;
+	int set_y = 0;
 	obj_ptr = std::make_shared<player_object>(player_object(std::to_string(i)));
-	// for (i = 0; i < cps_.size(); i++){
-	// 	int x = cps_.at(i)->get_x();
-	// 	int y = cps_.at(i)->get_y();
-	// 	std::string cp_id = maze_array_.at(x+(y*width_))->print_to_str();
-	// 	int c_id = std::stoi(cp_id.substr(3));
-	// 	if(players_.at(i) == nullptr){
-	// 		players_.at(i) = obj_ptr;
-	// 		break;
-	// 	}
-	// }
-	int x = 3;
-	int y = 3;
-	obj_ptr->set_x(x);
-	obj_ptr->set_y(y);
+	for (unsigned int c = 0; c < cps_.size(); c++){
+		// std::cout << "wut: " << cps_.at(c)->print_to_str() << std::endl;
+		int x = cps_.at(c)->get_x();
+		int y = cps_.at(c)->get_y();
+		std::string cp_id = cps_.at(c)->print_to_str();
+		int c_id = std::stoi(cp_id.substr(3));
+		// std::cout << "c_id: " << c_id << " i: " << i << std::endl;
+		if(i == c_id){
+			set_x = x;
+			set_y = y;
+			break;
+		}
+	}
+	// int x = 3;
+	// int y = 3;
+	obj_ptr->set_x(set_x);
+	obj_ptr->set_y(set_y);
 	players_.push_back(obj_ptr);
-	maze_array_.at(x+(y*width_)) = obj_ptr;
+	maze_array_.at(set_x+(set_y*width_)) = obj_ptr;
 	// int y = coords_counter_ / width_;
 	// int x = coords_counter_ - (y * width_);
 	// obj_ptr->set_x(x);
@@ -1020,17 +1025,17 @@ void game::add_player(client_connection_ptr ptr){
 	maze_.add_player(i);
 }
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game(0,"levels/level1.csv");
-	client_connection_ptr ptr;
-	game.add_player(ptr);
-	game.terminal_command();
-	// client_maze cmaze(game.maze_.msg_send_maze());
-	// cmaze.print_maze();
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game(0,"levels/level1.csv");
+// 	client_connection_ptr ptr;
+// 	game.add_player(ptr);
+// 	game.terminal_command();
+// 	// client_maze cmaze(game.maze_.msg_send_maze());
+// 	// cmaze.print_maze();
 
-   	return 0;
-}
+//    	return 0;
+// }
 
 
 
