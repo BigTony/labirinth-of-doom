@@ -342,7 +342,7 @@ std::string maze::move_one_keeper(unsigned int keeper_id){
 	// before
 	std::string ret = std::string(std::to_string(keepers_.at(keeper_id)->get_before_x())) + "," +  std::string(std::to_string(keepers_.at(keeper_id)->get_before_y()));
 	// actual
-	ret.append(" " + std::string(std::to_string(keepers_.at(keeper_id)->get_x())) + "," +  std::string(std::to_string(keepers_.at(keeper_id)->get_y())) + "," + keepers_.at(keeper_id)->print_to_str() + " ");
+	ret.append(" " + std::string(std::to_string(keepers_.at(keeper_id)->get_x())) + "," +  std::string(std::to_string(keepers_.at(keeper_id)->get_y())) + "," + keepers_.at(keeper_id)->print_to_str() + "," + keepers_.at(keeper_id)->get_direction() + " ");
 	return ret;
 }
 
@@ -382,7 +382,30 @@ std::string maze::move_one(unsigned int player_id){
 		// std::cout << "keeper: " << "x: " << keepers_.at(i)->get_x() << " " << "y: " << keepers_.at(i)->get_y() << std::endl;
 		if((keepers_.at(i)->get_x() == x) && (keepers_.at(i)->get_y() == y)){
 			// move_one(i);
-			out.print("HRAC ZAKAPAL");
+			// int x_b = players_.at(player_id)->get_before_x();
+			// int y_b = players_.at(player_id)->get_before_y();
+			// std::string playerid = maze_array_.at(x+(y*width_))->print_to_str();
+			// int p_id = std::stoi(playerid.substr(2));
+			// for (unsigned int i = 0; i < cps_.size(); i++){
+			// 	std::string createp_id = cps_.at(i)->print_to_str();
+			// 	int cp_id = std::stoi(createp_id.substr(3));
+			// 	if(cp_id == p_id){
+			// 		//
+			// 	}
+			// }
+			
+			
+			players_.at(player_id)->set_x(3);
+			players_.at(player_id)->set_y(3);
+			maze_array_.at(3+(3*width_)) = players_.at(player_id);
+			int before = players_.at(player_id)->get_before_x() + (players_.at(player_id)->get_before_y() * width_);
+			maze_object_ptr obj_ptr;
+			obj_ptr = std::make_shared<path_free>(path_free());
+			maze_array_.at(before) = obj_ptr;
+			std::string ret = std::string(std::to_string(players_.at(player_id)->get_before_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_before_y()));
+			ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + " " );
+			return ret;
+			// maze_array_.at(x+(y*width_)) = obj_ptr;
 		}
 	}
 	int before = players_.at(player_id)->get_before_x() + (players_.at(player_id)->get_before_y() * width_);
@@ -393,7 +416,7 @@ std::string maze::move_one(unsigned int player_id){
 	// before
 	std::string ret = std::string(std::to_string(players_.at(player_id)->get_before_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_before_y()));
 	// actual
-	ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + " ");
+	ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + " " );
 	return ret;
 }
 
