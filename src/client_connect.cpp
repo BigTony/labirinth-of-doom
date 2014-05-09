@@ -19,6 +19,7 @@ void server_connection::send_msg(std::string message){
 	if (msg_quee_.size()==1){
 		while (!(msg_quee_.empty())){
 			send_quee_msg(msg_quee_.back());
+			msg_quee_.pop_back();
 		}
 	}
 }
@@ -36,7 +37,6 @@ void server_connection::send_quee_msg(std::string message){
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data_.data(),send_data_.length()),[this](boost::system::error_code error, std::size_t){
 		if (!error){
 			out.print_debug("Msg was send");
-			msg_quee_.pop_back();
 		}
 		else{
 			out.print_error("Unable send msg. Server hang out unexpectly");

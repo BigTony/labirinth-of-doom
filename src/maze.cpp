@@ -958,19 +958,19 @@ void game::terminal_command(){
     terminal_command();
 }
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game("levels/level1.csv");
-	try{
-		// game.maze_.set_player_state(1,1,1);
-		game.terminal_command();
-	}catch (std::exception& error){
-		std::cerr << "Exception: " << error.what() << std::endl;
-	}
-
-
-   	return 0;
-}
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game("levels/level1.csv");
+// 	try{
+// 		// game.maze_.set_player_state(1,1,1);
+// 		game.terminal_command();
+// 	}catch (std::exception& error){
+// 		std::cerr << "Exception: " << error.what() << std::endl;
+// 	}
+// 
+// 
+//    	return 0;
+// }
 
 
 

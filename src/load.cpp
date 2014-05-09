@@ -66,6 +66,14 @@ void loader::print_matched(){
 	}
 }
 
+std::string loader::print_to_string(){
+	std::string ret="";
+	for (unsigned int i = 0; i < files_.size(); i++){
+		ret.append(files_.at(i));
+		ret.append(std::string("\n"));
+	}
+	return ret;
+}
 
 // int main(int argc, char* argv[]){
 // 	out.set_debug(true);

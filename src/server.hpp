@@ -27,11 +27,24 @@ private:
   
 };*/
 
+
+
+
+
+
+
+
 class game_server{
 public:
   game_server();
+  ~game_server();
   void run();
   void terminal_command();
+  void handle_clients();
+  void handle_msg(client_connection_ptr client);
+  std::string get_lobbys();
+
+  
   
   
 private:
@@ -39,9 +52,13 @@ private:
   tcp::endpoint endpoint_;
   connection_binnder binnder_;
   boost::thread *t_binnder_;
+  boost::thread *t_client_handle_;
   std::string command_;
   loader load_;
+  games games_;
+  
 };
+
 
 
 
