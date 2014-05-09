@@ -30,7 +30,8 @@
 #define ENDED 2
 #define ERROR 3
 
-
+class maze_object;
+typedef std::shared_ptr<maze_object> maze_object_ptr;
 
 /**
  * Virtual
@@ -47,17 +48,23 @@ public:
   virtual int get_y();
   virtual void set_x(int x);
   virtual void set_y(int y);
-  virtual int get_before();
-  virtual void set_before(int before);
+  virtual int get_before_x();
+  virtual int get_before_y();
+  virtual void set_before_x(int before);
+  virtual void set_before_y(int before);
+  virtual void pick_key(unsigned int key_id){};
+  virtual int get_id();
   maze_object();
+  std::vector<maze_object_ptr> keys_;
 private:
 	int x_;
   int y_;
   int state_ = 0;
   std::string direction_ = "north";
-  int before_;
+  int before_x_;
+  int before_y_;
+  int id;
 };
-
 
 class static_object: virtual public maze_object {
 public:
@@ -73,10 +80,12 @@ public:
   void print_object() = 0;
   std::string print_to_str() = 0;
   dynamic_object();
+  void pick_key(unsigned int key_id);
 private:
   int x_;
   int y_;
   int before_;
+  
 };
 
 class key_object: public static_object{
@@ -84,8 +93,9 @@ public:
   key_object(std::string s_id);
   void print_object();
   std::string print_to_str();
+  int id;
 private:
-	int id;
+	
 };
 
 class gate_object: public static_object{
@@ -93,8 +103,8 @@ public:
   gate_object(std::string s_id);
   void print_object();
   std::string print_to_str();
+  int id;
 private:
-	int id;
 };
 
 class wall_object: public static_object{
@@ -116,6 +126,7 @@ public:
   player_object(std::string s_id);
   void print_object();
   std::string print_to_str();
+  
 private:
   int id;
 };
@@ -125,6 +136,7 @@ public:
   keeper_object(std::string s_id);
   void print_object();
   std::string print_to_str();
+  void pick_key(unsigned int key_id){}
 private:
 	int id;
 };
@@ -145,7 +157,7 @@ private:
 	int id;
 };
 
-typedef std::shared_ptr<maze_object> maze_object_ptr;
+
 typedef std::shared_ptr<path_free> path_free_ptr;
 typedef std::shared_ptr<key_object> key_object_ptr;
 typedef std::shared_ptr<gate_object> gate_object_ptr;
@@ -159,6 +171,7 @@ typedef std::shared_ptr<create_player_object> create_player_object_ptr;
 class maze:public std::enable_shared_from_this<maze>{
 public:
   maze(std::string maze);
+  maze(){};
   void load_maze(std::string file_name);
   int do_cycle(); // vrati stav hry
   int get_winner(); // vrati id winnera
@@ -168,14 +181,21 @@ public:
   std::string msg_send_maze();
 
   void set_player_direction(int x,int y,std::string dir);
+  void set_direction_keeper(unsigned int keeper_id);
   void set_player_state(int x,int y,int state);
   void stop_go();
 
   void check_collision(unsigned int player_id);
+  void check_collision_keeper(unsigned int player_id);
   int get_position(std::string direction);
   void check_end();
   void move_one(unsigned int player_id);
+  void move_one_keeper(unsigned int keeper_id);
   void set_maze(std::string level);
+  void pick_key(int x,int y);
+  void open_gate(int x,int y);
+  void check_key();
+  void check_gate();
   std::vector<maze_object_ptr> players_;
 private:
 	int coords_counter_ = 0;
@@ -186,7 +206,6 @@ private:
 	std::vector<maze_object_ptr> keys_;
 	std::vector<maze_object_ptr> gates_;
 	std::vector<maze_object_ptr> walls_;
-	
 	std::vector<maze_object_ptr> keepers_;
 	std::vector<maze_object_ptr> finishes_;
 	std::vector<maze_object_ptr> cps_;
