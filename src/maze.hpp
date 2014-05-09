@@ -206,7 +206,7 @@ public:
   void check_gate();
   void check_steps(int x,int y);
   std::vector<maze_object_ptr> players_;
-private:
+protected:
 	int coords_counter_ = 0;
 	int width_;
 	int length_;
@@ -247,6 +247,7 @@ class client_maze: public maze,public std::enable_shared_from_this<client_maze>
 {
 public:
 	client_maze(std::string maze);
+
 };
 
 

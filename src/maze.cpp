@@ -23,10 +23,7 @@ std::string maze::msg_send_maze(){
 	std::string send_maze = std::to_string(width_) + "\n" + std::to_string(length_) + "\n";
 	for (unsigned int i = 0; i < maze_array_.size(); i++){
 		send_maze.append(maze_array_.at(i)->print_to_str());
-		send_maze.append(",");
-		if((i % (width_)) == 0){
-			send_maze.append("\n");
-		}
+		send_maze.append(",");	
 	}
 	return send_maze;
 }
@@ -115,18 +112,15 @@ void maze::set_maze(std::string level){
 
 	while ( file.good() ){
     	char c = file.get();
-    	
-		if (file.good()){
-			if((c == ',') || (c == '\n')){
+			if((c == ',') || (c == '\n') || (!file.good())){
 				add_object(value);
 				coords_counter_++;
 				value = "";
 			}else{
 				value +=c;
 			}
-		} 
-
    	}
+
    	file.close();
 }
 
@@ -893,7 +887,37 @@ void maze::set_player_state(int x,int y,int state){
 
 
 client_maze::client_maze(std::string maze){
-	
+	int counter = 0;
+	std::string value = "";
+	// width
+	while(maze[counter] != '\n'){
+		value += maze[counter];
+		counter++;
+	}
+	width_ = std::stoi(value);
+	value = "";
+	counter++;
+	// length
+	while(maze[counter] != '\n'){
+		value += maze[counter];
+		counter++;
+	}
+	length_ = std::stoi(value);
+	value = "";
+	counter++;
+	counter++;
+
+	while ( maze[counter] != EOF ){
+		if(( maze[counter] == ',') || (maze[counter] == '\n')){
+			add_object(value);
+			coords_counter_++;
+			counter++;
+			value = "";
+		}else{
+			value += maze[counter];
+			counter++;
+		}
+   	}
 }
 
 void maze::check_key(){
@@ -960,15 +984,11 @@ void game::terminal_command(){
 
 // int main(int argc, char* argv[]){
 // 	out.set_debug(true);
-// 	game game("levels/level1.csv");
-// 	try{
-// 		// game.maze_.set_player_state(1,1,1);
-// 		game.terminal_command();
-// 	}catch (std::exception& error){
-// 		std::cerr << "Exception: " << error.what() << std::endl;
-// 	}
-// 
-// 
+// 	game game(0,"levels/level1.csv");
+// 	// game.terminal_command();
+// 	client_maze cmaze(game.maze_.msg_send_maze());
+// 	cmaze.print_maze();
+
 //    	return 0;
 // }
 
