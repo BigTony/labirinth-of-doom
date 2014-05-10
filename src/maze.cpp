@@ -1108,7 +1108,6 @@ void maze::add_player(int i){
 	obj_ptr->set_y(set_y);
 	players_.push_back(obj_ptr);
 	maze_array_.at(set_x+(set_y*width_)) = obj_ptr;
- 
 }
 
 void game::add_player(client_connection_ptr ptr){
@@ -1136,14 +1135,63 @@ std::string game::info_to_string(){
 	return ret;
 }
 
+void maze::maze_update(std::string msg){
+	msg.append(" ");
+	int msg_size = msg.size();
+	int count = 0;
+	int comma_count = 0;
+	int x = 0;
+	int y = 0;
+	int b_x = 0;
+	int b_y = 0;
+	int id = 0;
+	std::string value = "";
+	maze_object_ptr obj_ptr;
+	obj_ptr = std::make_shared<path_free>(path_free());
+	while(count < msg_size){
+		if(msg[count] == ' '){
+			if(comma_count < 2){
+				maze_array_.at(x+(y*width_)) = obj_ptr;
+			}else if(comma_count == 3){
+				players_.at(id)->set_direction(value);
+				b_x = players_.at(id)->get_x();
+				b_y = players_.at(id)->get_y();
+				players_.at(id)->set_x(x);
+				players_.at(id)->set_y(y);
+				maze_array_.at(b_x+(b_y*width_)) = maze_array_.at(x+(y*width_)); // 
+				maze_array_.at(x+(y*width_)) = players_.at(id);
+			}
+			value = "";
+			comma_count = 0;
+			count++;
+		}else if(msg[count] == ','){
+			if(comma_count == 0){
+				x = std::stoi(value);
+			}else if(comma_count == 1){
+				y = std::stoi(value);
+			}else if(comma_count == 2){
+				id = std::stoi(value.substr(2));
+			}
+			value = "";
+			comma_count++;
+			count++;
+		}else{
+			value += msg[count];
+			count++;
+		}
+	}
+}
+
 
 
 // int main(int argc, char* argv[]){
-// 	out.set_debug(true);
-// 	game game(0,"levels/level1.csv");
-// 	client_connection_ptr ptr;
-// 	game.add_player(ptr);
-// 	game.terminal_command();
+// 	maze maze;
+// 	maze.set_maze("./levels/level1.csv");
+// 	maze.add_player(0);
+// 	maze.print_maze();
+// 	maze.maze_update("0,0 1,1,P_0,south");
+// 	maze.print_maze();
+// 	// game.terminal_command();
 // 	// client_maze cmaze(game.maze_.msg_send_maze());
 // 	// cmaze.print_maze();
 //    	return 0;
