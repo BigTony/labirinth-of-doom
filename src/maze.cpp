@@ -1048,8 +1048,12 @@ std::string game::terminal_command(int id, std::string command){
     int x = maze_.players_.at(i)->get_x();
     int y = maze_.players_.at(i)->get_y();
 
+	
     std::string message;
     message.append("send_response\t");
+	if (command.compare("start")==0 && maze_.state_==0 && id==owner_id_ ){
+		maze_.state_==PLAYING;
+		run();
     if (command.compare("w")==0){
     	maze_.set_player_direction(x,y,"north");
     }else if(command.compare("a")==0){
@@ -1073,7 +1077,7 @@ std::string game::terminal_command(int id, std::string command){
     }else if(command.compare("steps")==0){
     	maze_.check_steps(x,y);
     }else {
-		message.append("error");
+		message.append("bad command");
     }
     return message;
 }
