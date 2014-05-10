@@ -280,6 +280,7 @@ public:
   bool is_free(int x,int y);
   int set_differ(int differ,int num);
   std::vector<maze_object_ptr> players_;
+  std::string message_;
 protected:
 	int coords_counter_ = 0;
 	int width_;
@@ -312,13 +313,15 @@ public:
   int game_state_=0;
   maze maze_;
 private:
+  boost::asio::deadline_timer timer_; 
+  std::string game_name_;
+  boost::posix_time::ptime game_start_;
 	int owner_id_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
-	boost::posix_time::ptime game_start_;
 	boost::posix_time::ptime game_end_;
 	boost::posix_time::time_duration clock_;
-	boost::asio::deadline_timer timer_;  
-	std::string game_name_;
+	 
+	
 };
 
 

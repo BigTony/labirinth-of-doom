@@ -428,7 +428,7 @@ std::string maze::move_one(unsigned int player_id){
 		int k_y = keepers_.at(i)->get_y();
 		int k_b_x = keepers_.at(i)->get_before_x();
 		int k_b_y = keepers_.at(i)->get_before_y();
-		if((k_x == x) && (k_y == y) ||((k_x == b_x)&&(k_b_x == x)&&(k_y == b_y)&&(k_b_y == y))||
+		if(((k_x == x) && (k_y == y)) || ((k_x == b_x)&&(k_b_x == x)&&(k_y == b_y)&&(k_b_y == y))||
 			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+((k_y-1)*width_))->print_to_str()) == "w"))||
 			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x-1+((k_y)*width_))->print_to_str()) == "w"))||
 			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+((k_y+1)*width_))->print_to_str()) == "w"))||
@@ -440,7 +440,7 @@ std::string maze::move_one(unsigned int player_id){
 				int x_for = cps_.at(c)->get_x();
 				int y_for = cps_.at(c)->get_y();
 				std::string cp_id = cps_.at(c)->print_to_str();
-				int c_id = std::stoi(cp_id.substr(3));
+				unsigned int c_id = std::stoi(cp_id.substr(3));
 				if(player_id == c_id){
 					set_x = x_for;
 					set_y = y_for;
@@ -709,6 +709,7 @@ std::string maze::pick_key(int x,int y){
 			ret.append(std::string(std::to_string(x+1)) + "," +  std::string(std::to_string(y)) + " ");
 		}
 	}
+	message_ = ret;
 	return ret;
 }
 
@@ -789,6 +790,7 @@ std::string maze::open_gate(int x,int y){
 			}
 		}
 	}
+	message_ = ret;
 	return ret;
 }
 
@@ -1067,9 +1069,15 @@ std::string game::terminal_command(int id, std::string command){
     }else if(command.compare("stop")==0){
     	maze_.set_player_state(x,y,0);
     }else if(command.compare("pick")==0){
-    	message.append(maze_.pick_key(x,y));
+    	std::string test = maze_.pick_key(x,y);
+    	if(test != ""){
+    		message.append("picked up");
+    	}
     }else if(command.compare("open")==0){
-    	message.append(maze_.open_gate(x,y));
+    	std::string test = maze_.open_gate(x,y);
+    	if(test != ""){
+    		message.append("opened up");
+    	}
     }else if(command.compare("checkk")==0){
     	maze_.check_key();
     }else if(command.compare("checkg")==0){
