@@ -96,14 +96,17 @@ void game_server::handle_msg(client_connection_ptr client)
 			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),load_.get_path()+std::string("/")+parse_tab(msg,0),&io_,parse_tab(msg,1));
 			games_.push_back(new_game_ptr);
 			client->game_=new_game_ptr;
+			new_game_ptr->add_player(client);
 			client->send_msg(new_game_ptr->maze_.msg_send_maze());
 			out.print_debug(new_game_ptr->maze_.msg_send_maze());
 			client->set_status(IN_GAME);
 			break;}
-		case (IN_GAME):
+		case (IN_GAME):{
 			out.print_debug(std::string("Client state is IN_GAME"));
-			client->game_->terminal_command(client->get_client_id(),client->get_msg());
+			std::string response =client->game_->terminal_command(client->get_client_id(),client->get_msg());
+			client->send_msg(response);
 			break;
+		}
 		default:
 			out.print_error(std::string("Unexpected client state")+std::to_string(status));
 			return;
