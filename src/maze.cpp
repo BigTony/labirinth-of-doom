@@ -447,7 +447,7 @@ std::string maze::move_one(unsigned int player_id){
 					break;
 				}
 			}		
-			
+
 			// this shit is awesome or really stupid 
 			int differ = 0;
 			while(1){
@@ -679,7 +679,6 @@ std::string maze::pick_key(int x,int y){
 			obj_ptr = std::make_shared<path_free>(path_free());
 			maze_array_.at(x+((y-1)*width_)) = obj_ptr;
 			players_.at(player_id)->set_steps();
-
 			ret.append(std::string(std::to_string(x)) + "," +  std::string(std::to_string(y-1)) + " ");
 		}
 	}else if(dir == "west"){
