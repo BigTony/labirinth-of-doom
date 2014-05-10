@@ -390,6 +390,22 @@ int maze::set_differ(int differ,int num){
 	return 0;
 }
 
+std::string maze::return_keys(unsigned int player_id){
+	std::string ret = "";
+	for (unsigned int i = 0; i < players_.at(player_id)->keys_.size(); i++){
+		int x = players_.at(player_id)->keys_.at(i)->get_x();
+		int y = players_.at(player_id)->keys_.at(i)->get_y();
+		maze_array_.at(x+(y*width_)) = players_.at(player_id)->keys_.at(i);
+		ret.append(" " + std::string(std::to_string(x)) + "," +  std::string(std::to_string(y)) + "," + players_.at(player_id)->keys_.at(i)->print_to_str());
+	}
+	int count = players_.at(player_id)->keys_.size();
+	while(count){
+		players_.at(player_id)->keys_.pop_back();
+		count--;
+	}
+	return ret;
+}
+
 std::string maze::move_one(unsigned int player_id){
 	int x = players_.at(player_id)->get_x();
 	int y = players_.at(player_id)->get_y();
@@ -460,7 +476,6 @@ std::string maze::move_one(unsigned int player_id){
 					differ++;
 				}
 			}
-			
 			players_.at(player_id)->set_x(set_x);
 			players_.at(player_id)->set_y(set_y);
 			maze_array_.at(set_x+(set_y*width_)) = players_.at(player_id);
@@ -470,6 +485,8 @@ std::string maze::move_one(unsigned int player_id){
 			maze_array_.at(before) = obj_ptr;
 			std::string ret = std::string(std::to_string(players_.at(player_id)->get_before_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_before_y()));
 			ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + " " );
+			// drop keys
+			ret.append(return_keys(player_id));
 			return ret;
 			// maze_array_.at(x+(y*width_)) = obj_ptr;
 		}
@@ -1176,6 +1193,8 @@ void maze::maze_update(std::string msg){
 					keepers_.at(id)->set_y(y);
 					maze_array_.at(b_x+(b_y*width_)) = maze_array_.at(x+(y*width_));
 					maze_array_.at(x+(y*width_)) = keepers_.at(id);
+				}else if(type == "K_"){
+					maze_array_.at(x+(y*width_)) = keys_.at(id);
 				}
 			}
 			value = "";
@@ -1201,19 +1220,21 @@ void maze::maze_update(std::string msg){
 }
 
 
-/*
-int main(int argc, char* argv[]){
-	maze maze;
-	maze.set_maze("./levels/level1.csv");
-	maze.add_player(0);
-	maze.print_maze();
-	maze.maze_update("0,0 1,1,P_0,south 5,5,S_0,north");
-	maze.print_maze();
-	game.terminal_command();
-	client_maze cmaze(game.maze_.msg_send_maze());
-	cmaze.print_maze();
-   	return 0;
-}*/
+
+
+// int main(int argc, char* argv[]){
+// 	maze maze;
+// 	maze.set_maze("./levels/level1.csv");
+// 	maze.add_player(0);
+// 	maze.print_maze();
+// 	maze.maze_update("0,0 1,1,P_0,south 5,5,S_0,north");
+// 	maze.print_maze();
+// 	// game.terminal_command();
+// 	// client_maze cmaze(game.maze_.msg_send_maze());
+// 	// cmaze.print_maze();
+//    	return 0;
+// }
+
 
 
 
