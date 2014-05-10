@@ -279,6 +279,7 @@ public:
   void add_player(int id);
   bool is_free(int x,int y);
   int set_differ(int differ,int num);
+  void maze_update(std::string msg);
   std::vector<maze_object_ptr> players_;
   std::string message_;
 protected:

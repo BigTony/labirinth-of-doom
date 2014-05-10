@@ -11,29 +11,29 @@
 using boost::asio::ip::tcp;
 
 
-int main(int argc, char* argv[]){
-	try{
-		std::string arg = "argv[1]";
-		if (arg.compare("-debug"))
-		{
-			out.set_debug(true);
-			game_client client(argv[2]);
-			client.run();
-			client.terminal_command();
-		}
-		else{
-			game_client client(argv[1]);
-			client.run();
-			client.terminal_command();
-		}
+// int main(int argc, char* argv[]){
+// 	try{
+// 		std::string arg = "argv[1]";
+// 		if (arg.compare("-debug"))
+// 		{
+// 			out.set_debug(true);
+// 			game_client client(argv[2]);
+// 			client.run();
+// 			client.terminal_command();
+// 		}
+// 		else{
+// 			game_client client(argv[1]);
+// 			client.run();
+// 			client.terminal_command();
+// 		}
 
-   }
-	catch (std::exception& error){
-	 std::cerr << "Exception: " << error.what() << std::endl;
-   }
+//    }
+// 	catch (std::exception& error){
+// 	 std::cerr << "Exception: " << error.what() << std::endl;
+//    }
 
-	return 0;
-  }
+// 	return 0;
+//   }
 
 
 game_client::game_client(std::string server_ip):io_(),resolver_(io_),endpoint_(resolver_.resolve({server_ip,PORT})),connection_(&io_,endpoint_){
