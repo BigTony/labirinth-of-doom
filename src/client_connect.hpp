@@ -18,6 +18,7 @@
 #include <boost/asio.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "output.hpp"
+#include "maze.hpp"
 #include "message.hpp"
 
 #define MAX_MSG_LENGTH 4096
@@ -47,6 +48,7 @@ public:
 	* Print recieved message from server.
 	*/
 	void sync_wait_msg();
+	void wait_maze_update(client_maze* maze_ptr);
 	/** A public function.
 	 * Print recieved message from server.
 	 */
@@ -62,6 +64,7 @@ public:
 	std::string parse_arguments(std::string message);
 	void send_msg(std::string message);
 	std::string sync_msg();
+	tcp::socket socket_;
 private:
 	
 
@@ -70,11 +73,7 @@ private:
 	* Asio need to have at least one io_service object.
 	*/
 	boost::asio::io_service *io_;
-	/**
-	* A private variable.
-	* Create socket.
-	*/
-	tcp::socket socket_;
+
 	/**
 	* A private variable.
 	* Hold recieved data.

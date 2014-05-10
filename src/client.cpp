@@ -46,7 +46,7 @@ game_client::~game_client(){
 }
 
 void game_client::run(){
-	connection_.sync_wait_msg();
+	connection_.wait_maze_update(maze_ptr_);
 	t_connection_ = new boost::thread([this](){ io_.run(); });
 }
 
@@ -118,21 +118,14 @@ void game_client::join_game(std::string lobby){
 
 void game_client::play_game(){
 	clout.print_debug("Starting playing game...");
+// 	io_.post([this]{connection_.socket_.cancel();});
+// 	connection_.wait_maze_update(maze_ptr_);
 	maze_ptr_->print_maze();
 	std::string response;
 	while (1){
 		command_=clin.wait_cmd();
 		connection_.send_msg(command_);
-		while (1){
-			response=connection_.sync_msg();
-			if(response.compare(0,17, "send_game_change ") == 0){
-				response.erase(0,17);
-				maze_ptr_->maze_update(response);
-				maze_ptr_->print_maze();
-				continue;
-			}
-			break;
-		}
+		response=connection_.sync_msg();
 		clout.print_debug("Response was returned");
 		clout.print_response(response);
 		if (response.compare("exit")==0){

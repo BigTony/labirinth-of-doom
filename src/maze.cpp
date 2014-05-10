@@ -1057,7 +1057,7 @@ std::string game::terminal_command(int id, std::string command){
 		game_state_=PLAYING;
 		game_run();
 	}
-    if (command.compare("w")==0){
+    else if (command.compare("w")==0){
     	maze_.set_player_direction(x,y,"north");
     }else if(command.compare("a")==0){
     	maze_.set_player_direction(x,y,"west");
@@ -1201,7 +1201,7 @@ void maze::maze_update(std::string msg){
 }
 
 
-
+/*
 int main(int argc, char* argv[]){
 	maze maze;
 	maze.set_maze("./levels/level1.csv");
@@ -1209,11 +1209,11 @@ int main(int argc, char* argv[]){
 	maze.print_maze();
 	maze.maze_update("0,0 1,1,P_0,south 5,5,S_0,north");
 	maze.print_maze();
-	// game.terminal_command();
-	// client_maze cmaze(game.maze_.msg_send_maze());
-	// cmaze.print_maze();
+	game.terminal_command();
+	client_maze cmaze(game.maze_.msg_send_maze());
+	cmaze.print_maze();
    	return 0;
-}
+}*/
 
 
 
