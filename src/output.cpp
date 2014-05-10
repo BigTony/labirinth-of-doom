@@ -15,6 +15,32 @@ input_handler in;
 client_input_handler clin;
 client_output_handler clout;
 
+
+
+
+std::string parse_tab(std::string msg,int tab_count){
+	std::string name = "";
+	int i = 0;
+	int len = msg.size();
+	int tab_count_stop = 0;
+	while(tab_count_stop < tab_count){
+		if(msg[i] == '\t'){
+			tab_count_stop++;
+		}
+		i++;
+	}
+	while(msg[i] != '\t'){
+		if(i==len){
+			break;
+		}
+		name += msg[i];
+		i++;
+	}
+	return name;
+}
+
+
+
 output_handler::output_handler(){
 
 }

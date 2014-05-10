@@ -13,6 +13,8 @@
 #include <string>
 
 
+std::string parse_tab(std::string msg,int tab_count);
+
 class output_handler{
 public:
 	output_handler();
