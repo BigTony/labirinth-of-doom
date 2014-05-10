@@ -289,18 +289,20 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 
 std::string maze::check_end(){
 	std::string message;
+	// players
 	for (unsigned int i = 0; i < players_.size(); i++){
 		if(players_.at(i)->get_state() == 1){
 			message.append(move_one(i));
 		}
 	}
-	
-
+	// keepers
 	for (unsigned int i = 0; i < keepers_.size(); i++){
 		if(keepers_.at(i)->get_state() == 1){
 			message.append(move_one_keeper(i));
 		}
 	}
+	
+	
 	return message;
 } 
 
@@ -340,11 +342,58 @@ std::string maze::move_one_keeper(unsigned int keeper_id){
 	return ret;
 }
 
+bool maze::is_free(int x,int y){
+	if((maze_array_.at(x+(y*width_))->print_to_str()) != ""){
+		return false;
+	}
+	return true;
+}
+
+int maze::set_differ(int differ,int num){
+	if(differ == 0){
+		return num-1;
+	}else if(differ == 1){
+		return num-1;
+	}else if(differ == 2){
+		return num+1;
+	}else if(differ == 3){
+		return num;
+	}else if(differ == 4){
+		return num+1;
+	}else if(differ == 5){
+		return num;
+	}else if(differ == 6){
+		return num-2;
+	}else if(differ == 7){
+		return num+1;
+	}else if(differ == 8){
+		return num+1;
+	}else if(differ == 9){
+		return num;
+	}else if(differ == 10){
+		return num+1;
+	}else if(differ == 11){
+		return num;
+	}else if(differ == 12){
+		return num-2;
+	}else if(differ == 13){
+		return num+1;
+	}else if(differ == 14){
+		return num+1;
+	}else if(differ == 15){
+		return num;
+	}else if(differ == 16){
+		return num+1;
+	}else if(differ == 17){
+		return num;
+	}
+}
 
 std::string maze::move_one(unsigned int player_id){
 	int x = players_.at(player_id)->get_x();
 	int y = players_.at(player_id)->get_y();
-
+	int b_x = players_.at(player_id)->get_before_x();
+	int b_y = players_.at(player_id)->get_before_y();
 	// std::cout << "player: " << "x: " << x << " " << "y: " << y << std::endl;
 
 	// projdu hrace
@@ -374,24 +423,46 @@ std::string maze::move_one(unsigned int player_id){
 	for (unsigned int i = 0; i < keepers_.size(); i++){
 		// hraci na stejnem policku
 		// std::cout << "keeper: " << "x: " << keepers_.at(i)->get_x() << " " << "y: " << keepers_.at(i)->get_y() << std::endl;
-		if((keepers_.at(i)->get_before_x() == x) && (keepers_.at(i)->get_before_y() == y)){
-			// move_one(i);
-			// int x_b = players_.at(player_id)->get_before_x();
-			// int y_b = players_.at(player_id)->get_before_y();
-			// std::string playerid = maze_array_.at(x+(y*width_))->print_to_str();
-			// int p_id = std::stoi(playerid.substr(2));
-			// for (unsigned int i = 0; i < cps_.size(); i++){
-			// 	std::string createp_id = cps_.at(i)->print_to_str();
-			// 	int cp_id = std::stoi(createp_id.substr(3));
-			// 	if(cp_id == p_id){
-			// 		//
-			// 	}
-			// }
+		int k_x = keepers_.at(i)->get_x();
+		int k_y = keepers_.at(i)->get_y();
+		int k_b_x = keepers_.at(i)->get_before_x();
+		int k_b_y = keepers_.at(i)->get_before_y();
+		if((k_x == x) && (k_y == y) ||((k_x == b_x)&&(k_b_x == x)&&(k_y == b_y)&&(k_b_y == y))||
+			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+((k_y-1)*width_))->print_to_str()) == "w"))||
+			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x-1+((k_y)*width_))->print_to_str()) == "w"))||
+			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+((k_y+1)*width_))->print_to_str()) == "w"))||
+			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+1+((k_y)*width_))->print_to_str()) == "w"))){
+
+			int set_x = 0;
+			int set_y = 0;
+			for (unsigned int c = 0; c < cps_.size(); c++){
+				int x_for = cps_.at(c)->get_x();
+				int y_for = cps_.at(c)->get_y();
+				std::string cp_id = cps_.at(c)->print_to_str();
+				int c_id = std::stoi(cp_id.substr(3));
+				if(player_id == c_id){
+					set_x = x_for;
+					set_y = y_for;
+					break;
+				}
+			}		
 			
+			// this shit is awesome or really stupid 
+			int differ = 0;
+			while(1){
+				if(is_free(set_x,set_y)){
+					break;
+				}else{
+					set_x = set_differ(differ,set_x);
+					differ++;
+					set_y = set_differ(differ,set_y);
+					differ++;
+				}
+			}
 			
-			players_.at(player_id)->set_x(3);
-			players_.at(player_id)->set_y(3);
-			maze_array_.at(3+(3*width_)) = players_.at(player_id);
+			players_.at(player_id)->set_x(set_x);
+			players_.at(player_id)->set_y(set_y);
+			maze_array_.at(set_x+(set_y*width_)) = players_.at(player_id);
 			int before = players_.at(player_id)->get_before_x() + (players_.at(player_id)->get_before_y() * width_);
 			maze_object_ptr obj_ptr;
 			obj_ptr = std::make_shared<path_free>(path_free());
@@ -1000,18 +1071,11 @@ void maze::add_player(int i){
 			break;
 		}
 	}
-	// int x = 3;
-	// int y = 3;
 	obj_ptr->set_x(set_x);
 	obj_ptr->set_y(set_y);
 	players_.push_back(obj_ptr);
 	maze_array_.at(set_x+(set_y*width_)) = obj_ptr;
-	// int y = coords_counter_ / width_;
-	// int x = coords_counter_ - (y * width_);
-	// obj_ptr->set_x(x);
-	// obj_ptr->set_y(y);
-	// players_.push_back(obj_ptr);
-	// players_.at() = 
+ 
 }
 
 void game::add_player(client_connection_ptr ptr){
@@ -1025,6 +1089,7 @@ void game::add_player(client_connection_ptr ptr){
 	maze_.add_player(i);
 }
 
+<<<<<<< HEAD
 std::string game::info_to_string(){
 	std::string ret="";
 	ret.append(game_name_);
@@ -1049,6 +1114,18 @@ std::string game::info_to_string(){
 // 	// cmaze.print_maze();
 //    	return 0;
 // }
+=======
+int main(int argc, char* argv[]){
+	out.set_debug(true);
+	game game(0,"levels/level1.csv");
+	client_connection_ptr ptr;
+	game.add_player(ptr);
+	game.terminal_command();
+	// client_maze cmaze(game.maze_.msg_send_maze());
+	// cmaze.print_maze();
+   	return 0;
+}
+>>>>>>> 3480444ff2eb0cd7e51a23693f7245015d4855b3
 
 
 
