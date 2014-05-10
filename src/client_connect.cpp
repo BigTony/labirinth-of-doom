@@ -223,8 +223,8 @@ std::string server_connection::get_lobbys(){
 
 std::string server_connection::get_mazes(){
 	send_msg("create");
-	out.print_debug("Mazes was returned");
 	mutex_.wait();
+	out.print_debug("Mazes was returned");
 	mutex_.post();
 	return recived_data_;
 }

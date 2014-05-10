@@ -210,6 +210,8 @@ public:
   void check_gate();
   void check_steps(int x,int y);
   void add_player(int id);
+  bool is_free(int x,int y);
+  int set_differ(int differ,int num);
   std::vector<maze_object_ptr> players_;
 protected:
 	int coords_counter_ = 0;
