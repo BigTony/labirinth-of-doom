@@ -15,6 +15,32 @@ input_handler in;
 client_input_handler clin;
 client_output_handler clout;
 
+
+
+
+std::string parse_tab(std::string msg,int tab_count){
+	std::string name = "";
+	int i = 0;
+	int len = msg.size();
+	int tab_count_stop = 0;
+	while(tab_count_stop < tab_count){
+		if(msg[i] == '\t'){
+			tab_count_stop++;
+		}
+		i++;
+	}
+	while(msg[i] != '\t'){
+		if(i==len){
+			break;
+		}
+		name += msg[i];
+		i++;
+	}
+	return name;
+}
+
+
+
 output_handler::output_handler(){
 
 }
@@ -67,6 +93,14 @@ void output_handler::print_menu(){
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << "-----1. load-----------------------" << std::endl;
 	std::cout << "-----2. exit-----------------------" << std::endl;
+}
+
+void output_handler::print_help(){
+	std::cout << "Server for game Lab of doom --posible commands:" << std::endl;
+	std::cout << "load to load path with maps(default is /examples)" << std::endl;
+	std::cout << "Map format: w\\nl\\n following csv with ',' as divider." << std::endl;
+	std::cout << "Where:" << std::endl;	
+	std::cout << "exit" << std::endl;
 }
 
 std::string client_input_handler::wait_cmd() {

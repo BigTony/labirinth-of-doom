@@ -16,8 +16,8 @@
 #include <boost/asio.hpp>
 #include <iostream>
 #include <fstream>
-
-
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
+#include "boost/date_time/posix_time/posix_time.hpp"
 
 //game constants
 #define MAX_MAZE_WIDTH 50
@@ -34,6 +34,7 @@
 
 class maze_object;
 class client_connection;
+
 typedef std::shared_ptr<client_connection> client_connection_ptr;
 typedef std::shared_ptr<maze_object> maze_object_ptr;
 
@@ -231,23 +232,27 @@ protected:
 
 class game{
 public:
-	game(int client_id,std::string maze);
+	void game_run();
+	game(int client_id,std::string maze,std::string name,asio::io_service *io,std::string maze);
 	void set_command(int id, std::string command);
 	void set_timer(int id, std::string time);
+	std::string info_to_string();
   std::string do_action();
   void set_maze(maze maze);
   void load_maze(std::string maze);
   void terminal_command();
   void add_player(client_connection_ptr ptr);
+  int players_=0;
   maze maze_;
 private:
+	std::string game_name_;
 	int owner_id_;
 	int game_state_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
 	boost::posix_time::ptime game_start_;
 	boost::posix_time::ptime game_end_;
-	boost::posix_time::ptime clock_;
-	// boost::asio::deadline_timer timer_;  
+	boost::posix_time::time_duration clock_;
+	boost::asio::deadline_timer timer_;  
 };
 
 

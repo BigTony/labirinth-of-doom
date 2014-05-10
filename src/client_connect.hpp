@@ -89,7 +89,8 @@ private:
 	char header_[HEADER_LENGTH+1];
 	int recived_;
 	std::vector<std::string> msg_quee_;
-	boost::interprocess::interprocess_semaphore mutex_;
+	boost::interprocess::interprocess_semaphore mutex_wait_msg_;
+	boost::interprocess::interprocess_semaphore mutex_msg_recived_;
 };
 
 

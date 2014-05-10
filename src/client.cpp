@@ -37,6 +37,7 @@ int main(int argc, char* argv[]){
 
 
 game_client::game_client(std::string server_ip):io_(),resolver_(io_),endpoint_(resolver_.resolve({server_ip,PORT})),connection_(&io_,endpoint_){
+	maze_ptr_=nullptr;
 }
 game_client::~game_client(){
 	if (maze_ptr_!=nullptr){
@@ -99,10 +100,13 @@ void game_client::terminal_command(){
 void game_client::create_game(std::string maze){
 	clout.print_debug(std::string("Creating new maze: ")+maze);
 	std::string lobby= connection_.send_create_maze(maze);
+	clout.print_debug("Starting pADAADADlaying game");
 	if (maze_ptr_!=nullptr){
 		delete(maze_ptr_);
 	}
+	clout.print_debug("Starting pladaddadying game");
 	maze_ptr_=new client_maze(connection_.send_get_lobby(lobby));
+	clout.print_debug("Staadddg game");
 	play_game();
 }
 

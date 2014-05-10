@@ -13,6 +13,8 @@
 #include <string>
 
 
+std::string parse_tab(std::string msg,int tab_count);
+
 class output_handler{
 public:
 	output_handler();
@@ -22,6 +24,7 @@ public:
 	void print_error(std::string message);
 	void print_debug(std::string message);
 	void print_debug_object(std::string message);
+	void print_help();
 	void set_debug(bool set);
 	bool get_debug();
 	void print_menu();

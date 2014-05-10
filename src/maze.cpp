@@ -8,7 +8,7 @@
 
 #include "maze.hpp"
 #include "output.hpp"
-
+namespace pt = boost::posix_time;
 void maze::print_maze(){	
 	for (unsigned int i = 0; i < maze_array_.size(); i++){
 		if((i % (width_)) == 0){
@@ -387,6 +387,7 @@ int maze::set_differ(int differ,int num){
 	}else if(differ == 17){
 		return num;
 	}
+	return 0;
 }
 
 std::string maze::move_one(unsigned int player_id){
@@ -579,8 +580,31 @@ void maze::check_collision(unsigned int player_id){
 	}
 }
 
-game::game(int client_id,std::string maze):maze_(maze){
+game::game(int client_id,std::string maze,std::string name,asio::io_service *io,std::string maze):maze_(maze),timer_(*io),game_name_(name),game_start_(pt::second_clock::local_time()){
 	owner_id_=client_id;
+	clock_=boost::posix_time::milliseconds(50);
+}
+
+void game::game_run(){
+	timer_.expires_from_now(clock_);
+	timer_.async_wait([this](boost::system::error_code error){
+		if (!error){
+			std::string msg ="send_game_change ";
+			
+			msg.append(do_action());
+			unsigned int i = 0;
+			for (i = 0; i < players_id_.size(); i++){
+				if(players_id_.at(i) != nullptr){
+					players_id_.at(i)->send_msg(msg);
+				}
+			}
+		} 
+		else {
+			out.print_error("Timer error");
+		}
+		game_run();	
+	});
+	
 }
 
 
@@ -1091,16 +1115,33 @@ void game::add_player(client_connection_ptr ptr){
 	maze_.add_player(i);
 }
 
-int main(int argc, char* argv[]){
-	out.set_debug(true);
-	game game(0,"levels/level1.csv");
-	client_connection_ptr ptr;
-	game.add_player(ptr);
-	game.terminal_command();
-	// client_maze cmaze(game.maze_.msg_send_maze());
-	// cmaze.print_maze();
-   	return 0;
+std::string game::info_to_string(){
+	std::string ret="";
+	ret.append(game_name_);
+	ret.append("\t");
+	ret.append(boost::posix_time::to_iso_string((boost::posix_time::second_clock::local_time()-game_start_));
+	ret.append("\t");
+	ret.append(boost::posix_time::to_iso_string(clock_));
+	ret.append("\t");
+	ret.append(std::to_string(players_));
+	ret.append("\t");
+	
+	return ret;
 }
+
+
+
+// int main(int argc, char* argv[]){
+// 	out.set_debug(true);
+// 	game game(0,"levels/level1.csv");
+// 	client_connection_ptr ptr;
+// 	game.add_player(ptr);
+// 	game.terminal_command();
+// 	// client_maze cmaze(game.maze_.msg_send_maze());
+// 	// cmaze.print_maze();
+//    	return 0;
+// }
+
 
 
 
