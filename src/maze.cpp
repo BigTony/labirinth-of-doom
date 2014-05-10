@@ -1053,9 +1053,10 @@ std::string game::terminal_command(int id, std::string command){
 	
     std::string message;
     message.append("send_response\t");
-	if (command.compare("start")==0 && maze_.state_==0 && id==owner_id_ ){
-		maze_.state_==PLAYING;
-		run();
+	if (command.compare("start")==0 && game_state_==0 && id==owner_id_ ){
+		game_state_=PLAYING;
+		game_run();
+	}
     if (command.compare("w")==0){
     	maze_.set_player_direction(x,y,"north");
     }else if(command.compare("a")==0){

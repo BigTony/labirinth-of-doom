@@ -48,8 +48,10 @@ void client_connection::wait_msg(){
 
 
 void client_connection::read_msg(){
+	
 	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
+			data_[recived_]='\0';
 			recived_data_=data_;
 			out.print_debug("Recived data:\t"+recived_data_);
 			
@@ -85,7 +87,9 @@ void client_connection::wait_msg_handle(){
 
 
 void client_connection::read_msg_handle(){
+	
 	boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
+		data_[recived_]='\0';
 		auto self(shared_from_this());
 		if (!error){
 			recived_data_=data_;

@@ -55,6 +55,7 @@ void server_connection::wait_msg(){
 			out.print_debug(std::string("Recived header:\t")+header_);
 			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 				if (!error){
+					data_[recived_]='\0';
 					recived_data_=data_;
 					out.print_debug("Recived header:\t"+recived_data_);
 					wait_msg();
@@ -89,6 +90,7 @@ void server_connection::sync_wait_msg(){
 			out.print_debug(std::string("Recived header:\t")+header_);
 			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 				if (!error){
+					data_[recived_]='\0';
 					recived_data_=data_;
 					out.print_debug("Recived data:\t"+recived_data_);
 					mutex_msg_recived_.post();
