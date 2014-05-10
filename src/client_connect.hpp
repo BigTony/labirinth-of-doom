@@ -61,7 +61,7 @@ public:
 	void send_quee_msg(std::string message);
 	std::string parse_arguments(std::string message);
 	void send_msg(std::string message);
-	std::string wait_response();
+	std::string wait_response(std::string);
 private:
 	
 
