@@ -3,7 +3,7 @@
 using boost::asio::ip::tcp;
 
 
-server_connection::server_connection(boost::asio::io_service* io,tcp::resolver::iterator endpoint_iterator):socket_(*io),mutex_(1){
+server_connection::server_connection(boost::asio::io_service* io,tcp::resolver::iterator endpoint_iterator):socket_(*io),mutex_wait_msg_(1),mutex_msg_recived_(0){
 	out.print_debug("Creating server connection");
 	io_=io;
 	connect(endpoint_iterator);
@@ -23,7 +23,6 @@ void server_connection::send_msg(std::string message){
 		}
 	}
 }
-
 
 void server_connection::send_quee_msg(std::string message){
 	if (message.length()>MAX_MSG_LENGTH) {
@@ -47,7 +46,6 @@ void server_connection::send_quee_msg(std::string message){
 }
 
 void server_connection::wait_msg(){
-	mutex_.wait();
 	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
@@ -81,7 +79,7 @@ void server_connection::wait_msg(){
 
 
 void server_connection::sync_wait_msg(){
-	mutex_.wait();
+	mutex_wait_msg_.wait();
 	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
@@ -93,14 +91,14 @@ void server_connection::sync_wait_msg(){
 				if (!error){
 					recived_data_=data_;
 					out.print_debug("Recived data:\t"+recived_data_);
-					mutex_.post();
+					mutex_msg_recived_.post();
 					sync_wait_msg();
 				}
 				else{
 					socket_.close();
 					status_=CONNECTION_LOST;
 					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
-					mutex_.post();
+					mutex_msg_recived_.post();;
 				}
 			}); 
 		}
@@ -108,8 +106,9 @@ void server_connection::sync_wait_msg(){
 			socket_.close();
 			status_=CONNECTION_LOST;
 			out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
+			mutex_msg_recived_.post();
 			return;
-			mutex_.post();
+			
 		}
 	});
 	
@@ -215,34 +214,38 @@ std::string server_connection::parse_arguments(std::string message){
 
 std::string server_connection::get_lobbys(){
 	send_msg("join");
+	mutex_msg_recived_.wait();
+	std::string data=recived_data_;
+	mutex_wait_msg_.post();
 	out.print_debug("Lobbys was returned");
-	mutex_.wait();
-	mutex_.post();
-	return recived_data_;
+	return data;
 }
 
 std::string server_connection::get_mazes(){
 	send_msg("create");
+	mutex_msg_recived_.wait();
+	std::string data=recived_data_;
+	mutex_wait_msg_.post();
 	out.print_debug("Mazes was returned");
-	mutex_.wait();
-	mutex_.post();
-	return recived_data_;
+	return data;
 }
 
 
 std::string server_connection::send_get_lobby(std::string lobby){
 	send_msg(lobby);
-	mutex_.wait();
-	mutex_.post();
+	mutex_msg_recived_.wait();
+	std::string data=recived_data_;
+	mutex_wait_msg_.post();
 	out.print_debug("Lobby was returned");
-	return recived_data_;
+	return data;
 }
 
 std::string server_connection::send_create_maze(std::string maze){
 	send_msg(maze);
-	mutex_.wait();
-	mutex_.post();
-	out.print_debug("Maze was created");
-	return recived_data_;
+	mutex_msg_recived_.wait();
+	std::string data=recived_data_;
+	mutex_wait_msg_.post();
+	out.print_debug("Lobby was returned");
+	return data;
 }
 

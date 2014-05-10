@@ -508,7 +508,7 @@ void maze::check_collision(unsigned int player_id){
 	}
 }
 
-game::game(int client_id,std::string maze):maze_(maze){
+game::game(int client_id,std::string maze,boost::asio::io_service *io):maze_(maze),timer_(*io){
 	owner_id_=client_id;
 }
 
@@ -1023,6 +1023,20 @@ void game::add_player(client_connection_ptr ptr){
 		}
 	}
 	maze_.add_player(i);
+}
+
+std::string game::info_to_string(){
+	std::string ret="";
+	ret.append(game_name_);
+	ret.append("\t");
+	ret.append("time");//TODO
+	ret.append("\t");
+	ret.append("time step");//TODO
+	ret.append("\t");
+	ret.append(std::to_string(players_));//TODO
+	ret.append("\t");
+	
+	return ret;
 }
 
 // int main(int argc, char* argv[]){

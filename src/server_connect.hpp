@@ -64,6 +64,9 @@ public:
   int get_status();
   void set_handler(void(game_server::*handler)(std::shared_ptr<client_connection>));
   std::string get_msg();
+  void send_quee_msg(std::string message);
+  void set_name(std::string name);
+  std::string get_name();
   /**
   * A public variable. 
   * Socket storing information about connection with client.
@@ -74,8 +77,7 @@ public:
   tcp::socket socket_; 
   
 private:
-	game_server* game_server_ptr_;
-
+  game_server* game_server_ptr_;
   int client_id_;
   int status_;
   std::string send_data_;
@@ -85,6 +87,7 @@ private:
   int recived_;
   std::vector<std::string> msg_quee_;
   void (game_server::*next_msg_handler_)(std::shared_ptr<client_connection> connection);
+  std::string name_;
 };
 
 

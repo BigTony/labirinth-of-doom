@@ -229,23 +229,26 @@ protected:
 
 class game{
 public:
-	game(int client_id,std::string maze);
+	game(int client_id,std::string maze,boost::asio::io_service *io);
 	void set_command(int id, std::string command);
 	void set_timer(int id, std::string time);
+	std::string info_to_string();
   std::string do_action();
   void set_maze(maze maze);
   void load_maze(std::string maze);
   void terminal_command();
   void add_player(client_connection_ptr ptr);
+  int players_=0;
   maze maze_;
 private:
+	std::string game_name_;
 	int owner_id_;
 	int game_state_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
 	boost::posix_time::ptime game_start_;
 	boost::posix_time::ptime game_end_;
 	boost::posix_time::ptime clock_;
-	// boost::asio::deadline_timer timer_;  
+	boost::asio::deadline_timer timer_;  
 };
 
 

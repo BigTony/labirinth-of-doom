@@ -115,9 +115,26 @@ void client_connection::set_handler(void(game_server::*handler)(std::shared_ptr<
 	next_msg_handler_=handler;
 }
 
-
+void client_connection::set_name(std::string name){
+	name_=name;
+}
+std::string client_connection::get_name(){
+	return name_;
+}
 
 void client_connection::send_msg(std::string message){
+	out.print_debug(std::string("Sending msg to server, socket to server is")+ std::to_string(socket_.is_open()));
+	msg_quee_.push_back(message);
+	if (msg_quee_.size()==1){
+		while (!(msg_quee_.empty())){
+			send_quee_msg(msg_quee_.back());
+			msg_quee_.pop_back();
+		}
+	}
+}
+
+
+void client_connection::send_quee_msg(std::string message){
 	if (message.length()>MAX_MSG_LENGTH) {
 		out.print_warn("Msg is too long for transmit");
 		return;
@@ -224,6 +241,7 @@ void connection_binnder::wait_connection(game_server* gs_ptr){
 			connections_.push_back(p_new_connection);
 			new_client_ptr_=p_new_connection;
 			p_new_connection->set_status(CONNECTED);
+			p_new_connection->set_name(std::string("player")+std::to_string(connection_counter_));
 			connections_.back()->set_client_id(connection_counter_++);
 			new_client_.post();
 		} 

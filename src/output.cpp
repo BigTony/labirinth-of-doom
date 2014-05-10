@@ -69,6 +69,14 @@ void output_handler::print_menu(){
 	std::cout << "-----2. exit-----------------------" << std::endl;
 }
 
+void output_handler::print_help(){
+	std::cout << "Server for game Lab of doom --posible commands:" << std::endl;
+	std::cout << "load to load path with maps(default is /examples)" << std::endl;
+	std::cout << "Map format: w\\nl\\n following csv with ',' as divider." << std::endl;
+	std::cout << "Where:" << std::endl;	
+	std::cout << "exit" << std::endl;
+}
+
 std::string client_input_handler::wait_cmd() {
 	std::string command;
 	std::getline (std::cin,command);
