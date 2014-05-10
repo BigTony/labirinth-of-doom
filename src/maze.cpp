@@ -582,7 +582,7 @@ void maze::check_collision(unsigned int player_id){
 
 game::game(int client_id,std::string maze,boost::asio::io_service *io,std::string name):maze_(maze),timer_(*io),game_name_(name),game_start_(pt::second_clock::local_time()){
 	owner_id_=client_id;
-	clock_=boost::posix_time::milliseconds(50);
+	clock_=boost::posix_time::milliseconds(2000);
 }
 
 void game::game_run(){

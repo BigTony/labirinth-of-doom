@@ -49,6 +49,7 @@ public:
 	void print_menu();
 	void print_lobbys(std::string menu);
 	void print_mazes(std::string menu);
+	void print_response(std::string response);
 };
 
 extern client_input_handler clin;
