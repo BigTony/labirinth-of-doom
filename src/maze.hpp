@@ -81,8 +81,6 @@ public:
 	 * A public variable. 
 	 * Socket storing information about connection with client.
 	 */
-	
-	
 	int get_client_id();
 	tcp::socket socket_; 
 	game_ptr game_;

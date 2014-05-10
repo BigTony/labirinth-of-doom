@@ -19,18 +19,6 @@
 #include "load.hpp"
 
   
-/*class command_handler_server_cli: public:command_handler{
-public:
-  command_handler_server_cli(connection_binnder* binnder);//TODO add running games as param
-private:
-  connection_binnder* binnder_;
-  
-};*/
-
-
-
-
-
 
 
 
