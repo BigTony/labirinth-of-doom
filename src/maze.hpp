@@ -282,6 +282,7 @@ public:
   void maze_update(std::string msg);
   std::vector<maze_object_ptr> players_;
   std::string message_;
+  std::string return_keys(unsigned int player_id);
 protected:
 	int coords_counter_ = 0;
 	int width_;
