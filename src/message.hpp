@@ -9,8 +9,7 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
-#define MAX_MSG_LENGTH 4096
-#define HEADER_LENGTH 5
+
 
 #include <cstdio>
 #include <cstdlib>

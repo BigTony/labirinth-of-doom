@@ -19,6 +19,10 @@
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "boost/date_time/posix_time/posix_time.hpp"
 
+
+#define MAX_MSG_LENGTH 4096
+#define HEADER_LENGTH 5
+
 //game constants
 #define MAX_MAZE_WIDTH 50
 #define MAX_MAZE_LENGTH 50
@@ -31,12 +35,74 @@
 #define PLAYING 1
 #define ENDED 2
 #define ERROR 3
-
+class game;
 class maze_object;
 class client_connection;
-
+using boost::asio::ip::tcp;
+class game_server;
+typedef std::shared_ptr<game> game_ptr;
+typedef std::vector<game_ptr> games;
+/**
+ * Class storing all information about connected clients
+ */
+class client_connection:public std::enable_shared_from_this<client_connection> {
+public:
+	
+	/**
+	 * A constructor.
+	 * Constructor of new connected client.
+	 * @param socket used for connection.
+	 */
+	client_connection(tcp::socket socket,game_server* gs_ptr);
+	
+	/**
+	 * A public function.
+	 * Sends message to client connected with this connection.
+	 * When connection comes handle it and add it to.
+	 * @param auto 
+	 */  
+	void send_msg(std::string message);
+	void wait_handle_msg(std::shared_ptr<client_connection> connection);
+	void wait_msg();
+	void read_data();
+	void set_client_id(int id);
+	void read_msg();
+	void parse_arguments(std::string message);
+	void wait_msg_handle();
+	void read_msg_handle();
+	void set_status(int status);
+	int get_status();
+	void set_handler(void(game_server::*handler)(std::shared_ptr<client_connection>));
+	std::string get_msg();
+	void send_quee_msg(std::string message);
+	void set_name(std::string name);
+	std::string get_name();
+	/**
+	 * A public variable. 
+	 * Socket storing information about connection with client.
+	 */
+	
+	
+	int get_client_id();
+	tcp::socket socket_; 
+	
+private:
+	game_server* game_server_ptr_;
+	int client_id_;
+	int status_;
+	std::string send_data_;
+	std::string recived_data_;
+	char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
+	char header_[HEADER_LENGTH+1];
+	int recived_;
+	std::vector<std::string> msg_quee_;
+	void (game_server::*next_msg_handler_)(std::shared_ptr<client_connection> connection);
+	std::string name_;
+};
 typedef std::shared_ptr<client_connection> client_connection_ptr;
 typedef std::shared_ptr<maze_object> maze_object_ptr;
+
+
 
 /**
  * Virtual
@@ -233,7 +299,7 @@ protected:
 class game{
 public:
 	void game_run();
-	game(int client_id,std::string maze,std::string name,asio::io_service *io,std::string maze);
+	game(int client_id,std::string maze,boost::asio::io_service *io,std::string name);
 	void set_command(int id, std::string command);
 	void set_timer(int id, std::string time);
 	std::string info_to_string();
@@ -245,7 +311,7 @@ public:
   int players_=0;
   maze maze_;
 private:
-	std::string game_name_;
+
 	int owner_id_;
 	int game_state_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
@@ -253,6 +319,7 @@ private:
 	boost::posix_time::ptime game_end_;
 	boost::posix_time::time_duration clock_;
 	boost::asio::deadline_timer timer_;  
+	std::string game_name_;
 };
 
 

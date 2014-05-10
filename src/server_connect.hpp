@@ -11,15 +11,9 @@
 #ifndef SERVER_CONNECT_HPP
 #define SERVER_CONNECT_HPP
 
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
-#include <cstdlib>
-#include <boost/asio.hpp>
-#include "message.hpp"
-#include "output.hpp"
-#include "maze.hpp"
 
+//connect constants
 #define SERVER_PORT 11600
-
 #define CONNECTED 11
 #define IN_MENU 12
 #define IN_GAME 13
@@ -28,67 +22,13 @@
 #define CONNECTION_LOST -1
 #define DISCONNECTED 0
 
-using boost::asio::ip::tcp;
-class game_server;
-typedef std::shared_ptr<game> game_ptr;
-typedef std::vector<game_ptr> games;
-/**
-* Class storing all information about connected clients
-*/
-class client_connection:public std::enable_shared_from_this<client_connection> {
-public:
 
-  /**
-  * A constructor.
-  * Constructor of new connected client.
-  * @param socket used for connection.
-  */
-  client_connection(tcp::socket socket,game_server* gs_ptr);
 
-  /**
-  * A public function.
-  * Sends message to client connected with this connection.
-  * When connection comes handle it and add it to.
-  * @param auto 
-  */  
-  void send_msg(std::string message);
-  void wait_handle_msg(std::shared_ptr<client_connection> connection);
-  void wait_msg();
-  void read_data();
-  void set_client_id(int id);
-  void read_msg();
-  void parse_arguments(std::string message);
-  void wait_msg_handle();
-  void read_msg_handle();
-  void set_status(int status);
-  int get_status();
-  void set_handler(void(game_server::*handler)(std::shared_ptr<client_connection>));
-  std::string get_msg();
-  void send_quee_msg(std::string message);
-  void set_name(std::string name);
-  std::string get_name();
-  /**
-  * A public variable. 
-  * Socket storing information about connection with client.
-  */
-
-  
-  int get_client_id();
-  tcp::socket socket_; 
-  
-private:
-  game_server* game_server_ptr_;
-  int client_id_;
-  int status_;
-  std::string send_data_;
-  std::string recived_data_;
-  char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
-  char header_[HEADER_LENGTH+1];
-  int recived_;
-  std::vector<std::string> msg_quee_;
-  void (game_server::*next_msg_handler_)(std::shared_ptr<client_connection> connection);
-  std::string name_;
-};
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
+#include <cstdlib>
+#include <boost/asio.hpp>
+#include "output.hpp"
+#include "maze.hpp"
 
 
 /**

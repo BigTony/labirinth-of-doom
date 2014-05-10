@@ -14,6 +14,7 @@
 using boost::asio::ip::tcp;
 
 
+#ifndef CLIENT_MAIN
 
 
 int main(int argc, char* argv[]){
@@ -32,8 +33,7 @@ int main(int argc, char* argv[]){
 
   return 0;
 }
-
-
+#endif
 game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_){
   load_.load_all_files("./levels");
 }
@@ -113,7 +113,7 @@ void game_server::handle_msg(client_connection_ptr client)
 		case (CHOOSING_MAZE):{
 			out.print_debug(std::string("Client state is CHOOSING_MAZE"));
 			std::string msg=client->get_msg();
-			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),load_.get_path()+std::string("/"),parse_tab(msg,0),&io_,parse_tab(msg,1));
+			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),load_.get_path()+std::string("/")+parse_tab(msg,0),&io_,parse_tab(msg,1));
 			games_.push_back(new_game_ptr);
 			client->send_msg(new_game_ptr->maze_.msg_send_maze());
 			out.print_debug(new_game_ptr->maze_.msg_send_maze());

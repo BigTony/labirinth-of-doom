@@ -8,9 +8,9 @@
 #include "client_connect.hpp"
 #include "client.hpp"
 
-
 using boost::asio::ip::tcp;
 
+#define CLIENT_MAIN
 int main(int argc, char* argv[]){
 	try{
 		std::string arg = "argv[1]";
