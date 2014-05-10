@@ -14,26 +14,6 @@
 using boost::asio::ip::tcp;
 
 
-#ifndef CLIENT_MAIN
-
-
-int main(int argc, char* argv[]){
-
-  try{
-	  std::string arg = "argv[1]";
-	  if (arg.compare("-debug")){
-	  }
-    game_server server;
-    server.run();
-    server.terminal_command();
-  }
-  catch (std::exception& error){
-    out.print_error(std::string("Exception: ")+error.what());
-  }
-
-  return 0;
-}
-#endif
 game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_){
   load_.load_all_files("./levels");
 }
@@ -115,12 +95,14 @@ void game_server::handle_msg(client_connection_ptr client)
 			std::string msg=client->get_msg();
 			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),load_.get_path()+std::string("/")+parse_tab(msg,0),&io_,parse_tab(msg,1));
 			games_.push_back(new_game_ptr);
+			client->game_=new_game_ptr;
 			client->send_msg(new_game_ptr->maze_.msg_send_maze());
 			out.print_debug(new_game_ptr->maze_.msg_send_maze());
 			client->set_status(IN_GAME);
 			break;}
 		case (IN_GAME):
 			out.print_debug(std::string("Client state is IN_GAME"));
+			client->game_->terminal_command(client->get_client_id(),client->get_msg());
 			break;
 		default:
 			out.print_error(std::string("Unexpected client state")+std::to_string(status));

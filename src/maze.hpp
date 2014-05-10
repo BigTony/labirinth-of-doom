@@ -85,9 +85,11 @@ public:
 	
 	int get_client_id();
 	tcp::socket socket_; 
+	game_ptr game_;
 	
 private:
 	game_server* game_server_ptr_;
+	
 	int client_id_;
 	int status_;
 	std::string send_data_;
@@ -306,14 +308,13 @@ public:
   std::string do_action();
   void set_maze(maze maze);
   void load_maze(std::string maze);
-  void terminal_command();
+  std::string terminal_command(int id, std::string command);
   void add_player(client_connection_ptr ptr);
   int players_=0;
+  int game_state_=0;
   maze maze_;
 private:
-
 	int owner_id_;
-	int game_state_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
 	boost::posix_time::ptime game_start_;
 	boost::posix_time::ptime game_end_;
