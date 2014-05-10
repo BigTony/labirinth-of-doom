@@ -1149,6 +1149,7 @@ void maze::maze_update(std::string msg){
 	int b_x = 0;
 	int b_y = 0;
 	int id = 0;
+	std::string type = "";
 	std::string value = "";
 	maze_object_ptr obj_ptr;
 	obj_ptr = std::make_shared<path_free>(path_free());
@@ -1174,6 +1175,7 @@ void maze::maze_update(std::string msg){
 			}else if(comma_count == 1){
 				y = std::stoi(value);
 			}else if(comma_count == 2){
+				type = value.substr(0,2);
 				id = std::stoi(value.substr(2));
 			}
 			value = "";
