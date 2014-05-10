@@ -10,6 +10,7 @@
 #include <string>
 #include <cstdlib>
 #include "server_connect.hpp"
+#include "maze.hpp"
 
 
 

@@ -249,3 +249,11 @@ std::string server_connection::send_create_maze(std::string maze){
 	return data;
 }
 
+std::string server_connection::wait_response(std::string command){
+	send_msg(command);
+	mutex_msg_recived_.wait();
+	std::string data=recived_data_;
+	mutex_wait_msg_.post();
+	out.print_debug("Response was returned");
+	return data;
+}

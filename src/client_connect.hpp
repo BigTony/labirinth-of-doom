@@ -19,6 +19,9 @@
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "output.hpp"
 #include "message.hpp"
+
+#define MAX_MSG_LENGTH 4096
+#define HEADER_LENGTH 5
 #define PORT "11600"
 #define NOT_CONNECTED 1
 #define CONNECTED 2
@@ -58,6 +61,7 @@ public:
 	void send_quee_msg(std::string message);
 	std::string parse_arguments(std::string message);
 	void send_msg(std::string message);
+	std::string wait_response(std::string);
 private:
 	
 

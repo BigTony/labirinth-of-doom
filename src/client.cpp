@@ -8,8 +8,8 @@
 #include "client_connect.hpp"
 #include "client.hpp"
 
-
 using boost::asio::ip::tcp;
+
 
 int main(int argc, char* argv[]){
 	try{
@@ -105,7 +105,7 @@ void game_client::create_game(std::string maze){
 		delete(maze_ptr_);
 	}
 	clout.print_debug("Starting pladaddadying game");
-	maze_ptr_=new client_maze(connection_.send_get_lobby(lobby));
+	maze_ptr_=new client_maze(lobby);
 	clout.print_debug("Staadddg game");
 	play_game();
 }
@@ -121,5 +121,10 @@ void game_client::join_game(std::string lobby){
 
 void game_client::play_game(){
 	clout.print_debug("Starting playing game");
+	maze_ptr_->print_maze();
+	while (1){
+		command_=clin.wait_cmd();
+		std::string response_=connection_.wait_response(command_);
+	}
 }
 

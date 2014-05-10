@@ -580,7 +580,7 @@ void maze::check_collision(unsigned int player_id){
 	}
 }
 
-game::game(int client_id,std::string maze,std::string name,asio::io_service *io,std::string maze):maze_(maze),timer_(*io),game_name_(name),game_start_(pt::second_clock::local_time()){
+game::game(int client_id,std::string maze,boost::asio::io_service *io,std::string name):maze_(maze),timer_(*io),game_name_(name),game_start_(pt::second_clock::local_time()){
 	owner_id_=client_id;
 	clock_=boost::posix_time::milliseconds(50);
 }
@@ -1037,6 +1037,7 @@ void maze::check_steps(int x,int y){
 	std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 }
 
+<<<<<<< HEAD
 
 
 
@@ -1049,34 +1050,47 @@ void game::terminal_command(){
     // maze_.set_player_direction(4,1,"west");
     // maze_.set_player_state(2,3,1);
     // maze_.set_player_direction(2,3,"north");
+=======
+std::string game::terminal_command(int id, std::string command){
+	unsigned i=0;
+	for (i = 0; i < players_id_.size(); i++){
+		if(players_id_.at(i) != nullptr){
+			if (players_id_.at(i)->get_client_id() == id)
+				break;			
+		}
+	}
+    int x = maze_.players_.at(i)->get_x();
+    int y = maze_.players_.at(i)->get_y();
+
+>>>>>>> 0644997f31747aa58d5deccaea0b71687d4f949c
     std::string message;
-    message.append("send_game_change ");
-    if (command_.compare("w")==0){
+    message.append("send_response\t");
+    if (command.compare("w")==0){
     	maze_.set_player_direction(x,y,"north");
-    }else if(command_.compare("a")==0){
+    }else if(command.compare("a")==0){
     	maze_.set_player_direction(x,y,"west");
-    }else if(command_.compare("s")==0){
+    }else if(command.compare("s")==0){
     	maze_.set_player_direction(x,y,"south");
-    }else if(command_.compare("d")==0){
+    }else if(command.compare("d")==0){
     	maze_.set_player_direction(x,y,"east");
-    }else if(command_.compare("go")==0){
+    }else if(command.compare("go")==0){
     	maze_.set_player_state(x,y,1);
-    }else if(command_.compare("stop")==0){
+    }else if(command.compare("stop")==0){
     	maze_.set_player_state(x,y,0);
-    }else if(command_.compare("pick")==0){
+    }else if(command.compare("pick")==0){
     	message.append(maze_.pick_key(x,y));
-    }else if(command_.compare("open")==0){
+    }else if(command.compare("open")==0){
     	message.append(maze_.open_gate(x,y));
-    }else if(command_.compare("checkk")==0){
+    }else if(command.compare("checkk")==0){
     	maze_.check_key();
-    }else if(command_.compare("checkg")==0){
+    }else if(command.compare("checkg")==0){
     	maze_.check_gate();
-    }else if(command_.compare("steps")==0){
+    }else if(command.compare("steps")==0){
     	maze_.check_steps(x,y);
+    }else {
+		message.append("error");
     }
-    message.append(do_action());
-    std::cout << message << std::endl;
-    terminal_command();
+    return message;
 }
 
 void maze::add_player(int i){
@@ -1119,7 +1133,7 @@ std::string game::info_to_string(){
 	std::string ret="";
 	ret.append(game_name_);
 	ret.append("\t");
-	ret.append(boost::posix_time::to_iso_string((boost::posix_time::second_clock::local_time()-game_start_));
+	ret.append(boost::posix_time::to_iso_string(boost::posix_time::second_clock::local_time()-game_start_));
 	ret.append("\t");
 	ret.append(boost::posix_time::to_iso_string(clock_));
 	ret.append("\t");
