@@ -1037,20 +1037,6 @@ void maze::check_steps(int x,int y){
 	std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 }
 
-<<<<<<< HEAD
-
-
-
-void game::terminal_command(){
-	maze_.print_maze();
-    std::string command_=in.wait_cmd();
-    int x = maze_.players_.at(0)->get_x();
-    int y = maze_.players_.at(0)->get_y();
-    // maze_.set_player_state(4,1,1);
-    // maze_.set_player_direction(4,1,"west");
-    // maze_.set_player_state(2,3,1);
-    // maze_.set_player_direction(2,3,"north");
-=======
 std::string game::terminal_command(int id, std::string command){
 	unsigned i=0;
 	for (i = 0; i < players_id_.size(); i++){
@@ -1062,7 +1048,6 @@ std::string game::terminal_command(int id, std::string command){
     int x = maze_.players_.at(i)->get_x();
     int y = maze_.players_.at(i)->get_y();
 
->>>>>>> 0644997f31747aa58d5deccaea0b71687d4f949c
     std::string message;
     message.append("send_response\t");
     if (command.compare("w")==0){
