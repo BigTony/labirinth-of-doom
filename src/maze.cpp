@@ -709,6 +709,7 @@ std::string maze::pick_key(int x,int y){
 			ret.append(std::string(std::to_string(x+1)) + "," +  std::string(std::to_string(y)) + " ");
 		}
 	}
+	message_ = ret;
 	return ret;
 }
 
@@ -789,6 +790,7 @@ std::string maze::open_gate(int x,int y){
 			}
 		}
 	}
+	message_ = ret;
 	return ret;
 }
 
@@ -1063,9 +1065,15 @@ std::string game::terminal_command(int id, std::string command){
     }else if(command.compare("stop")==0){
     	maze_.set_player_state(x,y,0);
     }else if(command.compare("pick")==0){
-    	message.append(maze_.pick_key(x,y));
+    	std::string test = maze_.pick_key(x,y);
+    	if(test != ""){
+    		message.append("picked up");
+    	}
     }else if(command.compare("open")==0){
-    	message.append(maze_.open_gate(x,y));
+    	std::string test = maze_.open_gate(x,y);
+    	if(test != ""){
+    		message.append("opened up");
+    	}
     }else if(command.compare("checkk")==0){
     	maze_.check_key();
     }else if(command.compare("checkg")==0){

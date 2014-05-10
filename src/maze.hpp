@@ -282,6 +282,7 @@ public:
   bool is_free(int x,int y);
   int set_differ(int differ,int num);
   std::vector<maze_object_ptr> players_;
+  std::string message_;
 protected:
 	int coords_counter_ = 0;
 	int width_;
