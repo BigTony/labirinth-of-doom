@@ -15,7 +15,7 @@ using boost::asio::ip::tcp;
 
 
 game_server::game_server():io_(),endpoint_(tcp::v4(), SERVER_PORT),binnder_(&io_,endpoint_){
-  load_.load_all_files("./levels");
+  load_.load_all_files("./examples");
 }
 
 game_server::~game_server(){
