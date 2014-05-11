@@ -30,6 +30,7 @@
 #define DEFAULT_CLOCK 500
 #define MAX_CLOCK 5000
 #define MAX_PLAYERS 4
+#define DISCONNECTED 0
 
 //game status
 #define STOPED 0
@@ -284,6 +285,7 @@ public:
   std::vector<maze_object_ptr> players_;
   std::string message_;
   std::string return_keys(unsigned int player_id);
+  void disconect_player(unsigned int player_id);
 protected:
 	int coords_counter_ = 0;
 	int width_;
