@@ -612,7 +612,7 @@ void game::game_run(){
 			unsigned int i = 0;
 			for (i = 0; i < players_id_.size(); i++){
 				if(players_id_.at(i) != nullptr){
-					if (players_id_.at(i)->get_status()==DISCONNECTED){
+					if (players_id_.at(i)->get_status()!=DISCONNECTED){
 						players_id_.at(i)->send_msg(msg);
 					}
 					else{
