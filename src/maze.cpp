@@ -12,11 +12,11 @@ namespace pt = boost::posix_time;
 void maze::print_maze(){	
 	for (unsigned int i = 0; i < maze_array_.size(); i++){
 		if((i % (width_)) == 0){
-			out.print("");
+			clout.print("");
 		}
 		maze_array_.at(i)->print_object();
 	}
-	out.print("\n");
+	clout.print("");
 }
 
 std::string maze::msg_send_maze(){
@@ -887,7 +887,7 @@ key_object::key_object(std::string s_id){
 }
 
 void key_object::print_object(){
-	out.print_debug_object("K_");
+	clout.print_debug_object("K_");
 }
 
 std::string key_object::print_to_str(){
@@ -900,7 +900,7 @@ gate_object::gate_object(std::string s_id){
 }
 
 void gate_object::print_object(){
-	out.print_debug_object("G_");
+	clout.print_debug_object("G_");
 }
 
 std::string gate_object::print_to_str(){
@@ -913,7 +913,7 @@ wall_object::wall_object(){
 }
 
 void wall_object::print_object(){
-	out.print_debug_object("W_");
+	clout.print_debug_object("W_");
 }
 
 std::string wall_object::print_to_str(){
@@ -926,7 +926,7 @@ path_free::path_free(){
 }
 
 void path_free::print_object(){
-	out.print_debug_object("__");
+	clout.print_debug_object("__");
 }
 
 std::string path_free::print_to_str(){
@@ -976,7 +976,7 @@ keeper_object::keeper_object(std::string s_id){
 }
 
 void keeper_object::print_object(){
-	out.print_debug_object("S_");
+	clout.print_debug_object("S_");
 }
 
 void keeper_object::steps_to(int steps){
@@ -1002,7 +1002,7 @@ finish_object::finish_object(){
 }
 
 void finish_object::print_object(){
-	out.print_debug_object("F_");
+	clout.print_debug_object("F_");
 }
 
 std::string finish_object::print_to_str(){
@@ -1015,7 +1015,7 @@ create_player_object::create_player_object(std::string s_id){
 }
 
 void create_player_object::print_object(){
-	out.print_debug_object("CP");
+	clout.print_debug_object("CP");
 }
 
 std::string create_player_object::print_to_str(){

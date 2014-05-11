@@ -107,8 +107,9 @@ typedef std::shared_ptr<maze_object> maze_object_ptr;
 
 
 /**
- * Virtual
- */
+* Class virtual.
+* Used in creating maze objects.
+*/
 class maze_object {
 public:
   virtual void print_object(){}
@@ -142,6 +143,10 @@ private:
   int id;
 };
 
+/**
+* Class virtual.
+* Used in creating maze static objects wall,keys etc.. .
+*/
 class static_object: virtual public maze_object {
 public:
   //virtual key,gate,wall,free
@@ -150,6 +155,10 @@ public:
   static_object();
 };
 
+/**
+* Class virtual.
+* Used in creating maze dynamic objects.
+*/
 class dynamic_object: virtual public maze_object {
 public:
   //virtual keeper, player

@@ -66,8 +66,7 @@ void  output_handler::print_debug(std::string message){
 }
 
 void  output_handler::print_debug_object(std::string message){
-	if (debug_==true)
-		std::cout << message;
+	std::cout << message;
 }
 
 void output_handler::set_debug(bool set){

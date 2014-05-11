@@ -23,7 +23,7 @@ public:
 	void print_warn(std::string message);
 	void print_error(std::string message);
 	void print_debug(std::string message);
-	void print_debug_object(std::string message);
+	virtual void print_debug_object(std::string message);
 	void print_help();
 	void set_debug(bool set);
 	bool get_debug();
@@ -41,6 +41,7 @@ public:
 
 class client_input_handler: public input_handler{
 public:
+	void print_debug_object(std::string message);
 	std::string wait_cmd();
 };
 
