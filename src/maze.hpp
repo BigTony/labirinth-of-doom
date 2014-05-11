@@ -815,8 +815,8 @@ public:
   void add_player(client_connection_ptr ptr);
   int players_=0;
   int game_state_=0;
-  std::string game_name_;
   maze maze_;
+  std::string game_name_;
 private:
   boost::asio::deadline_timer timer_; 
   boost::posix_time::ptime game_start_;

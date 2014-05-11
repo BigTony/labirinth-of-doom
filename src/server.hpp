@@ -39,35 +39,35 @@ public:
   ~game_server();
   /**
    * A public function.
-   * 
+   * Run server.
    */
   void run();
   /**
    * A public function.
-   * 
+   * Handle terminal command.
    */
   void terminal_command();
   /**
    * A public function.
-   * 
+   * Handle clients connection.
    */
   void handle_clients();
   /**
    * A public function.
-   * 
+   * Handle message from client.
    * @param client
    */
   void handle_msg(client_connection_ptr client);
   /**
    * A public function.
-   * 
+   * Generate actual lobbies.
    * Return string
    */
   std::string get_lobbys();
   /**
    * A public function.
-   * 
-   * @param
+   * Generate pointer to game by given name.
+   * @param string name of game.
    * Return game_ptr
    */
   game_ptr get_game_by_name(std::string name);

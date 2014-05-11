@@ -940,13 +940,13 @@ player_object::player_object(std::string s_id){
 
 void player_object::print_object(){
 	if(get_direction() == "north"){
-		out.print_debug_object("^_");
+		clout.print_debug_object("^_");
 	}else if(get_direction() == "west"){
-		out.print_debug_object("<_");
+		clout.print_debug_object("<_");
 	}else if(get_direction() == "south"){
-		out.print_debug_object("v_");
+		clout.print_debug_object("v_");
 	}else if(get_direction() == "east"){
-		out.print_debug_object(">_");
+		clout.print_debug_object(">_");
 	}
 }
 
@@ -1096,11 +1096,8 @@ void maze::check_steps(int x,int y){
 
 std::string game::terminal_command(int id, std::string command){
 	unsigned i=0;
-	out.print_debug(std::to_string(players_));
 	for (i = 0; i < players_id_.size(); i++){
-		out.print_debug(std::to_string(i));
 		if(players_id_.at(i) != nullptr){
-			out.print_debug(std::to_string(i));
 			if (players_id_.at(i)->get_client_id() == id)
 				break;			
 		}

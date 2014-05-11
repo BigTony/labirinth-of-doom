@@ -4,17 +4,17 @@ using boost::asio::ip::tcp;
 
 
 server_connection::server_connection(boost::asio::io_service* io,tcp::resolver::iterator endpoint_iterator):socket_(*io),mutex_wait_msg_(1),mutex_msg_recived_(0){
-	out.print_debug("Creating server connection");
+	clout.print_debug("Creating server connection");
 	io_=io;
 	connect(endpoint_iterator);
 }
 
 void server_connection::check_socket(){
-	out.print_debug("Socket to server is "+ std::to_string(socket_.is_open()));
+	clout.print_debug("Socket to server is "+ std::to_string(socket_.is_open()));
 }
 
 void server_connection::send_msg(std::string message){
-	out.print_debug(std::string("Sending msg to server, socket to server is")+ std::to_string(socket_.is_open()));
+	clout.print_debug(std::string("Sending msg to server, socket to server is")+ std::to_string(socket_.is_open()));
 	msg_quee_.push_back(message);
 	if (msg_quee_.size()==1){
 		while (!(msg_quee_.empty())){
@@ -26,7 +26,7 @@ void server_connection::send_msg(std::string message){
 
 void server_connection::send_quee_msg(std::string message){
 	if (message.length()>MAX_MSG_LENGTH) {
-		out.print_warn("Msg is too long for transmit");
+		clout.print_warn("Msg is too long for transmit");
 		return;
 	}
 	char header[HEADER_LENGTH+1];
@@ -35,10 +35,10 @@ void server_connection::send_quee_msg(std::string message){
 	std::cout << send_data_ << std::endl;
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data_.data(),send_data_.length()),[this](boost::system::error_code error, std::size_t){
 		if (!error){
-			out.print_debug("Msg was send");
+			clout.print_debug("Msg was send");
 		}
 		else{
-			out.print_error("Unable send msg. Server hang out unexpectly");
+			clout.print_error("Unable send msg. Server hang out unexpectly");
 			status_=CONNECTION_LOST;
 			socket_.close();
 		}
@@ -46,24 +46,24 @@ void server_connection::send_quee_msg(std::string message){
 }
 
 void server_connection::wait_msg(){
-	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
+	clout.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
 			recived_ = std::atoi(header);
-			out.print_debug(std::string("Recived header:\t")+header_);
+			clout.print_debug(std::string("Recived header:\t")+header_);
 			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 				if (!error){
 					data_[recived_]='\0';
 					recived_data_=data_;
-					out.print_debug("Recived header:\t"+recived_data_);
+					clout.print_debug("Recived header:\t"+recived_data_);
 					wait_msg();
 				}
 				else{
 					socket_.close();
 					status_=CONNECTION_LOST;
-					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
+					clout.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
 					return;
 				}
 			}); 
@@ -71,7 +71,7 @@ void server_connection::wait_msg(){
 	else{
 		socket_.close();
 		status_=CONNECTION_LOST;
-		out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
+		clout.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
 		return;
 	}
 	});
@@ -81,25 +81,25 @@ void server_connection::wait_msg(){
 
 void server_connection::sync_wait_msg(){
 	mutex_wait_msg_.wait();
-	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
+	clout.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this](boost::system::error_code error, std::size_t length){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
 			recived_ = std::atoi(header);
-			out.print_debug(std::string("Recived header:\t")+header_);
+			clout.print_debug(std::string("Recived header:\t")+header_);
 			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this](boost::system::error_code error, std::size_t length){
 				if (!error){
 					data_[recived_]='\0';
 					recived_data_=data_;
-					out.print_debug("Recived data:\t"+recived_data_);
+					clout.print_debug("Recived data:\t"+recived_data_);
 					mutex_msg_recived_.post();
 					sync_wait_msg();
 				}
 				else{
 					socket_.close();
 					status_=CONNECTION_LOST;
-					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
+					clout.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
 					mutex_msg_recived_.post();;
 				}
 			}); 
@@ -107,7 +107,7 @@ void server_connection::sync_wait_msg(){
 		else{
 			socket_.close();
 			status_=CONNECTION_LOST;
-			out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
+			clout.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
 			mutex_msg_recived_.post();
 			return;
 			
@@ -118,24 +118,24 @@ void server_connection::sync_wait_msg(){
 
 void server_connection::wait_maze_update(client_maze** maze_ptr){
 	mutex_wait_msg_.wait();
-	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
+	clout.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
 	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this,maze_ptr](boost::system::error_code error, std::size_t length){
 		if (!error){
 			char header[HEADER_LENGTH + 1] = "";
 			std::strncat(header, header_, HEADER_LENGTH);
 			recived_ = std::atoi(header);
-			out.print_debug(std::string("Recived header:\t")+header_);
+			clout.print_debug(std::string("Recived header:\t")+header_);
 			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this,maze_ptr](boost::system::error_code error, std::size_t length){
 				if (!error){
 					data_[recived_]='\0';
 			recived_data_=data_;
-			out.print_debug("Recived data:\t"+recived_data_);
+			clout.print_debug("Recived data:\t"+recived_data_);
 			if(recived_data_.compare(0,17, "send_game_change ") == 0){
 				recived_data_.erase(0,17);
-				out.print_debug("Handle update...");
-				out.print_debug(recived_data_);
+				clout.print_debug("Handle update...");
+				clout.print_debug(recived_data_);
 				(*maze_ptr)->maze_update(recived_data_);
-				out.print_debug("Update was hadled...");
+				clout.print_debug("Update was hadled...");
 				(*maze_ptr)->print_maze();
 				mutex_wait_msg_.post();
 				wait_maze_update(maze_ptr);
@@ -147,7 +147,7 @@ void server_connection::wait_maze_update(client_maze** maze_ptr){
 				else{
 					socket_.close();
 					status_=CONNECTION_LOST;
-					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
+					clout.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
 					mutex_msg_recived_.post();;
 				}
 			}); 
@@ -155,7 +155,7 @@ void server_connection::wait_maze_update(client_maze** maze_ptr){
 		else{
 			socket_.close();
 			status_=CONNECTION_LOST;
-			out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
+			clout.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
 			mutex_msg_recived_.post();
 			return;
 			
@@ -174,7 +174,7 @@ std::string server_connection::sync_msg(){
 
 void server_connection::connect(tcp::resolver::iterator endpoint_iterator){
 	boost::asio::connect(socket_, endpoint_iterator);
-	out.print_error("Client is connected to server ...");
+	clout.print_error("Client is connected to server ...");
 }
 
 void server_connection::stop(){
@@ -199,7 +199,7 @@ std::string server_connection::parse_arguments(std::string message){
 				if(space % 2 == 0){
 					active += message[i];
 				}else{	
-					out.print_debug(std::string("sour x: ") + std::string(active));
+					clout.print_debug(std::string("sour x: ") + std::string(active));
 					active = "";
 				}
 			}else if(isdigit(message[i])){
@@ -207,10 +207,10 @@ std::string server_connection::parse_arguments(std::string message){
 			}else if(message[i] == ' '){
 				// sudej pocet mezer
 				if(space % 2 == 0){
-					out.print_debug(std::string("obj : ") + std::string(active));
+					clout.print_debug(std::string("obj : ") + std::string(active));
 					active = "";
 				}else{
-					out.print_debug(std::string("sour y: ") + std::string(active));
+					clout.print_debug(std::string("sour y: ") + std::string(active));
 					active = "";
 				}
 				space++;
@@ -218,7 +218,7 @@ std::string server_connection::parse_arguments(std::string message){
 			}
 			i++;
 		}
-		out.print_debug(std::string("sour y: ") + std::string(active));
+		clout.print_debug(std::string("sour y: ") + std::string(active));
 	}else if(message.compare(0,10, "send_lobby") == 0){
 		unsigned int i = 11;
 		std::string game_name,maze_name,player_count,game_num;
@@ -274,7 +274,7 @@ std::string server_connection::get_lobbys(){
 	mutex_msg_recived_.wait();
 	std::string data=recived_data_;
 	mutex_wait_msg_.post();
-	out.print_debug("Lobbys was returned");
+	clout.print_debug("Lobbys was returned");
 	return data;
 }
 
@@ -283,7 +283,7 @@ std::string server_connection::get_mazes(){
 	mutex_msg_recived_.wait();
 	std::string data=recived_data_;
 	mutex_wait_msg_.post();
-	out.print_debug("Mazes was returned");
+	clout.print_debug("Mazes was returned");
 	return data;
 }
 
@@ -293,7 +293,7 @@ std::string server_connection::send_get_lobby(std::string lobby){
 	mutex_msg_recived_.wait();
 	std::string data=recived_data_;
 	mutex_wait_msg_.post();
-	out.print_debug("Lobby was returned");
+	clout.print_debug("Lobby was returned");
 	return data;
 }
 
@@ -302,7 +302,7 @@ std::string server_connection::send_create_maze(std::string maze){
 	mutex_msg_recived_.wait();
 	std::string data=recived_data_;
 	mutex_wait_msg_.post();
-	out.print_debug("Lobby was returned");
+	clout.print_debug("Lobby was returned");
 	return data;
 }
 

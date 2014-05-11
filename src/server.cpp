@@ -33,7 +33,6 @@ void game_server::run(){
   binnder_.wait_connection(this);
   t_client_handle_ = new boost::thread([this](){this->handle_clients();  });
   t_binnder_ = new boost::thread([this](){ io_.run(); });
-
 }
 
 void game_server::terminal_command(){

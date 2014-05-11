@@ -37,39 +37,39 @@ class game_client{
   ~game_client();
   /**
    * A public function.
-   * 
+   * Run client.
    */ 
   void run();
   /**
    * A public function.
-   * 
+   * Handle commands from player.
    */ 
   void terminal_command();
   /**
    * A public function.
-   * 
+   * Choose lobby..
    */ 
   void choose_lobby();
   /**
    * A public function.
-   * 
+   * Choose maze.
    */ 
   void choose_maze();
   /**
    * A public function.
-   * 
-   * @param maze
+   * Create game.
+   * @param maze level name.
    */ 
   void create_game(std::string maze);
   /**
    * A public function.
-   * 
-   * @param lobby
+   * Join game.
+   * @param lobby name of lobby with players.
    */ 
   void join_game(std::string lobby);
   /**
    * A public function.
-   * 
+   * Game loop.
    */ 
   void play_game();
   

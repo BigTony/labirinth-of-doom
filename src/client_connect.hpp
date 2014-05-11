@@ -19,7 +19,6 @@
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "output.hpp"
 #include "maze.hpp"
-#include "message.hpp"
 
 #define MAX_MSG_LENGTH 4096
 #define HEADER_LENGTH 5
@@ -43,10 +42,6 @@ public:
 	server_connection(boost::asio::io_service *io,tcp::resolver::iterator endpoint_iterator);
 	/** 
 	 * A public function.
-	 * Send message to server.
-	 */
-	/** 
-	 * A public function.
 	 * Recieve message from server.
 	 */
 	void wait_msg();
@@ -57,7 +52,7 @@ public:
 	void sync_wait_msg();
 	/**
    	 * A public function.
-     * 
+     * Wait for update.
      * @param maze_ptr
      */ 
 	void wait_maze_update(client_maze** maze_ptr);
@@ -82,48 +77,48 @@ public:
 	std::string send_create_maze(std::string maze);
 	/**
    	 * A public function.
-   	 * 
-     * @param lobby
-     * Return string
+   	 * Send to get lobbies.
+     * @param lobby.
+     * Return string.
      */ 
 	std::string send_get_lobby(std::string lobby);
 	/**
    	 * A public function.
-     * 
+     * Stop it.
      */ 
 	void stop();
 	/**
    	 * A public function.
-   	 * 
+   	 * Connect to server.
      * @param endpoint_iterator
      */ 
 	void connect(tcp::resolver::iterator endpoint_iterator);
 	/**
    	 * A public function.
-     * 
+     * Check socket if alive or not.
      */ 
 	void check_socket();
 	/**
    	 * A public function.
-   	 * 
+   	 * Send msg to que for send.
      * @param message
      */ 
 	void send_quee_msg(std::string message);
 	/**
    	 * A public function.
-   	 * 
-     * @param message
+   	 * Parse arguments.
+     * @param message.
      */ 
 	std::string parse_arguments(std::string message);
 	/**
    	 * A public function.
-   	 * 
+   	 * Send message to server.
      * @param message
      */ 
 	void send_msg(std::string message);
 	/**
    	 * A public function.
-     * 
+     * Synchronize messages.
      * Return string
      */ 
 	std::string sync_msg();
@@ -148,47 +143,47 @@ private:
 	size_t len_;
 	/**
    	 * A private variable.
-     * 
+     * Status.
      */
 	int status_;
 	/**
    	 * A private variable.
-     * 
+     * Data which will be send to server.
      */
 	std::string send_data_;
 	/**
    	 * A private variable.
-     * 
+     * Recieved data from message.
      */
 	std::string recived_data_;
 	/**
    	 * A private variable.
-     * 
+     * Buffer for data.
      */
 	char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
 	/**
    	 * A private variable.
-     * 
+     * Buffer for header.
      */
 	char header_[HEADER_LENGTH+1];
 	/**
    	 * A private variable.
-     * 
+     * Recieved signal.
      */
 	int recived_;
 	/**
    	 * A private variable.
-     * 
+     * Array of messages.
      */
 	std::vector<std::string> msg_quee_;
 	/**
    	 * A private variable.
-     * 
+     * Semaphore.
      */
 	boost::interprocess::interprocess_semaphore mutex_wait_msg_;
 	/**
    	 * A private variable.
-     * 
+     * Semaphore.
      */
 	boost::interprocess::interprocess_semaphore mutex_msg_recived_;
 };

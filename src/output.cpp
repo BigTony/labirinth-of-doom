@@ -111,13 +111,14 @@ std::string client_input_handler::wait_cmd() {
 void client_output_handler::print_menu(){
 	std::cout << "----Client Lab of doom-------------" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
-	std::cout << "-----1. join-----------------------" << std::endl;
-	std::cout << "-----2. create---------------------" << std::endl;
+	std::cout << "--------join-----------------------" << std::endl;
+	std::cout << "--------create---------------------" << std::endl;
 }
 
 void client_output_handler::print_lobbys(std::string menu){
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << "-----Choose loby-------------------" << std::endl;
+	std::cout << "-----<name>------------------------" << std::endl;
 	std::cout << menu << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
 }
@@ -125,6 +126,7 @@ void client_output_handler::print_lobbys(std::string menu){
 void client_output_handler::print_mazes(std::string menu){
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << "-----Choose maze-------------------" << std::endl;
+	std::cout << "-----<maze_name><tab><game_name>---" << std::endl;
 	std::cout << menu << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
 }
