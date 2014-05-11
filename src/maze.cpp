@@ -396,7 +396,7 @@ std::string maze::return_keys(unsigned int player_id){
 		int x = players_.at(player_id)->keys_.at(i)->get_x();
 		int y = players_.at(player_id)->keys_.at(i)->get_y();
 		maze_array_.at(x+(y*width_)) = players_.at(player_id)->keys_.at(i);
-		ret.append(" " + std::string(std::to_string(x)) + "," +  std::string(std::to_string(y)) + "," + players_.at(player_id)->keys_.at(i)->print_to_str());
+		ret.append(" " + std::string(std::to_string(x)) + "," +  std::string(std::to_string(y)) + "," + players_.at(player_id)->keys_.at(i)->print_to_str()+" ");
 	}
 	int count = players_.at(player_id)->keys_.size();
 	while(count){
@@ -599,7 +599,7 @@ void maze::check_collision(unsigned int player_id){
 
 game::game(int client_id,std::string maze,boost::asio::io_service *io,std::string name):maze_(maze),timer_(*io),game_name_(name),game_start_(pt::second_clock::local_time()){
 	owner_id_=client_id;
-	clock_=boost::posix_time::milliseconds(2000);
+	clock_=boost::posix_time::milliseconds(DEFAULT_CLOCK);
 }
 
 void game::game_run(){
@@ -612,7 +612,12 @@ void game::game_run(){
 			unsigned int i = 0;
 			for (i = 0; i < players_id_.size(); i++){
 				if(players_id_.at(i) != nullptr){
-					players_id_.at(i)->send_msg(msg);
+					if (players_id_.at(i)->get_status()==DISCONNECTED){
+						players_id_.at(i)->send_msg(msg);
+					}
+					else{
+						out.print_debug("Disconnected player is still in game");
+					}
 				}
 			}
 		} 
@@ -626,7 +631,7 @@ void game::game_run(){
 
 
 std::string game::do_action(){	
-	std::string ret = maze_.stop_go();
+	std::string ret = maze_.message_+maze_.stop_go();
 	return ret;
 }
 
@@ -1158,7 +1163,7 @@ std::string game::info_to_string(){
 }
 
 void maze::maze_update(std::string msg){
-	msg.append(" ");
+	//msg.append(" ");
 	int msg_size = msg.size();
 	int count = 0;
 	int comma_count = 0;

@@ -27,6 +27,7 @@
 #define MAX_MAZE_WIDTH 50
 #define MAX_MAZE_LENGTH 50
 #define MIN_CLOCK 500
+#define DEFAULT_CLOCK 500
 #define MAX_CLOCK 5000
 #define MAX_PLAYERS 4
 

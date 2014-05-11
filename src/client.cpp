@@ -46,7 +46,7 @@ game_client::~game_client(){
 }
 
 void game_client::run(){
-	connection_.wait_maze_update(maze_ptr_);
+	connection_.wait_maze_update(&maze_ptr_);
 	t_connection_ = new boost::thread([this](){ io_.run(); });
 }
 

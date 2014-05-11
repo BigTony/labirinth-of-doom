@@ -48,7 +48,7 @@ public:
 	* Print recieved message from server.
 	*/
 	void sync_wait_msg();
-	void wait_maze_update(client_maze* maze_ptr);
+	void wait_maze_update(client_maze** maze_ptr);
 	/** A public function.
 	 * Print recieved message from server.
 	 */
