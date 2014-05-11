@@ -189,7 +189,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 				if((maze_array_.at(x+((y-1)*width_))->get_state()) == 1){
 					y--;
 					keepers_.at(keeper_id)->set_y(y);
-					std::cout << "n:keeper" << std::endl;
+					//std::cout << "n:keeper" << std::endl;
 					keepers_.at(keeper_id)->set_steps();
 				}
 				return;
@@ -201,7 +201,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 			if(((maze_array_.at(x+((y-1)*width_))->print_to_str()) != "w") && (maze_array_.at(x+((y-1)*width_))->print_to_str().compare(0,2,"K_") != 0)){
 				y--;
 				keepers_.at(keeper_id)->set_y(y);
-				std::cout << "n:keeper" << std::endl;
+				//std::cout << "n:keeper" << std::endl;
 				keepers_.at(keeper_id)->set_steps();
 			}else{
 				set_direction_keeper(keeper_id);
@@ -213,7 +213,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 				if((maze_array_.at(x-1+(y*width_))->get_state()) == 1){
 					x--;
 					keepers_.at(keeper_id)->set_x(x);
-					std::cout << "w:keeper" << std::endl;
+					//std::cout << "w:keeper" << std::endl;
 					keepers_.at(keeper_id)->set_steps();
 				}
 				return;
@@ -225,7 +225,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 			if(((maze_array_.at(x-1+(y*width_))->print_to_str()) != "w") && (maze_array_.at(x-1+(y*width_))->print_to_str().compare(0,2,"K_") != 0)){
 				x--;
 				keepers_.at(keeper_id)->set_x(x);
-				std::cout << "w:keeper" << std::endl;
+				//std::cout << "w:keeper" << std::endl;
 				keepers_.at(keeper_id)->set_steps();
 			}else{
 				set_direction_keeper(keeper_id);
@@ -238,7 +238,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 				if((maze_array_.at(x+((y+1)*width_))->get_state()) == 1){
 					y++;
 					keepers_.at(keeper_id)->set_y(y);
-					std::cout << "s" << std::endl;
+					//std::cout << "s" << std::endl;
 					keepers_.at(keeper_id)->set_steps();
 				}
 				return;
@@ -250,7 +250,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 			if(((maze_array_.at(x+((y+1)*width_))->print_to_str()) != "w")&&(maze_array_.at(x+((y+1)*width_))->print_to_str().compare(0,2,"K_") != 0)){
 				y++;
 				keepers_.at(keeper_id)->set_y(y);
-				std::cout << "s" << std::endl;
+				//std::cout << "s" << std::endl;
 				keepers_.at(keeper_id)->set_steps();
 			}else{
 				set_direction_keeper(keeper_id);
@@ -264,7 +264,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 				if((maze_array_.at(x+1+(y*width_))->get_state()) == 1){
 					x++;
 					keepers_.at(keeper_id)->set_x(x);
-					std::cout << "e" << std::endl;
+					//std::cout << "e" << std::endl;
 					keepers_.at(keeper_id)->set_steps();
 					return;
 				}
@@ -276,7 +276,7 @@ void maze::check_collision_keeper(unsigned int keeper_id){
 			if(((maze_array_.at(x+1+(y*width_))->print_to_str()) != "w")&&(maze_array_.at(x+1+(y*width_))->print_to_str().compare(0,2,"K_") != 0)){
 				x++;
 				keepers_.at(keeper_id)->set_x(x);
-				std::cout << "e" << std::endl;
+				//std::cout << "e" << std::endl;
 				keepers_.at(keeper_id)->set_steps();
 			}else{
 				set_direction_keeper(keeper_id);
@@ -338,7 +338,7 @@ std::string maze::move_one_keeper(unsigned int keeper_id){
 	// before
 	std::string ret = std::string(std::to_string(keepers_.at(keeper_id)->get_before_x())) + "," +  std::string(std::to_string(keepers_.at(keeper_id)->get_before_y()));
 	// actual
-	ret.append(" " + std::string(std::to_string(keepers_.at(keeper_id)->get_x())) + "," +  std::string(std::to_string(keepers_.at(keeper_id)->get_y())) + "," + keepers_.at(keeper_id)->print_to_str() + "," + keepers_.at(keeper_id)->get_direction() + " ");
+	ret.append(" " + std::string(std::to_string(keepers_.at(keeper_id)->get_x())) + "," +  std::string(std::to_string(keepers_.at(keeper_id)->get_y())) + "," + keepers_.at(keeper_id)->print_to_str() + "," + keepers_.at(keeper_id)->get_direction() + "," + std::to_string(keepers_.at(keeper_id)->get_steps()) + " ");
 	return ret;
 }
 
@@ -450,43 +450,56 @@ std::string maze::move_one(unsigned int player_id){
 			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+((k_y+1)*width_))->print_to_str()) == "w"))||
 			((k_b_x == x) && (k_b_y == y) && ((maze_array_.at(k_x+1+((k_y)*width_))->print_to_str()) == "w"))){
 
-			int set_x = 0;
-			int set_y = 0;
-			for (unsigned int c = 0; c < cps_.size(); c++){
-				int x_for = cps_.at(c)->get_x();
-				int y_for = cps_.at(c)->get_y();
-				std::string cp_id = cps_.at(c)->print_to_str();
-				unsigned int c_id = std::stoi(cp_id.substr(3));
-				if(player_id == c_id){
-					set_x = x_for;
-					set_y = y_for;
-					break;
-				}
-			}		
+			// int x = players_.at(player_id)->get_x();
+			// int y = players_.at(player_id)->get_y();
+			// players_.at(player_id)->set_state(2);
+			// maze_object_ptr obj_ptr;
+			// obj_ptr = std::make_shared<path_free>(path_free());
+			// maze_array_.at(x+(y*width_)) = obj_ptr;
 
-			// this shit is awesome or really stupid 
-			int differ = 0;
-			while(1){
-				if(is_free(set_x,set_y)){
-					break;
-				}else{
-					set_x = set_differ(differ,set_x);
-					differ++;
-					set_y = set_differ(differ,set_y);
-					differ++;
-				}
-			}
-			players_.at(player_id)->set_x(set_x);
-			players_.at(player_id)->set_y(set_y);
-			maze_array_.at(set_x+(set_y*width_)) = players_.at(player_id);
+			// std::string ret = "";
+			// ret.append(std::to_string(x)+","+std::to_string(y)+" ");
+			// return ret;
+
+			// int set_x = 0;
+			// int set_y = 0;
+			// for (unsigned int c = 0; c < cps_.size(); c++){
+			// 	int x_for = cps_.at(c)->get_x();
+			// 	int y_for = cps_.at(c)->get_y();
+			// 	std::string cp_id = cps_.at(c)->print_to_str();
+			// 	unsigned int c_id = std::stoi(cp_id.substr(3));
+			// 	if(player_id == c_id){
+			// 		set_x = x_for;
+			// 		set_y = y_for;
+			// 		break;
+			// 	}
+			// }		
+
+			// // this shit is awesome or really stupid 
+			// int differ = 0;
+			// while(1){
+			// 	if(is_free(set_x,set_y)){
+			// 		break;
+			// 	}else{
+			// 		set_x = set_differ(differ,set_x);
+			// 		differ++;
+			// 		set_y = set_differ(differ,set_y);
+			// 		differ++;
+			// 	}
+			// }
+			// players_.at(player_id)->set_x(0);
+			// players_.at(player_id)->set_y(0);
+
+			// // maze_array_.at(set_x+(set_y*width_)) = players_.at(player_id);
+			players_.at(player_id)->set_state(2);
 			int before = players_.at(player_id)->get_before_x() + (players_.at(player_id)->get_before_y() * width_);
 			maze_object_ptr obj_ptr;
 			obj_ptr = std::make_shared<path_free>(path_free());
 			maze_array_.at(before) = obj_ptr;
-			std::string ret = std::string(std::to_string(players_.at(player_id)->get_before_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_before_y()));
-			ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + " " );
-			// drop keys
-			ret.append(return_keys(player_id));
+			std::string ret = std::string(std::to_string(players_.at(player_id)->get_before_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_before_y())) + " ";
+			// // ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + "," + std::to_string(players_.at(player_id)->get_steps()) + " "  );
+			// // drop keys
+			// ret.append(return_keys(player_id));
 			return ret;
 			// maze_array_.at(x+(y*width_)) = obj_ptr;
 		}
@@ -499,7 +512,7 @@ std::string maze::move_one(unsigned int player_id){
 	// before
 	std::string ret = std::string(std::to_string(players_.at(player_id)->get_before_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_before_y()));
 	// actual
-	ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + " " );
+	ret.append(" " + std::string(std::to_string(players_.at(player_id)->get_x())) + "," +  std::string(std::to_string(players_.at(player_id)->get_y())) + "," + players_.at(player_id)->print_to_str() + "," + players_.at(player_id)->get_direction() + "," + std::to_string(players_.at(player_id)->get_steps()) + " " );
 	return ret;
 }
 
@@ -509,18 +522,18 @@ void maze::check_collision(unsigned int player_id){
 	int y = players_.at(player_id)->get_y();
 	players_.at(player_id)->set_before_x(x);
 	players_.at(player_id)->set_before_y(y);
-	std::cout << "player: x: " << x << " " << "y: " << y << std::endl;
+	//std::cout << "player: x: " << x << " " << "y: " << y << std::endl;
 	if(dir == "north"){
 		if(y != 0){
 			if(maze_array_.at(x+((y-1)*width_))->print_to_str() == "f"){
-				std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
+				//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 			}
 			if(maze_array_.at(x+((y-1)*width_))->print_to_str().compare(0,2,"G_") == 0){
 				if((maze_array_.at(x+((y-1)*width_))->get_state()) == 1){
 					y--;
 					players_.at(player_id)->set_y(y);
 					players_.at(player_id)->set_steps();
-					std::cout << "n" << std::endl;
+					//std::cout << "n" << std::endl;
 				}
 				return;
 			}
@@ -528,20 +541,20 @@ void maze::check_collision(unsigned int player_id){
 				y--;
 				players_.at(player_id)->set_y(y);
 				players_.at(player_id)->set_steps();
-				std::cout << "n" << std::endl;
+				//std::cout << "n" << std::endl;
 			}
 		}		
 	}else if(dir == "west"){
 		if(x != 0){
 			if(maze_array_.at(x+-1+(y*width_))->print_to_str() == "f"){
-				std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
+				//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 			}
 			if(maze_array_.at(x-1+(y*width_))->print_to_str().compare(0,2,"G_") == 0){
 				if((maze_array_.at(x-1+(y*width_))->get_state()) == 1){
 					x--;
 					players_.at(player_id)->set_x(x);
 					players_.at(player_id)->set_steps();
-					std::cout << "w" << std::endl;
+					//std::cout << "w" << std::endl;
 				}
 				return;
 			}
@@ -549,20 +562,20 @@ void maze::check_collision(unsigned int player_id){
 				x--;
 				players_.at(player_id)->set_x(x);
 				players_.at(player_id)->set_steps();
-				std::cout << "w" << std::endl;
+				//std::cout << "w" << std::endl;
 			}	
 		}
 	}else if(dir == "south"){
 		if(y != length_-1){
 			if(maze_array_.at(x+((y+1)*width_))->print_to_str() == "f"){
-				std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
+				//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 			}
 			if(maze_array_.at(x+((y+1)*width_))->print_to_str().compare(0,2,"G_") == 0){
 				if((maze_array_.at(x+((y+1)*width_))->get_state()) == 1){
 					y++;
 					players_.at(player_id)->set_y(y);
 					players_.at(player_id)->set_steps();
-					std::cout << "s" << std::endl;
+					//std::cout << "s" << std::endl;
 				}
 				return;
 			}
@@ -570,20 +583,20 @@ void maze::check_collision(unsigned int player_id){
 				y++;
 				players_.at(player_id)->set_y(y);
 				players_.at(player_id)->set_steps();
-				std::cout << "s" << std::endl;
+				//std::cout << "s" << std::endl;
 			}
 		}
 	}else if(dir == "east"){
 		if(x != width_-1){
 			if(maze_array_.at(x+1+(y*width_))->print_to_str() == "f"){
-				std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
+				//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 			}
 			if(maze_array_.at(x+1+(y*width_))->print_to_str().compare(0,2,"G_") == 0){
 				if((maze_array_.at(x+1+(y*width_))->get_state()) == 1){
 					x++;
 					players_.at(player_id)->set_x(x);
 					players_.at(player_id)->set_steps();
-					std::cout << "e" << std::endl;
+					//std::cout << "e" << std::endl;
 				}
 				return;
 			}
@@ -591,7 +604,7 @@ void maze::check_collision(unsigned int player_id){
 				x++;
 				players_.at(player_id)->set_x(x);
 				players_.at(player_id)->set_steps();
-				std::cout << "e" << std::endl;
+				//std::cout << "e" << std::endl;
 			}	
 		}
 	}
@@ -952,6 +965,10 @@ void player_object::set_steps(){
 	steps_++;
 }
 
+void player_object::steps_to(int steps){
+	steps_ = steps;
+}
+
 
 keeper_object::keeper_object(std::string s_id){
 	id = std::stoi(s_id);
@@ -960,6 +977,10 @@ keeper_object::keeper_object(std::string s_id){
 
 void keeper_object::print_object(){
 	out.print_debug_object("S_");
+}
+
+void keeper_object::steps_to(int steps){
+	steps_ = steps;
 }
 
 
@@ -1052,13 +1073,13 @@ client_maze::client_maze(std::string maze){
 
 void maze::check_key(){
 	for (unsigned int i = 0; i < keys_.size(); i++){
-		std::cout << keys_.at(i)->get_x() << " " << keys_.at(i)->get_y() << std::endl;
+		//std::cout << keys_.at(i)->get_x() << " " << keys_.at(i)->get_y() << std::endl;
 	}
 }
 
 void maze::check_gate(){
 	for (unsigned int i = 0; i < gates_.size(); i++){
-		std::cout << gates_.at(i)->get_x() << " " << gates_.at(i)->get_y() << std::endl;
+		//std::cout << gates_.at(i)->get_x() << " " << gates_.at(i)->get_y() << std::endl;
 	}
 }
 
@@ -1070,7 +1091,7 @@ void maze::check_steps(int x,int y){
 			break;
 		}
 	}
-	std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
+	//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 }
 
 std::string game::terminal_command(int id, std::string command){
@@ -1189,6 +1210,7 @@ void maze::maze_update(std::string msg){
 	int id = 0;
 	std::string type = "";
 	std::string value = "";
+	std::string dir = "";
 	maze_object_ptr obj_ptr;
 	obj_ptr = std::make_shared<path_free>(path_free());
 	while(count < msg_size){
@@ -1197,27 +1219,32 @@ void maze::maze_update(std::string msg){
 				y = std::stoi(value);
 				maze_array_.at(x+(y*width_)) = obj_ptr;
 			}else if(comma_count == 3){
+				if(type == "K_"){
+					maze_array_.at(x+(y*width_)) = keys_.at(id);
+				}
+			}else if(comma_count == 4){
 				if(type == "P_"){
-					players_.at(id)->set_direction(value);
+					players_.at(id)->set_direction(dir);
 					b_x = players_.at(id)->get_x();
 					b_y = players_.at(id)->get_y();
 					players_.at(id)->set_x(x);
 					players_.at(id)->set_y(y);
+					players_.at(id)->steps_to(std::stoi(value));
 					maze_array_.at(b_x+(b_y*width_)) = maze_array_.at(x+(y*width_));
 					maze_array_.at(x+(y*width_)) = players_.at(id);
 				}else if(type == "S_"){
-					keepers_.at(id)->set_direction(value);
+					keepers_.at(id)->set_direction(dir);
 					b_x = keepers_.at(id)->get_x();
 					b_y = keepers_.at(id)->get_y();
 					keepers_.at(id)->set_x(x);
 					keepers_.at(id)->set_y(y);
+					keepers_.at(id)->steps_to(std::stoi(value));
 					maze_array_.at(b_x+(b_y*width_)) = maze_array_.at(x+(y*width_));
 					maze_array_.at(x+(y*width_)) = keepers_.at(id);
-				}else if(type == "K_"){
-					maze_array_.at(x+(y*width_)) = keys_.at(id);
 				}
 			}
 			value = "";
+			dir = "";
 			comma_count = 0;
 			count++;
 		}else if(msg[count] == ','){
@@ -1228,6 +1255,8 @@ void maze::maze_update(std::string msg){
 			}else if(comma_count == 2){
 				type = value.substr(0,2);
 				id = std::stoi(value.substr(2));
+			}else if(comma_count == 3){
+				dir.append(value);
 			}
 			value = "";
 			comma_count++;
@@ -1238,6 +1267,7 @@ void maze::maze_update(std::string msg){
 		}
 	}
 }
+// x,y,obj_id,dir,steps
 
 
 
