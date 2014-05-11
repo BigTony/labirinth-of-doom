@@ -128,7 +128,7 @@ std::string client_connection::get_name(){
 }
 
 void client_connection::send_msg(std::string message){
-	out.print_debug(std::string("Sending msg to server, socket to server is")+ std::to_string(socket_.is_open()));
+	out.print_debug(std::string("Sending msg to client, socket is")+ std::to_string(socket_.is_open()));
 	msg_quee_.push_back(message);
 	if (msg_quee_.size()==1){
 		while (!(msg_quee_.empty())){

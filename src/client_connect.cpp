@@ -113,7 +113,62 @@ void server_connection::sync_wait_msg(){
 			
 		}
 	});
-	
+}
+
+
+void server_connection::wait_maze_update(client_maze** maze_ptr){
+	mutex_wait_msg_.wait();
+	out.print_debug(std::string("Waiting msg from server,socket to server is")+ std::to_string(socket_.is_open()));
+	boost::asio::async_read(socket_,boost::asio::buffer(header_, HEADER_LENGTH),[this,maze_ptr](boost::system::error_code error, std::size_t length){
+		if (!error){
+			char header[HEADER_LENGTH + 1] = "";
+			std::strncat(header, header_, HEADER_LENGTH);
+			recived_ = std::atoi(header);
+			out.print_debug(std::string("Recived header:\t")+header_);
+			boost::asio::async_read(socket_,boost::asio::buffer(data_, recived_),[this,maze_ptr](boost::system::error_code error, std::size_t length){
+				if (!error){
+					data_[recived_]='\0';
+			recived_data_=data_;
+			out.print_debug("Recived data:\t"+recived_data_);
+			if(recived_data_.compare(0,17, "send_game_change ") == 0){
+				recived_data_.erase(0,17);
+				out.print_debug("Handle update...");
+				out.print_debug(recived_data_);
+				(*maze_ptr)->maze_update(recived_data_);
+				out.print_debug("Update was hadled...");
+				(*maze_ptr)->print_maze();
+				mutex_wait_msg_.post();
+				wait_maze_update(maze_ptr);
+				return;
+			}
+			mutex_msg_recived_.post();
+			wait_maze_update(maze_ptr);
+				}
+				else{
+					socket_.close();
+					status_=CONNECTION_LOST;
+					out.print_error("Unable send msg. Server hang out unexpectly(in msg body)");
+					mutex_msg_recived_.post();;
+				}
+			}); 
+		}
+		else{
+			socket_.close();
+			status_=CONNECTION_LOST;
+			out.print_error("Unable send msg. Server hang out unexpectly(in msg head)");
+			mutex_msg_recived_.post();
+			return;
+			
+		}
+	});
+}
+
+
+std::string server_connection::sync_msg(){
+	mutex_msg_recived_.wait();
+	std::string response=recived_data_;
+	mutex_wait_msg_.post();
+	return response;
 }
 
 
@@ -251,11 +306,4 @@ std::string server_connection::send_create_maze(std::string maze){
 	return data;
 }
 
-std::string server_connection::wait_response(std::string command){
-	send_msg(command);
-	mutex_msg_recived_.wait();
-	std::string data=recived_data_;
-	mutex_wait_msg_.post();
-	out.print_debug("Response was returned");
-	return data;
-}
+

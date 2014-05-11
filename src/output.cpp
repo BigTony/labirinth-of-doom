@@ -40,7 +40,6 @@ std::string parse_tab(std::string msg,int tab_count){
 }
 
 
-
 output_handler::output_handler(){
 
 }
@@ -129,4 +128,10 @@ void client_output_handler::print_mazes(std::string menu){
 	std::cout << "-----Choose maze-------------------" << std::endl;
 	std::cout << menu << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
+}
+
+
+void client_output_handler::print_response(std::string response){
+	std::cout << "---------Response is:--------------" << std::endl;
+	std::cout << response << std::endl;
 }
