@@ -1106,6 +1106,31 @@ void maze::check_steps(int x,int y){
 	//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
 }
 
+void game::generate_dir(int left_right,int x,int y,int i){
+	// right
+	if(left_right == 0){
+		if(maze_.players_.at(i)->get_direction() == "north"){
+			maze_.set_player_direction(x,y,"east");
+		}else if(maze_.players_.at(i)->get_direction() == "east"){
+			maze_.set_player_direction(x,y,"south");
+		}else if(maze_.players_.at(i)->get_direction() == "south"){
+			maze_.set_player_direction(x,y,"west");
+		}else if(maze_.players_.at(i)->get_direction() == "west"){
+			maze_.set_player_direction(x,y,"north");
+		}
+	}else{
+		if(maze_.players_.at(i)->get_direction() == "north"){
+			maze_.set_player_direction(x,y,"west");
+		}else if(maze_.players_.at(i)->get_direction() == "west"){
+			maze_.set_player_direction(x,y,"south");
+		}else if(maze_.players_.at(i)->get_direction() == "south"){
+			maze_.set_player_direction(x,y,"east");
+		}else if(maze_.players_.at(i)->get_direction() == "east"){
+			maze_.set_player_direction(x,y,"north");
+		}
+	}
+}
+
 std::string game::terminal_command(int id, std::string command){
 	unsigned i=0;
 	for (i = 0; i < players_id_.size(); i++){
@@ -1124,14 +1149,10 @@ std::string game::terminal_command(int id, std::string command){
 		game_state_=PLAYING;
 		game_run();
 	}
-    else if (command.compare("w")==0){
-    	maze_.set_player_direction(x,y,"north");
-    }else if(command.compare("a")==0){
-    	maze_.set_player_direction(x,y,"west");
-    }else if(command.compare("s")==0){
-    	maze_.set_player_direction(x,y,"south");
-    }else if(command.compare("d")==0){
-    	maze_.set_player_direction(x,y,"east");
+    else if (command.compare("left")==0){
+    	generate_dir(1,x,y,i);
+    }else if(command.compare("right")==0){
+		generate_dir(0,x,y,i);
     }else if(command.compare("go")==0){
     	maze_.set_player_state(x,y,1);
     }else if(command.compare("stop")==0){

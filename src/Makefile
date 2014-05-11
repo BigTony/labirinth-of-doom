@@ -7,15 +7,13 @@ SERVER_SRC=server_main.cpp server.cpp server.hpp server_connect.hpp server_conne
 CLIENT_CLI_SRC=client.cpp client.hpp client_connect.hpp client_connect.cpp output.hpp output.cpp maze.hpp maze.cpp server_connect.hpp server_connect.cpp load.cpp load.hpp server.cpp server.hpp
 
 
-all: server client
-run: server client
+all: server cli
 
 server: $(SERVER_SRC)
 	$(CC) $(CFLAGS) $(SERVER_SRC) $(LIBS) -o $(SERVER_BIN)
-
 
 cli: $(CLIENT_CLI_SRC)
 	$(CC) $(CFLAGS) $(CLIENT_CLI_SRC) $(LIBS) -o $(CLIENT_CLI_BIN)
 	
 clean:
-	rm   *.o $(SERVER_BIN) $(CLIENT_BIN)
+	rm   *.o $(SERVER_BIN) $(CLIENT_CLI_BIN)

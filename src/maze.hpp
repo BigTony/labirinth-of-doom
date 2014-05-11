@@ -813,6 +813,7 @@ public:
    */
   std::string terminal_command(int id, std::string command);
   void add_player(client_connection_ptr ptr);
+  void generate_dir(int left_right,int x,int y,int i);
   int players_=0;
   int game_state_=0;
   maze maze_;
