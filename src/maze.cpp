@@ -526,7 +526,7 @@ void maze::check_collision(unsigned int player_id){
 	if(dir == "north"){
 		if(y != 0){
 			if(maze_array_.at(x+((y-1)*width_))->print_to_str() == "f"){
-				//std::cout << "pocet kroku: " << players_.at(player_id)->get_steps() << std::endl;
+				message_.append("finish");
 			}
 			if(maze_array_.at(x+((y-1)*width_))->print_to_str().compare(0,2,"P_") == 0){
 				return;
@@ -1157,7 +1157,7 @@ std::string game::terminal_command(int id, std::string command){
     	maze_.set_player_state(x,y,1);
     }else if(command.compare("stop")==0){
     	maze_.set_player_state(x,y,0);
-    }else if(command.compare("pick")==0){
+    }else if(command.compare("take")==0){
     	std::string test = maze_.pick_key(x,y);
     	if(test != ""){
     		message.append("picked up");

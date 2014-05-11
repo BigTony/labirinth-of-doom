@@ -124,9 +124,9 @@ void client_output_handler::print_lobbys(std::string menu){
 }
 
 void client_output_handler::print_mazes(std::string menu){
-	std::cout << "-----------------------------------" << std::endl;
-	std::cout << "-----Choose maze-------------------" << std::endl;
-	std::cout << "-----<maze_name><tab><game_name>---" << std::endl;
+	std::cout << "-----------------------------------------------------" << std::endl;
+	std::cout << "-Choose maze-----------------------------------------" << std::endl;
+	std::cout << "-<maze_name><tab><game_name><tab><tik_miliseconds>---" << std::endl;
 	std::cout << menu << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
 }

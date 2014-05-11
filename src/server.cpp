@@ -10,6 +10,7 @@
 #include <string>
 #include "server.hpp"
 #include "output.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 
 using boost::asio::ip::tcp;
 
@@ -100,6 +101,10 @@ void game_server::handle_msg(client_connection_ptr client)
 			out.print_debug(std::string("Client state is CHOOSING_MAZE"));
 			std::string msg=client->get_msg();
 			game_ptr new_game_ptr = std::make_shared<game>(client->get_client_id(),load_.get_path()+std::string("/")+parse_tab(msg,0),&io_,parse_tab(msg,1));
+			std::string timer_test = parse_tab(msg,2);
+			if(timer_test != ""){
+				new_game_ptr->clock_ = boost::posix_time::milliseconds(std::stoi(timer_test));
+			}
 			games_.push_back(new_game_ptr);
 			client->game_=new_game_ptr;
 			new_game_ptr->add_player(client);

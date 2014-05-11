@@ -130,7 +130,17 @@ void server_connection::wait_maze_update(client_maze** maze_ptr){
 					data_[recived_]='\0';
 			recived_data_=data_;
 			clout.print_debug("Recived data:\t"+recived_data_);
-			if(recived_data_.compare(0,17, "send_game_change ") == 0){
+			std::size_t found = recived_data_.find("finish");
+			if(found!=std::string::npos){
+				clout.print("--==KONEC HRY==--");
+				for (unsigned int i = 0; i < (*maze_ptr)->players_.size(); i++){
+					if((*maze_ptr)->players_.at(i)->get_state() != 2){
+						clout.print("Player number: " + std::to_string(i) + " stay alive!");
+						clout.print("Number of steps: " + std::to_string((*maze_ptr)->players_.at(i)->get_steps()));
+					}
+				}
+				return;
+			}else if(recived_data_.compare(0,17, "send_game_change ") == 0){
 				recived_data_.erase(0,17);
 				clout.print_debug("Handle update...");
 				clout.print_debug(recived_data_);

@@ -27,7 +27,7 @@
 #define MAX_MAZE_WIDTH 50
 #define MAX_MAZE_LENGTH 50
 #define MIN_CLOCK 500
-#define DEFAULT_CLOCK 500
+#define DEFAULT_CLOCK 1500
 #define MAX_CLOCK 5000
 #define MAX_PLAYERS 4
 #define DISCONNECTED 0
@@ -818,13 +818,14 @@ public:
   int game_state_=0;
   maze maze_;
   std::string game_name_;
-private:
   boost::asio::deadline_timer timer_; 
+  boost::posix_time::time_duration clock_;
+private:
   boost::posix_time::ptime game_start_;
 	int owner_id_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  
 	boost::posix_time::ptime game_end_;
-	boost::posix_time::time_duration clock_;
+	
 	 
 	
 };
