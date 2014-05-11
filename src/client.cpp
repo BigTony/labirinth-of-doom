@@ -88,6 +88,7 @@ void game_client::terminal_command(){
 	clout.print_mazes(connection_.get_mazes());
 	command_=clin.wait_cmd();
 	if(command_.compare("back")==0){
+		connection_.send_msg(command_);
 		return;
 	}
 	else if(command_.compare("refresh")==0){
