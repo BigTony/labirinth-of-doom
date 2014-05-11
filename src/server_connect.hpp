@@ -20,7 +20,7 @@
 #define CHOOSING_MAZE 14
 #define CHOOSING_GAME 15
 #define CONNECTION_LOST -1
-#define DISCONNECTED 0
+
 
 
 

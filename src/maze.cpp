@@ -396,7 +396,7 @@ std::string maze::return_keys(unsigned int player_id){
 		int x = players_.at(player_id)->keys_.at(i)->get_x();
 		int y = players_.at(player_id)->keys_.at(i)->get_y();
 		maze_array_.at(x+(y*width_)) = players_.at(player_id)->keys_.at(i);
-		ret.append(" " + std::string(std::to_string(x)) + "," +  std::string(std::to_string(y)) + "," + players_.at(player_id)->keys_.at(i)->print_to_str()+" ");
+		ret.append(std::string(std::to_string(x)) + "," +  std::string(std::to_string(y)) + "," + players_.at(player_id)->keys_.at(i)->print_to_str()+" ");
 	}
 	int count = players_.at(player_id)->keys_.size();
 	while(count){
@@ -814,6 +814,18 @@ std::string maze::open_gate(int x,int y){
 	}
 	message_ = ret;
 	return ret;
+}
+
+void maze::disconect_player(unsigned int player_id){
+	int x = players_.at(player_id)->get_x();
+	int y = players_.at(player_id)->get_y();
+	maze_object_ptr obj_ptr;
+	obj_ptr = std::make_shared<path_free>(path_free());
+	maze_array_.at(x+(y*width_)) = obj_ptr;
+	players_.erase(players_.begin() + player_id);
+	std::string ret = "";
+	ret.append(std::to_string(x)+","+std::to_string(y)+" ");
+	message_ = ret;
 }
 
 static_object::static_object(){
