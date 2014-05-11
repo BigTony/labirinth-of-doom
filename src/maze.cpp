@@ -691,7 +691,7 @@ std::string maze::pick_key(int x,int y){
 	std::string dir = players_.at(player_id)->get_direction();
 	if(dir == "north"){
 		if(maze_array_.at(x+((y-1)*width_))->print_to_str().compare(0,2,"K_") == 0){
-			players_.at(player_id)->keys_.push_back(maze_array_.at(x+((y+1)*width_)));
+			players_.at(player_id)->keys_.push_back(maze_array_.at(x+((y-1)*width_)));
 			maze_object_ptr obj_ptr;
 			obj_ptr = std::make_shared<path_free>(path_free());
 			maze_array_.at(x+((y-1)*width_)) = obj_ptr;
