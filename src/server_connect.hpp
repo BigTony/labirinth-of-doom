@@ -58,9 +58,22 @@ public:
   * Stop waiting for incomming connection from clients.
   */  
   void stop();
+  /**
+   * A public function.
+   * @param id
+   * @param msg
+   */
   void send_to_client(int id,std::string msg);
-
+  /**
+   * A public function.
+   * 
+   */
   void check_socket();
+  /**
+   * A public function.
+   * 
+   * Return client_connect_ptr 
+   */
   client_connection_ptr wait_new_client();
 private:  
   

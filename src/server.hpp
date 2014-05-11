@@ -21,16 +21,55 @@
   
 
 
-
+/**
+* Class 
+* 
+*/
 class game_server{
 public:
+  /**
+   * A constructor.
+   * Constructor of new game server.
+   */
   game_server();
+  /**
+   * A destructor.
+   * Destructor of game server.
+   */
   ~game_server();
+  /**
+   * A public function.
+   * 
+   */
   void run();
+  /**
+   * A public function.
+   * 
+   */
   void terminal_command();
+  /**
+   * A public function.
+   * 
+   */
   void handle_clients();
+  /**
+   * A public function.
+   * 
+   * @param client
+   */
   void handle_msg(client_connection_ptr client);
+  /**
+   * A public function.
+   * 
+   * Return string
+   */
   std::string get_lobbys();
+  /**
+   * A public function.
+   * 
+   * @param name
+   * Return game_ptr
+   */
   game_ptr get_game_by_name(std::string name);
   
   

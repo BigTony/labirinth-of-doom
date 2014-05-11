@@ -30,44 +30,105 @@
 
 using boost::asio::ip::tcp;
 
-
+/**
+* Class 
+* 
+*/
 class server_connection {
 public:
-	/** A constructor of server_connection.
-	* Also create connection to argv[1]
-	*/
+	/** 
+	 * A constructor of server_connection.
+	 * Also create connection to argv[1]
+	 */
 	server_connection(boost::asio::io_service *io,tcp::resolver::iterator endpoint_iterator);
-	/** A public function.
-	* Send message to server.
-	*/
-	/** A public function.
-	* Recieve message from server.
-	*/
+	/** 
+	 * A public function.
+	 * Send message to server.
+	 */
+	/** 
+	 * A public function.
+	 * Recieve message from server.
+	 */
 	void wait_msg();
-	/** A public function.
-	* Print recieved message from server.
-	*/
-	void sync_wait_msg();
-	void wait_maze_update(client_maze** maze_ptr);
-	/** A public function.
+	/** 
+	 * A public function.
 	 * Print recieved message from server.
 	 */
+	void sync_wait_msg();
+	/**
+   	 * A public function.
+     * 
+     * @param maze_ptr
+     */ 
+	void wait_maze_update(client_maze** maze_ptr);
+	/** 
+	 * A public function.
+	 * Print recieved message from server.
+	 * Return string lobbies.
+	 */
 	std::string get_lobbys();
+	/**
+   	 * A public function.
+     * Print recieved messsage from server.
+     * Return string mazes.
+     */ 
 	std::string get_mazes();
-	
+	/**
+   	 * A public function.
+     * Send message to server to create new maze.
+     * @param maze maze name.
+     * Return string.
+     */ 
 	std::string send_create_maze(std::string maze);
+	/**
+   	 * A public function.
+   	 * 
+     * @param lobby
+     * Return string
+     */ 
 	std::string send_get_lobby(std::string lobby);
+	/**
+   	 * A public function.
+     * 
+     */ 
 	void stop();
+	/**
+   	 * A public function.
+   	 * 
+     * @param endpoint_iterator
+     */ 
 	void connect(tcp::resolver::iterator endpoint_iterator);
+	/**
+   	 * A public function.
+     * 
+     */ 
 	void check_socket();
+	/**
+   	 * A public function.
+   	 * 
+     * @param message
+     */ 
 	void send_quee_msg(std::string message);
+	/**
+   	 * A public function.
+   	 * 
+     * @param message
+     */ 
 	std::string parse_arguments(std::string message);
+	/**
+   	 * A public function.
+   	 * 
+     * @param message
+     */ 
 	void send_msg(std::string message);
+	/**
+   	 * A public function.
+     * 
+     * Return string
+     */ 
 	std::string sync_msg();
 	tcp::socket socket_;
 private:
-	
-
 	/**
 	* A private variable.
 	* Asio need to have at least one io_service object.
