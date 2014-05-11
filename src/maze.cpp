@@ -1224,6 +1224,10 @@ void maze::maze_update(std::string msg){
 				}
 			}else if(comma_count == 4){
 				if(type == "P_"){
+					int p_size = players_.size();
+					if(id >= p_size){
+						add_player(id);
+					}
 					players_.at(id)->set_direction(dir);
 					b_x = players_.at(id)->get_x();
 					b_y = players_.at(id)->get_y();
