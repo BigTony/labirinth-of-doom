@@ -92,6 +92,7 @@ void game_server::handle_msg(client_connection_ptr client)
 			std::string msg=client->get_msg();
 			game_ptr new_game_ptr = get_game_by_name(msg);
 			new_game_ptr->add_player(client);
+			client->game_=new_game_ptr;
 			client->send_msg(new_game_ptr->maze_.msg_send_maze());
 			out.print_debug(new_game_ptr->maze_.msg_send_maze());
 			client->set_status(IN_GAME);

@@ -1096,6 +1096,7 @@ void maze::check_steps(int x,int y){
 
 std::string game::terminal_command(int id, std::string command){
 	unsigned i=0;
+	out.print_debug(std::to_string(players_));
 	for (i = 0; i < players_id_.size(); i++){
 		out.print_debug(std::to_string(i));
 		if(players_id_.at(i) != nullptr){
@@ -1170,6 +1171,7 @@ void maze::add_player(int i){
 	obj_ptr->set_y(set_y);
 	players_.push_back(obj_ptr);
 	maze_array_.at(set_x+(set_y*width_)) = obj_ptr;
+	
 }
 
 void game::add_player(client_connection_ptr ptr){

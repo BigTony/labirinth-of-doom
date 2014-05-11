@@ -28,8 +28,8 @@ public:
 	void set_debug(bool set);
 	bool get_debug();
 	void print_menu();
-private:
-	bool debug_=true;
+protected:
+	bool debug_=false;
 };
 
 class input_handler{

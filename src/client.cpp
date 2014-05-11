@@ -13,10 +13,11 @@ using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[]){
 	try{
-		std::string arg = "argv[1]";
-		if (arg.compare("-debug"))
+		std::string arg = argv[1];
+		if (arg.compare("-debug")==0)
 		{
 			out.set_debug(true);
+			clout.set_debug(true);
 			game_client client(argv[2]);
 			client.run();
 			client.terminal_command();
