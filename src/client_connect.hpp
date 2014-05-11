@@ -146,14 +146,50 @@ private:
 	* Prevent buffer overflow.
 	*/
 	size_t len_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	int status_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	std::string send_data_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	std::string recived_data_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	char data_[MAX_MSG_LENGTH+HEADER_LENGTH];
+	/**
+   	 * A private variable.
+     * 
+     */
 	char header_[HEADER_LENGTH+1];
+	/**
+   	 * A private variable.
+     * 
+     */
 	int recived_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	std::vector<std::string> msg_quee_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	boost::interprocess::interprocess_semaphore mutex_wait_msg_;
+	/**
+   	 * A private variable.
+     * 
+     */
 	boost::interprocess::interprocess_semaphore mutex_msg_recived_;
 };
 

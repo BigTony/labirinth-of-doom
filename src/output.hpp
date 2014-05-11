@@ -156,9 +156,25 @@ public:
 	void print_response(std::string response);
 };
 
+/**
+ * A global variable.
+ * 
+ */
 extern client_input_handler clin;
+/**
+ * A global variable.
+ * 
+ */
 extern client_output_handler clout;
+/**
+ * A global variable.
+ * 
+ */
 extern input_handler in;
+/**
+ * A global variable.
+ * 
+ */
 extern output_handler out;
 
 #endif

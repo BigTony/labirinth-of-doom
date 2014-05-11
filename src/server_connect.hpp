@@ -60,19 +60,19 @@ public:
   void stop();
   /**
    * A public function.
+   * Send message to client by id.
    * @param id
    * @param msg
    */
   void send_to_client(int id,std::string msg);
   /**
    * A public function.
-   * 
+   * Well check socket.
    */
   void check_socket();
   /**
    * A public function.
-   * 
-   * Return client_connect_ptr 
+   * Return client_connect_ptr.
    */
   client_connection_ptr wait_new_client();
 private:  
@@ -82,21 +82,35 @@ private:
   * Acceptor object needs to be created to listen for new connections
   */  
   tcp::acceptor acceptor_;
+  /**
+   * A private variable.
+   * Socket object needed for communication.
+   */
   tcp::socket socket_;
   /**
   * A private variable 
   * Array storing client connections
   */   
   std::vector<client_connection_ptr> connections_;
-
   /**
   * A private variable 
   * Socket storing information about connection with client
   */
   boost::asio::io_service* io_;
-  
+  /**
+   * A private variable.
+   * Count connections.
+   */
   int connection_counter_;
+  /**
+   * A private variable.
+   * Semaphore.
+   */
   boost::interprocess::interprocess_semaphore new_client_;
+  /**
+   * A private variable.
+   * Pointer to client connection.
+   */
   client_connection_ptr new_client_ptr_;
 };
 

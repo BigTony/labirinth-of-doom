@@ -67,7 +67,7 @@ public:
   /**
    * A public function.
    * 
-   * @param name
+   * @param
    * Return game_ptr
    */
   game_ptr get_game_by_name(std::string name);
@@ -75,13 +75,45 @@ public:
   
   
 private:
+  /**
+   * A private variable.
+   * Boost io service
+   */
   boost::asio::io_service io_;
+  /**
+   * A private variable.
+   * Endpoint.
+   */
   tcp::endpoint endpoint_;
+  /**
+   * A private variable.
+   * Binnder for connections.
+   */
   connection_binnder binnder_;
+  /**
+   * A private variable.
+   * Binnder thread.
+   */
   boost::thread *t_binnder_;
+  /**
+   * A private variable.
+   * Handle client thread.
+   */
   boost::thread *t_client_handle_;
+  /**
+   * A private variable.
+   * Command string.
+   */
   std::string command_;
+  /**
+   * A private variable.
+   * Class loader.
+   */
   loader load_;
+  /**
+   * A private variable.
+   * Class games.
+   */
   games games_;
   
 };
