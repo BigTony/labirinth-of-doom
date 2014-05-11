@@ -115,6 +115,7 @@ public:
   virtual std::string print_to_str();
   virtual int get_steps();
   virtual void set_steps(){}
+  virtual void steps_to(int steps){}
   virtual std::string get_direction();
   virtual void set_direction(std::string dir);
   virtual int get_state();
@@ -156,6 +157,7 @@ public:
   std::string print_to_str() = 0;
   int get_steps() = 0;
   void set_steps() = 0;
+  void steps_to(int steps) = 0;
   dynamic_object();
   void pick_key(unsigned int key_id);
 private:
@@ -204,9 +206,10 @@ public:
   std::string print_to_str();
   int get_steps();
   void set_steps();
+  void steps_to(int steps);
 private:
   int id;
-  int steps_;
+  int steps_ = 0;
 };
 
 class keeper_object: public dynamic_object{
@@ -217,6 +220,7 @@ public:
   void pick_key(unsigned int key_id){}
   int get_steps();
   void set_steps();
+  void steps_to(int steps);
 private:
 	int id;
   int steps_ = 0;
