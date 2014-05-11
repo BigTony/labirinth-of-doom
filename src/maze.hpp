@@ -316,10 +316,10 @@ public:
   void add_player(client_connection_ptr ptr);
   int players_=0;
   int game_state_=0;
+  std::string game_name_;
   maze maze_;
 private:
   boost::asio::deadline_timer timer_; 
-  std::string game_name_;
   boost::posix_time::ptime game_start_;
 	int owner_id_;
 	std::array<client_connection_ptr,MAX_PLAYERS> players_id_;  

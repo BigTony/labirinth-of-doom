@@ -113,7 +113,8 @@ void game_client::join_game(std::string lobby){
 	if (maze_ptr_!=nullptr){
 		delete(maze_ptr_);
 	}
-	maze_ptr_=new client_maze(connection_.send_get_lobby(lobby));
+	std::string maze= connection_.send_get_lobby(lobby);
+	maze_ptr_=new client_maze(maze);
 	play_game();
 }
 

@@ -89,6 +89,12 @@ void game_server::handle_msg(client_connection_ptr client)
 // // 			break;
 		case (CHOOSING_GAME):{
 			out.print_debug(std::string("Client state is CHOOSING_GAME"));
+			std::string msg=client->get_msg();
+			game_ptr new_game_ptr = get_game_by_name(msg);
+			new_game_ptr->add_player(client);
+			client->send_msg(new_game_ptr->maze_.msg_send_maze());
+			out.print_debug(new_game_ptr->maze_.msg_send_maze());
+			client->set_status(IN_GAME);
 			break;}
 		case (CHOOSING_MAZE):{
 			out.print_debug(std::string("Client state is CHOOSING_MAZE"));
@@ -121,4 +127,15 @@ std::string game_server::get_lobbys(){
 		ret.append(games_.at(i)->info_to_string());
 	}
 	return ret;
+}
+
+game_ptr game_server::get_game_by_name(std::string name){
+	game_ptr game=nullptr;
+	for (unsigned int i = 0; i < games_.size(); i++)
+	{
+		if (games_.at(i)->game_name_.compare(name)==0){
+			game = games_.at(i);
+		}
+	}
+	return game;
 }

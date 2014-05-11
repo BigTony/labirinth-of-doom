@@ -31,7 +31,7 @@ public:
   void handle_clients();
   void handle_msg(client_connection_ptr client);
   std::string get_lobbys();
-
+  game_ptr get_game_by_name(std::string name);
   
   
   
